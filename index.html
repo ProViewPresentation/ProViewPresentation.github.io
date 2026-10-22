@@ -20,23 +20,13 @@
 <body>
 
   <!-- ============================================================
-       GLOBAL TOP NAVIGATION BAR & WORKSPACE SWITCHER
+       GLOBAL TOP NAVIGATION BAR — CLEAN, SIMPLE & SPACIOUS
   ============================================================ -->
   <header class="top-navbar">
-    <div style="display:flex;align-items:center;gap:20px;">
-      <div class="brand-logo" onclick="ProViewApp.switchView('landing')">
-        <div class="brand-mark">PV</div>
-        <span>ProView</span>
-        <span class="brand-badge-free">100% Free Forever</span>
-      </div>
-
-      <nav class="nav-links" aria-label="Landing Sections">
-        <a href="#how-it-works" class="nav-link" onclick="ProViewApp.switchView('landing', false)">How It Works</a>
-        <a href="#core-features" class="nav-link" onclick="ProViewApp.switchView('landing', false)">Core Features</a>
-        <a href="#dual-workspaces" class="nav-link" onclick="ProViewApp.switchView('landing', false)">Admin vs. Operator</a>
-        <a href="#competitive-analysis" class="nav-link" onclick="ProViewApp.switchView('landing', false)">Comparison</a>
-        <a href="#special-features" class="nav-link" onclick="ProViewApp.switchView('landing', false)">Special Features</a>
-      </nav>
+    <div class="brand-logo" onclick="ProViewApp.switchView('landing')">
+      <div class="brand-mark">PV</div>
+      <span>ProView</span>
+      <span class="brand-badge-free">100% Free</span>
     </div>
 
     <!-- Dual-Workspace Mode Switcher -->
@@ -50,7 +40,7 @@
       </button>
       <button id="pill-operator" class="ws-pill" onclick="ProViewApp.switchView('operator')">
         <span class="ws-dot pulse" style="color:var(--accent-emerald);"></span>
-        <span>Operator Live Deck</span>
+        <span>Live Operator</span>
       </button>
       <button id="pill-stage" class="ws-pill" onclick="ProViewApp.switchView('stage')">
         <span class="ws-dot" style="color:var(--accent-cyan);"></span>
@@ -62,9 +52,9 @@
     <div class="nav-actions">
       <div id="cloud-status-indicator" class="cloud-status-pill connected" title="Connected to BreadBackend (/api/v1/proview)">
         <span class="ws-dot pulse" style="color:#10B981;"></span>
-        <span id="cloud-status-text">BreadBackend Ready</span>
+        <span id="cloud-status-text">Cloud Ready</span>
       </div>
-      <div id="nav-auth-area" style="display:flex;align-items:center;gap:8px;">
+      <div id="nav-auth-area" style="display:flex;align-items:center;gap:12px;">
         <button class="btn btn-sm btn-outline" onclick="ProViewApp.openAuthModal('login')">Log In</button>
         <button class="btn btn-sm btn-amber" onclick="ProViewApp.openAuthModal('signup')">Free Account</button>
       </div>
@@ -77,104 +67,84 @@
   ============================================================ -->
   <main id="view-landing" class="app-view active-view">
 
-    <!-- HERO SECTION -->
+    <!-- HERO SECTION — CENTERED, SPACIOUS & UNCLUTTERED -->
     <section class="hero-section">
       <div class="container">
-        <div class="hero-top-grid">
-          <div>
-            <div class="eyebrow-badge">
-              <span>✦ NEXT-GEN CHURCH PRESENTATION SOFTWARE</span>
-              <span>•</span>
-              <span>100% FREE</span>
-            </div>
-            <h1 class="hero-title">
-              Engineered for the Sanctuary. <span class="text-gradient-amber">Zero Clunkiness. Zero Cost.</span>
-            </h1>
-            <p class="hero-subtitle">
-              <strong>ProView</strong> is a next-generation, purpose-built church presentation software engineered specifically for houses of worship. It eliminates the clunkiness of secular programs like PowerPoint and the steep learning curves and heavy hardware requirements of legacy church software—combining fluid speed, intuitive multi-layered management, and a robust dual-interface workflow.
-            </p>
+        <div class="hero-centered-intro">
+          <div class="eyebrow-badge">
+            <span>✦ NEXT-GEN CHURCH PRESENTATION SOFTWARE • 100% FREE FOREVER</span>
+          </div>
+          <h1 class="hero-title">
+            Engineered for the Sanctuary.<br />
+            <span class="text-gradient-amber">Zero Clunkiness. Zero Cost.</span>
+          </h1>
+          <p class="hero-subtitle">
+            <strong>ProView</strong> is a next-generation, purpose-built church presentation software engineered specifically for houses of worship. It eliminates the clunkiness of secular programs like PowerPoint and the steep learning curves and heavy hardware requirements of legacy church software—combining fluid speed, intuitive multi-layered management, and a robust dual-interface workflow.
+          </p>
 
-            <div class="hero-cta-row">
-              <button class="btn btn-lg btn-amber" onclick="ProViewApp.openAuthModal('signup')">
-                Create Free Church Account →
-              </button>
-              <button class="btn btn-lg btn-emerald" onclick="ProViewApp.switchView('operator')">
-                ● Launch Project Operator Deck
-              </button>
-              <button class="btn btn-lg btn-outline" onclick="ProViewApp.switchView('admin')">
-                Open Admin Control Hub
-              </button>
-            </div>
+          <div class="hero-cta-row">
+            <button class="btn btn-lg btn-amber" onclick="ProViewApp.openAuthModal('signup')">
+              Create Free Church Account →
+            </button>
+            <button class="btn btn-lg btn-emerald" onclick="ProViewApp.switchView('operator')">
+              ● Launch Project Operator Deck
+            </button>
+            <button class="btn btn-lg btn-outline" onclick="ProViewApp.switchView('admin')">
+              Open Admin Control Hub
+            </button>
+          </div>
 
-            <div class="hero-trust-strip">
-              <div class="trust-metric">
-                <strong><span style="color:var(--accent-emerald);">●</span> 100% Free Forever</strong>
-                <span>No subscriptions, seat limits, or watermarks</span>
-              </div>
-              <div class="trust-metric">
-                <strong><span style="color:var(--accent-amber);">◆</span> Dual-Workspace Split</strong>
-                <span>Decoupled Admin Hub &amp; Live Operator Deck</span>
-              </div>
-              <div class="trust-metric">
-                <strong><span style="color:var(--accent-cyan);">▲</span> Universal Hardware</strong>
-                <span>Runs silk-smooth on any church laptop</span>
-              </div>
+          <div class="hero-trust-strip">
+            <div class="trust-metric">
+              <strong><span style="color:var(--accent-emerald);">●</span> 100% Free Forever</strong>
+              <span>No subscriptions, seat limits, or watermarks</span>
+            </div>
+            <div class="trust-metric">
+              <strong><span style="color:var(--accent-amber);">◆</span> Dual-Workspace Split</strong>
+              <span>Decoupled Admin Hub &amp; Live Operator Deck</span>
+            </div>
+            <div class="trust-metric">
+              <strong><span style="color:var(--accent-cyan);">▲</span> Universal Hardware</strong>
+              <span>Runs smoothly on any church computer</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wide, Uncompacted Interactive Live Engine Preview -->
+        <div class="hero-showcase-card">
+          <div class="showcase-window-bar">
+            <div class="window-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="font-mono" style="font-size:0.78rem;color:var(--text-secondary);">
+              LIVE ENGINE PREVIEW — CLICK ANY SLIDE CUE BELOW
+            </div>
+            <div class="showcase-mode-tabs">
+              <button class="showcase-tab active-op" onclick="ProViewApp.switchView('operator')">Open Live Deck</button>
+              <button class="showcase-tab active" onclick="ProViewApp.switchView('admin')">Open Admin Hub</button>
             </div>
           </div>
 
-          <!-- Interactive Live Engine Preview Card -->
-          <div class="hero-showcase-card">
-            <div class="showcase-window-bar">
-              <div class="window-dots">
-                <span></span><span></span><span></span>
+          <div class="showcase-body">
+            <div class="mini-stage-screen">
+              <div class="mini-stage-tally">
+                <span class="ws-dot pulse"></span> ON AIR • MAIN SANCTUARY 1080p60
               </div>
-              <div class="font-mono" style="font-size:0.72rem;color:var(--text-secondary);">
-                PROVIEW LIVE ENGINE • DUAL-INTERFACE PREVIEW
+              <div class="mini-stage-ndi">
+                NDI STREAM + STAGE SYNC
               </div>
-              <div class="showcase-mode-tabs">
-                <button class="showcase-tab active-op" onclick="ProViewApp.switchView('operator')">LIVE DECK</button>
-                <button class="showcase-tab active" onclick="ProViewApp.switchView('admin')">ADMIN HUB</button>
+              <div id="hero-stage-lyric" class="mini-stage-lyric">
+                Bless the Lord, O my soul, O my soul
+                Worship His holy name
+              </div>
+              <div class="mini-stage-ccli">
+                <span id="hero-stage-ccli-left">CCLI Song #6016351 • License #11482903</span>
+                <span>Grace Sanctuary Fellowship</span>
               </div>
             </div>
 
-            <div class="showcase-body">
-              <div class="mini-stage-screen">
-                <div class="mini-stage-tally">
-                  <span class="ws-dot pulse"></span> ON AIR • MAIN SANCTUARY 1080p60
-                </div>
-                <div class="mini-stage-ndi">
-                  NDI STREAM + STAGE VIEW SYNC
-                </div>
-                <div id="hero-stage-lyric" class="mini-stage-lyric">
-                  Bless the Lord, O my soul, O my soul
-                  Worship His holy name
-                </div>
-                <div class="mini-stage-ccli">
-                  <span id="hero-stage-ccli-left">CCLI Song #6016351 • License #11482903</span>
-                  <span>Grace Sanctuary Fellowship</span>
-                </div>
-              </div>
-
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                <span class="font-mono" style="font-size:0.72rem;color:var(--text-secondary);">
-                  CLICK A SLIDE CUE BELOW TO TEST LIVE ENGINE RENDERING:
-                </span>
-                <span class="font-mono" style="font-size:0.7rem;color:var(--accent-amber);">
-                  Master Templates Protected
-                </span>
-              </div>
-
-              <div id="hero-cue-strip" class="mini-cue-strip">
-                <!-- Populated by JS -->
-              </div>
-
-              <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border-subtle);display:flex;justify-content:space-between;align-items:center;font-size:0.78rem;color:var(--text-secondary);">
-                <span>Want the full Sunday morning experience?</span>
-                <div style="display:flex;gap:8px;">
-                  <button class="btn btn-sm btn-cyan" onclick="ProViewApp.switchView('stage')">Preview Stage Monitor</button>
-                  <button class="btn btn-sm btn-emerald" onclick="ProViewApp.switchView('operator')">Enter Full Operator View →</button>
-                </div>
-              </div>
+            <div id="hero-cue-strip" class="mini-cue-strip">
+              <!-- Populated by JS -->
             </div>
           </div>
         </div>
@@ -203,11 +173,11 @@
             </div>
             <h3>The Database Core</h3>
             <p>
-              All songs, media files (photos, loops, background videos), Bible translations, and sermon elements are stored in a centralized, cloud-synced, or local database powered by BreadBackend.
+              All songs, media files (photos, loops, background videos), Bible translations, and sermon elements are stored in a centralized, cloud-synced, or local database.
             </p>
             <ul class="pillar-specs">
               <li>✦ Centralized Song &amp; Lyric Repository</li>
-              <li>✦ Cloud-Synced Media Assets (Up to 50MB/file)</li>
+              <li>✦ Cloud-Synced Media Assets (Up to 50MB)</li>
               <li>✦ Multi-Translation Scripture Library</li>
               <li>✦ Reusable Sermon Templates &amp; Themes</li>
             </ul>
@@ -225,7 +195,7 @@
             <ul class="pillar-specs">
               <li>✦ Chronological Service Playlists</li>
               <li>✦ Nested Multi-Part Sermon Folders</li>
-              <li>✦ Instant Reordering &amp; Grouping</li>
+              <li>✦ Effortless Reordering &amp; Grouping</li>
               <li>✦ Weeks-in-Advance Service Planning</li>
             </ul>
           </div>
@@ -242,7 +212,7 @@
             <ul class="pillar-specs">
               <li>✦ 1080p60 Main Sanctuary Projection</li>
               <li>✦ Stage Display Confidence Monitors</li>
-              <li>✦ Direct NDI / Lower-Third Broadcast Feeds</li>
+              <li>✦ Direct NDI &amp; Online Broadcast Feeds</li>
               <li>✦ Zero-Latency Volunteer Execution</li>
             </ul>
           </div>
@@ -260,7 +230,7 @@
           <div class="section-num-tag">02 • Purpose-Built Capabilities</div>
           <h2 class="section-title">2. Core Features of ProView</h2>
           <p class="section-desc">
-            Every tool inside ProView is engineered around how worship teams, pastors, and media volunteers actually prepare and execute services.
+            Every tool inside ProView is designed around how worship teams, pastors, and media volunteers prepare and run services.
           </p>
         </div>
 
@@ -270,23 +240,17 @@
             <div>
               <div class="bento-icon-row">
                 <div class="bento-icon" style="background:var(--accent-amber-soft);color:var(--accent-amber);">🎬</div>
-                <span class="bento-tag">Zero Conversion Delays</span>
+                <span class="bento-tag">60 FPS Compositor</span>
               </div>
-              <h3 style="margin-top:16px;">Seamless Multi-Media Integration</h3>
+              <h3 style="margin-top:24px;">Seamless Multi-Media Integration</h3>
               <p>
                 Effortlessly blends text slides, lyrics, background loops, high-resolution photos, and foreground videos without stuttering or format conversion delays.
               </p>
             </div>
-            <div class="bento-preview-box">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                <span class="font-mono" style="font-size:0.74rem;color:var(--accent-amber);">LAYER COMPOSITOR</span>
-                <span class="font-mono" style="font-size:0.72rem;color:var(--accent-emerald);">60 FPS LOCKED</span>
-              </div>
-              <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                <span class="cue-type-badge badge-media">Layer 1: 4K Motion Loop</span>
-                <span class="cue-type-badge badge-song">Layer 2: Crisp Lyric Typography</span>
-                <span class="cue-type-badge badge-scripture">Layer 3: CCLI &amp; NDI Overlay</span>
-              </div>
+            <div class="bento-preview-box" style="display:flex;gap:10px;flex-wrap:wrap;">
+              <span class="cue-type-badge badge-media">Motion Loops</span>
+              <span class="cue-type-badge badge-song">Crisp Lyrics</span>
+              <span class="cue-type-badge badge-scripture">NDI &amp; Stage Overlays</span>
             </div>
           </div>
 
@@ -294,24 +258,16 @@
           <div class="bento-card">
             <div>
               <div class="bento-icon-row">
-                <div class="bento-icon" style="background:rgba(168,85,247,0.16);color:#C084FC;">🗂️</div>
-                <span class="bento-tag">Hierarchical Grouping</span>
+                <div class="bento-icon" style="background:rgba(168,85,247,0.14);color:#C084FC;">🗂️</div>
+                <span class="bento-tag">Nested Hierarchy</span>
               </div>
-              <h3 style="margin-top:16px;">Smart Collection &amp; Sermon Builder</h3>
+              <h3 style="margin-top:24px;">Smart Collection &amp; Sermon Builder</h3>
               <p>
                 Makes structuring multi-part sermons simple. Pastors or media teams can create nested slide collections, grouping an entire sermon series, scripture references, and presentation points under a single parent folder.
               </p>
             </div>
-            <div class="bento-preview-box">
-              <div class="font-mono" style="font-size:0.75rem;color:#C084FC;margin-bottom:6px;">
-                📁 Sermon Series: Unshakeable Hope (Part 3)
-              </div>
-              <div style="padding-left:14px;border-left:2px solid rgba(168,85,247,0.4);font-size:0.8rem;color:var(--text-secondary);display:flex;flex-direction:column;gap:4px;">
-                <span>├── Slide 1: Series Title Graphic</span>
-                <span>├── Slide 2: Isaiah 40:28-31 (ESV Reflowed)</span>
-                <span>├── Slide 3: Point 1 — God's Perspective</span>
-                <span>└── Slide 4: Altar Call &amp; Reflection Quote</span>
-              </div>
+            <div class="bento-preview-box" style="font-family:var(--font-mono);font-size:0.82rem;color:#C084FC;">
+              📁 Sermon Series Folder → Title + Scripture + Points 1–3
             </div>
           </div>
 
@@ -320,18 +276,15 @@
             <div>
               <div class="bento-icon-row">
                 <div class="bento-icon" style="background:var(--accent-emerald-soft);color:var(--accent-emerald);">⚖️</div>
-                <span class="bento-tag">100% Legal Compliance</span>
+                <span class="bento-tag">Automatic Compliance</span>
               </div>
-              <h3 style="margin-top:16px;">Built-In Copyright &amp; CCLI Automation</h3>
+              <h3 style="margin-top:24px;">Built-In Copyright &amp; CCLI Automation</h3>
               <p>
-                Automatically tracks and appends CCLI license numbers, song titles, and author credits to the bottom corner of lyric slides to keep the church legally compliant without manual formatting.
+                Automatically tracks and appends CCLI license numbers, song titles, and author credits to the bottom corner of lyric slides to keep the church legally compliant.
               </p>
             </div>
-            <div class="bento-preview-box" style="display:flex;justify-content:space-between;align-items:center;font-family:var(--font-mono);font-size:0.75rem;">
-              <div>
-                <div style="color:var(--text-primary);">"10,000 Reasons" • Jonas Myrin, Matt Redman</div>
-                <div style="color:var(--accent-amber);">CCLI Song #6016351 • Church License #11482903</div>
-              </div>
+            <div class="bento-preview-box" style="display:flex;justify-content:space-between;align-items:center;font-family:var(--font-mono);font-size:0.8rem;">
+              <span style="color:var(--accent-amber);">CCLI Song #6016351 • License #11482903</span>
               <span class="brand-badge-free">Auto-Appended</span>
             </div>
           </div>
@@ -341,20 +294,17 @@
             <div>
               <div class="bento-icon-row">
                 <div class="bento-icon" style="background:var(--accent-cyan-soft);color:var(--accent-cyan);">📖</div>
-                <span class="bento-tag">Multi-Translation On The Fly</span>
+                <span class="bento-tag">ESV • NIV • KJV • NLT</span>
               </div>
-              <h3 style="margin-top:16px;">Instant Scripture Engine</h3>
+              <h3 style="margin-top:24px;">Instant Scripture Engine</h3>
               <p>
-                Pulls verses from multiple Bible translations on the fly (ESV, NIV, KJV, NLT), auto-formatting them across slides based on user-defined text length preferences.
+                Pulls verses from multiple Bible translations on the fly, auto-formatting them across slides based on user-defined text length preferences.
               </p>
             </div>
             <div class="bento-preview-box" style="display:flex;justify-content:space-between;align-items:center;">
-              <div>
-                <div class="font-mono" style="font-size:0.75rem;color:var(--accent-cyan);">Isaiah 40:28-31 • ESV / NIV / KJV / NLT</div>
-                <div style="font-size:0.8rem;color:var(--text-secondary);">Auto-splits into 3 balanced sub-slides at 145 chars/slide</div>
-              </div>
+              <span class="font-mono" style="font-size:0.82rem;color:var(--accent-cyan);">Auto-splits verses cleanly across slides</span>
               <button class="btn btn-sm btn-cyan" onclick="ProViewApp.switchView('admin');ProViewApp.switchAdminTab('scripture');">
-                Try Scripture Engine →
+                Open Scripture Engine →
               </button>
             </div>
           </div>
@@ -372,7 +322,7 @@
           <div class="section-num-tag">03 • Dual-Workspace Architecture</div>
           <h2 class="section-title">3. The Two Core Pages: Admin Page vs. Project Operator Page</h2>
           <p class="section-desc">
-            To ensure Sunday services run without a hitch while keeping the main platform secure, ProView is divided into two primary workspaces. Click into either workspace below to experience it live.
+            To ensure Sunday services run without a hitch while keeping the main platform secure, ProView is divided into two primary workspaces.
           </p>
         </div>
 
@@ -383,8 +333,8 @@
               <div class="ws-role-pill" style="background:var(--accent-amber-soft);color:var(--accent-amber);border:1px solid var(--border-amber);">
                 <span>A • THE CONTROL &amp; CREATION HUB</span>
               </div>
-              <h3 style="font-size:1.75rem;margin-bottom:10px;">The Admin Page</h3>
-              <p style="color:var(--text-secondary);font-size:0.98rem;">
+              <h3 style="font-size:1.9rem;margin-bottom:14px;">The Admin Page</h3>
+              <p style="color:var(--text-secondary);font-size:1.05rem;">
                 This is where <strong>90% of the heavy lifting, preparation, and template designing</strong> happens ahead of time.
               </p>
 
@@ -401,17 +351,11 @@
                     <strong>Who uses it:</strong> Worship pastors, media directors, and tech leads during the week.
                   </div>
                 </li>
-                <li>
-                  <span style="color:var(--accent-amber);font-weight:800;">✦</span>
-                  <div>
-                    <strong>Master Template Protection:</strong> Changes made in the Admin Hub define the canonical database synced with BreadBackend.
-                  </div>
-                </li>
               </ul>
             </div>
 
-            <div style="padding-top:20px;border-top:1px solid var(--border-subtle);display:flex;justify-content:space-between;align-items:center;">
-              <span class="font-mono" style="font-size:0.76rem;color:var(--accent-amber);">5 Deep Preparation Modules</span>
+            <div style="padding-top:28px;border-top:1px solid var(--border-subtle);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;">
+              <span class="font-mono" style="font-size:0.82rem;color:var(--accent-amber);">Master Database &amp; Service Planner</span>
               <button class="btn btn-amber" onclick="ProViewApp.switchView('admin')">
                 Open Admin Control Hub →
               </button>
@@ -424,8 +368,8 @@
               <div class="ws-role-pill" style="background:var(--accent-emerald-soft);color:var(--accent-emerald);border:1px solid var(--border-emerald);">
                 <span>B • THE LIVE EXECUTION HUB</span>
               </div>
-              <h3 style="font-size:1.75rem;margin-bottom:10px;">The Project Operator Page</h3>
-              <p style="color:var(--text-secondary);font-size:0.98rem;">
+              <h3 style="font-size:1.9rem;margin-bottom:14px;">The Project Operator Page</h3>
+              <p style="color:var(--text-secondary);font-size:1.05rem;">
                 Designed for <strong>absolute simplicity, speed, and clean visibility</strong> during a live service. It gives the volunteer or projectionist complete control over the active service playlist.
               </p>
 
@@ -433,7 +377,7 @@
                 <li>
                   <span style="color:var(--accent-emerald);font-weight:800;">●</span>
                   <div>
-                    <strong>What you do here:</strong> Run the live service by clicking through slides, songs, scripture readings, and announcements with zero visual clutter.
+                    <strong>What you do here:</strong> Run the live service by clicking through slides, songs, and announcements.
                   </div>
                 </li>
                 <li>
@@ -445,8 +389,8 @@
               </ul>
             </div>
 
-            <div style="padding-top:20px;border-top:1px solid var(--border-subtle);display:flex;justify-content:space-between;align-items:center;">
-              <span class="font-mono" style="font-size:0.76rem;color:var(--accent-emerald);">Safe Micro-Edits • Zero Panic</span>
+            <div style="padding-top:28px;border-top:1px solid var(--border-subtle);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;">
+              <span class="font-mono" style="font-size:0.82rem;color:var(--accent-emerald);">Safe Micro-Edits • Master Protected</span>
               <button class="btn btn-emerald" onclick="ProViewApp.switchView('operator')">
                 Launch Project Operator Deck →
               </button>
@@ -466,7 +410,7 @@
           <div class="section-num-tag">04 • Benchmark Comparison</div>
           <h2 class="section-title">4. Competitive Analysis: How ProView Compares</h2>
           <p class="section-desc">
-            See why houses of worship are replacing expensive, resource-heavy legacy tools and clunky secular slide decks with ProView.
+            See how ProView compares to legacy church platforms and secular presentation tools.
           </p>
         </div>
 
@@ -484,15 +428,15 @@
             <tbody>
               <tr class="proview-row">
                 <td>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <span class="brand-mark" style="width:28px;height:28px;font-size:0.75rem;">PV</span>
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <span class="brand-mark" style="width:32px;height:32px;font-size:0.8rem;">PV</span>
                     <strong>ProView</strong>
                   </div>
                 </td>
                 <td><strong>Incredible (Designed for volunteers &amp; pros)</strong></td>
                 <td><strong>High (Operator micro-edits + Admin depth)</strong></td>
                 <td><strong>Native multi-output, NDI, &amp; Stage displays</strong></td>
-                <td><strong>100% Free; Lightweight, optimized for all hardware</strong></td>
+                <td><strong>Lightweight, optimized for all hardware (100% Free)</strong></td>
               </tr>
               <tr>
                 <td><strong>ProPresenter</strong></td>
@@ -519,13 +463,13 @@
           </table>
         </div>
 
-        <h3 style="font-size:1.55rem;text-align:center;margin-bottom:28px;color:var(--text-daylight-ink);">
+        <h3 style="font-size:1.75rem;text-align:center;margin-bottom:44px;color:var(--text-daylight-ink);">
           ProView’s Standout Strengths (and Eliminated Weaknesses)
         </h3>
 
         <div class="strengths-grid">
           <div class="strength-card">
-            <h4>⚡ Zero Bloat &amp; Universal Hardware Compatibility</h4>
+            <h4>⚡ Zero Bloat &amp; Universal Hardware</h4>
             <p>
               Unlike competitors that bog down low-spec church laptops or demand expensive dedicated graphic cards, ProView is optimized to run smoothly on almost any system.
             </p>
@@ -558,26 +502,23 @@
           <div class="section-num-tag">05 • Next-Gen Innovation</div>
           <h2 class="section-title">5. Cool Special Features</h2>
           <p class="section-desc">
-            Experience ProView's signature intelligent automation tools live right below.
+            Interactive tools built to save preparation time and keep everyone on stage in sync.
           </p>
         </div>
 
         <div class="special-features-grid">
           <!-- Interactive Smart Text-Flow Reflow Demo -->
           <div class="sandbox-panel">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-              <span class="cue-type-badge badge-scripture">INTERACTIVE LIVE SANDBOX</span>
-              <span class="font-mono" style="font-size:0.75rem;color:var(--accent-cyan);">Dynamic Slide Calculation</span>
-            </div>
-            <h3 style="font-size:1.45rem;margin-bottom:8px;">Smart Text-Flow Reflow</h3>
-            <p style="color:var(--text-secondary);font-size:0.93rem;margin-bottom:18px;">
-              If an operator pastes a massive block of scripture or sermon notes into a slide, ProView auto-calculates text length and dynamically splits it across multiple clean, uniform sub-slides. <strong>Try adjusting the character density or pasting text below:</strong>
+            <span class="cue-type-badge badge-scripture" style="margin-bottom:18px;display:inline-block;">INTERACTIVE DEMO</span>
+            <h3 style="font-size:1.6rem;margin-bottom:12px;">Smart Text-Flow Reflow</h3>
+            <p style="color:var(--text-secondary);font-size:1rem;margin-bottom:28px;">
+              If an operator pastes a massive block of scripture or sermon notes into a slide, ProView auto-calculates text length and dynamically splits it across multiple clean, uniform sub-slides.
             </p>
 
             <div class="form-group">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
                 <label class="form-label" for="landing-reflow-slider" style="margin:0;">Target Text Density per Slide:</label>
-                <span id="landing-reflow-char-val" class="font-mono" style="font-size:0.8rem;color:var(--accent-amber);font-weight:700;">130 chars/slide</span>
+                <span id="landing-reflow-char-val" class="font-mono" style="font-size:0.88rem;color:var(--accent-amber);font-weight:700;">130 chars/slide</span>
               </div>
               <input
                 type="range"
@@ -595,51 +536,44 @@
               <textarea
                 id="landing-reflow-input"
                 class="form-textarea"
-                style="min-height:92px;"
+                style="min-height:110px;"
                 oninput="ProViewApp.renderLandingReflowDemo()"
               >For I am sure that neither death nor life, nor angels nor rulers, nor things present nor things to come, nor powers, nor height nor depth, nor anything else in all creation, will be able to separate us from the love of God in Christ Jesus our Lord.</textarea>
             </div>
 
-            <div class="font-mono" style="font-size:0.74rem;color:var(--text-secondary);margin-bottom:6px;">
-              AUTO-GENERATED UNIFORM SUB-SLIDES:
-            </div>
             <div id="landing-reflow-output" class="reflow-slides-preview">
               <!-- Populated by JS -->
             </div>
           </div>
 
           <!-- Crowd-Sourced Stage View Sync Card -->
-          <div class="sandbox-panel" style="display:flex;flex-direction:column;justify-content:space-between;">
+          <div class="sandbox-panel" style="display:flex;flex-direction:column;justify-content:space-between;gap:28px;">
             <div>
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-                <span class="cue-type-badge badge-media">REAL-TIME CONFIDENCE LINK</span>
-                <span class="font-mono" style="font-size:0.75rem;color:var(--accent-emerald);">WebSocket / Broadcast Sync</span>
-              </div>
-              <h3 style="font-size:1.45rem;margin-bottom:8px;">Crowd-Sourced Stage View Sync</h3>
-              <p style="color:var(--text-secondary);font-size:0.93rem;margin-bottom:20px;">
-                Allows speakers, pastors, and musicians to view tailored countdowns, next-slide previews, chord keys, and custom private notes on tablets, phones, or stage confidence monitors via a secure local web link.
+              <span class="cue-type-badge badge-media" style="margin-bottom:18px;display:inline-block;">STAGE CONFIDENCE LINK</span>
+              <h3 style="font-size:1.6rem;margin-bottom:12px;">Crowd-Sourced Stage View Sync</h3>
+              <p style="color:var(--text-secondary);font-size:1rem;margin-bottom:28px;">
+                Allows speakers and musicians to view tailored countdowns, next-slide previews, and custom private notes on tablets or confidence monitors via a secure local web link.
               </p>
 
-              <!-- Mini Mockup of Stage Confidence Monitor -->
-              <div style="background:#05070C;border:1px solid var(--border-cyan);border-radius:12px;padding:18px;margin-bottom:20px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-subtle);padding-bottom:10px;margin-bottom:12px;" class="font-mono">
-                  <span style="color:var(--accent-cyan);font-size:0.76rem;">● STAGE CONFIDENCE LINK #7742</span>
-                  <span style="color:#FBBF24;font-size:0.85rem;font-weight:700;">TIMER: 34:18</span>
+              <!-- Clean Mockup of Stage Confidence Monitor -->
+              <div style="background:#060911;border:1px solid var(--border-cyan);border-radius:16px;padding:28px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-subtle);padding-bottom:14px;margin-bottom:18px;" class="font-mono">
+                  <span style="color:var(--accent-cyan);font-size:0.8rem;">● STAGE CONFIDENCE #7742</span>
+                  <span style="color:#FBBF24;font-size:0.9rem;font-weight:700;">TIMER: 34:18</span>
                 </div>
-                <div style="font-size:0.72rem;color:var(--text-secondary);" class="font-mono">ACTIVE LYRIC / SERMON CUE:</div>
-                <div style="font-size:1.05rem;font-weight:700;color:#FEF08A;margin:6px 0 12px;">
+                <div style="font-size:1.2rem;font-weight:700;color:#FEF08A;margin-bottom:16px;line-height:1.5;">
                   "Bless the Lord, O my soul, O my soul / Worship His holy name"
                 </div>
-                <div style="font-size:0.78rem;color:var(--text-secondary);border-top:1px solid var(--border-subtle);padding-top:8px;">
+                <div style="font-size:0.9rem;color:var(--text-secondary);border-top:1px solid var(--border-subtle);padding-top:14px;">
                   <strong>NEXT SLIDE:</strong> The sun comes up, it's a new day dawning...
                 </div>
-                <div style="font-size:0.76rem;color:var(--accent-emerald);margin-top:6px;" class="font-mono">
-                  PRIVATE STAGE NOTE: Key of G • 73 BPM • Acoustic enters solo
+                <div style="font-size:0.82rem;color:var(--accent-emerald);margin-top:10px;" class="font-mono">
+                  STAGE NOTE: Key of G • 73 BPM • Acoustic enters solo
                 </div>
               </div>
             </div>
 
-            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <div style="display:flex;gap:14px;flex-wrap:wrap;">
               <button class="btn btn-cyan" style="flex:1;" onclick="ProViewApp.switchView('stage')">
                 Open Full Stage View Sync →
               </button>
@@ -658,17 +592,17 @@
     ============================================================ -->
     <section id="account-signup-section" class="section-slate">
       <div class="container">
-        <div style="max-width:960px;margin:0 auto;background:var(--bg-obsidian);border:1px solid var(--border-amber);border-radius:var(--radius-xl);padding:44px;box-shadow:var(--shadow-lg);">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center;" class="hero-top-grid">
+        <div style="max-width:1060px;margin:0 auto;background:var(--bg-obsidian);border:1px solid var(--border-amber);border-radius:var(--radius-xl);padding:64px;box-shadow:var(--shadow-lg);">
+          <div class="dual-workspace-grid" style="align-items:center;">
             <div>
-              <span class="brand-badge-free" style="margin-bottom:12px;display:inline-block;">100% FREE FOREVER • NO CREDIT CARD</span>
-              <h2 style="font-size:2rem;line-height:1.15;margin-bottom:14px;">
+              <span class="brand-badge-free" style="margin-bottom:18px;display:inline-block;">100% FREE FOREVER • NO CREDIT CARD</span>
+              <h2 style="font-size:2.25rem;line-height:1.18;margin-bottom:18px;">
                 Create Your Free Church Account Today
               </h2>
-              <p style="color:var(--text-secondary);font-size:0.95rem;margin-bottom:20px;">
+              <p style="color:var(--text-secondary);font-size:1.05rem;margin-bottom:28px;">
                 Register your church or ministry in seconds. Your songs, CCLI metadata, media uploads, and service collections sync directly with our live cloud database (<code>BreadBackend /api/v1/proview</code>).
               </p>
-              <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;font-size:0.88rem;color:var(--text-secondary);">
+              <ul style="list-style:none;display:flex;flex-direction:column;gap:14px;font-size:0.96rem;color:var(--text-secondary);">
                 <li><strong style="color:var(--accent-emerald);">✓</strong> Unlimited Worship Songs, Scripture Slides &amp; Service Collections</li>
                 <li><strong style="color:var(--accent-emerald);">✓</strong> 50MB Cloud Media Uploads (Photos, Motion Loops, Videos)</li>
                 <li><strong style="color:var(--accent-emerald);">✓</strong> Full Access to Both Admin Hub &amp; Project Operator Page</li>
@@ -676,8 +610,8 @@
               </ul>
             </div>
 
-            <form onsubmit="ProViewApp.submitInlineLandingSignup(event)" style="background:var(--bg-slate-panel);padding:28px;border-radius:var(--radius-lg);border:1px solid var(--border-subtle);">
-              <h3 style="font-size:1.15rem;margin-bottom:16px;">Register Your Sanctuary Workspace</h3>
+            <form onsubmit="ProViewApp.submitInlineLandingSignup(event)" style="background:var(--bg-slate-panel);padding:40px;border-radius:var(--radius-lg);border:1px solid var(--border-subtle);">
+              <h3 style="font-size:1.3rem;margin-bottom:24px;">Register Your Sanctuary Workspace</h3>
 
               <div class="form-group">
                 <label class="form-label" for="inline-signup-church">Church / Ministry Name</label>
@@ -694,7 +628,7 @@
                 <input type="password" id="inline-signup-password" class="form-input" placeholder="Create a secure password" required />
               </div>
 
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
                 <div class="form-group">
                   <label class="form-label" for="inline-signup-ccli">CCLI License # (Optional)</label>
                   <input type="text" id="inline-signup-ccli" class="form-input" placeholder="CCLI #11482903" />
@@ -708,11 +642,11 @@
                 </div>
               </div>
 
-              <button type="submit" id="inline-signup-btn" class="btn btn-amber" style="width:100%;margin-top:6px;">
+              <button type="submit" id="inline-signup-btn" class="btn btn-amber" style="width:100%;margin-top:10px;">
                 Create 100% Free Account &amp; Launch ProView
               </button>
 
-              <div style="text-align:center;margin-top:12px;font-size:0.8rem;color:var(--text-secondary);">
+              <div style="text-align:center;margin-top:18px;font-size:0.88rem;color:var(--text-secondary);">
                 Already have an account?
                 <a href="javascript:void(0)" style="color:var(--accent-amber);font-weight:600;" onclick="ProViewApp.openAuthModal('login')">Sign In Here</a>
               </div>
@@ -723,14 +657,14 @@
     </section>
 
     <!-- Footer -->
-    <footer style="padding:36px 28px;background:#070A10;border-top:1px solid var(--border-subtle);text-align:center;font-size:0.84rem;color:var(--text-secondary);">
-      <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <span class="brand-mark" style="width:26px;height:26px;font-size:0.72rem;">PV</span>
+    <footer style="padding:52px 48px;background:#060911;border-top:1px solid var(--border-subtle);font-size:0.9rem;color:var(--text-secondary);">
+      <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span class="brand-mark" style="width:30px;height:30px;font-size:0.78rem;">PV</span>
           <strong style="color:var(--text-primary);">ProView Presentation</strong>
           <span>• Next-Generation Free Church Presentation Software</span>
         </div>
-        <div style="display:flex;gap:16px;">
+        <div style="display:flex;gap:24px;">
           <a href="javascript:void(0)" onclick="ProViewApp.switchView('admin')" style="color:var(--accent-amber);">Admin Hub</a>
           <a href="javascript:void(0)" onclick="ProViewApp.switchView('operator')" style="color:var(--accent-emerald);">Operator Live Deck</a>
           <a href="javascript:void(0)" onclick="ProViewApp.switchView('stage')" style="color:var(--accent-cyan);">Stage View Sync</a>
@@ -743,34 +677,35 @@
 
   <!-- ============================================================
        VIEW 2: THE ADMIN PAGE (THE CONTROL & CREATION HUB)
+       Spacious, Uncompacted Modular Preparation Workspace
   ============================================================ -->
   <section id="view-admin" class="app-view">
     <div class="workspace-shell">
       <div class="workspace-subbar">
         <div class="subbar-left">
           <span class="ws-role-pill" style="margin:0;background:var(--accent-amber-soft);color:var(--accent-amber);border:1px solid var(--border-amber);">
-            WORKSPACE A • ADMIN PAGE (CONTROL &amp; CREATION HUB)
+            ADMIN HUB
           </span>
           <div class="subbar-tabs" role="tablist">
             <button class="subbar-tab active" data-tab="services" onclick="ProViewApp.switchAdminTab('services')">
-              1. Service Organizer &amp; Sermons
+              Service &amp; Sermons
             </button>
             <button class="subbar-tab" data-tab="songs" onclick="ProViewApp.switchAdminTab('songs')">
-              2. Song &amp; CCLI Library
+              Songs &amp; CCLI
             </button>
             <button class="subbar-tab" data-tab="scripture" onclick="ProViewApp.switchAdminTab('scripture')">
-              3. Instant Scripture Engine
+              Scripture Engine
             </button>
             <button class="subbar-tab" data-tab="media" onclick="ProViewApp.switchAdminTab('media')">
-              4. Master Media Library (Cloud Upload)
+              Media Library
             </button>
             <button class="subbar-tab" data-tab="settings" onclick="ProViewApp.switchAdminTab('settings')">
-              5. Global Themes &amp; Permissions
+              Settings
             </button>
           </div>
         </div>
 
-        <div style="display:flex;align-items:center;gap:10px;">
+        <div>
           <button class="btn btn-sm btn-emerald" onclick="ProViewApp.switchView('operator')">
             ● Go Live in Operator Deck →
           </button>
@@ -779,92 +714,99 @@
 
       <!-- ADMIN MODULE 1: SERVICE ORGANIZER & SMART SERMON BUILDER -->
       <div id="admin-mod-services" class="admin-module active-module">
-        <div class="admin-three-col">
-          <!-- Column 1: Chronological Service Collections -->
-          <div class="panel-card">
-            <div class="panel-header">
-              <h3>📅 Service Collections</h3>
-              <span class="font-mono" style="font-size:0.7rem;color:var(--accent-amber);">Cloud Synced</span>
-            </div>
-            <div class="panel-body">
-              <div id="admin-service-collections-list" class="collection-list" style="margin-bottom:20px;">
-                <!-- Populated by JS -->
+        <div class="admin-services-layout">
+          <div class="admin-services-top-grid">
+            <!-- Left: Chronological Service Collections -->
+            <div class="panel-card">
+              <div class="panel-header">
+                <h3>📅 Service Collections</h3>
+                <span class="font-mono" style="font-size:0.75rem;color:var(--accent-amber);">Cloud Synced</span>
               </div>
+              <div class="panel-body">
+                <div id="admin-service-collections-list" class="collection-list" style="margin-bottom:28px;">
+                  <!-- Populated by JS -->
+                </div>
 
-              <form onsubmit="ProViewApp.createNewServiceCollection(event)" style="border-top:1px solid var(--border-subtle);padding-top:16px;">
-                <div class="font-mono" style="font-size:0.72rem;color:var(--accent-amber);margin-bottom:10px;">
-                  + CREATE NEW SERVICE COLLECTION
+                <form onsubmit="ProViewApp.createNewServiceCollection(event)" style="border-top:1px solid var(--border-subtle);padding-top:24px;">
+                  <div class="font-mono" style="font-size:0.78rem;color:var(--accent-amber);margin-bottom:16px;">
+                    + CREATE NEW SERVICE COLLECTION
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="new-service-title">Collection Title</label>
+                    <input type="text" id="new-service-title" class="form-input" placeholder="e.g. Easter Sunrise Service" required />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="new-service-date">Day &amp; Time</label>
+                    <input type="text" id="new-service-date" class="form-input" placeholder="Sunday • 8:00 AM Sanctuary" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="new-service-pastor">Lead Pastor / Director</label>
+                    <input type="text" id="new-service-pastor" class="form-input" placeholder="Pastor David Vance" />
+                  </div>
+                  <button type="submit" class="btn btn-amber" style="width:100%;">Create Service Collection</button>
+                </form>
+              </div>
+            </div>
+
+            <!-- Right: Active Service Order & Hierarchy -->
+            <div class="panel-card">
+              <div class="panel-header">
+                <div>
+                  <h3 id="admin-active-service-title">Sunday Morning Traditional</h3>
+                  <div id="admin-active-service-meta" class="font-mono" style="font-size:0.78rem;color:var(--text-secondary);margin-top:4px;"></div>
                 </div>
-                <div class="form-group">
-                  <label class="form-label" for="new-service-title">Collection Title</label>
-                  <input type="text" id="new-service-title" class="form-input" placeholder="e.g. Easter Sunrise Service" required />
+                <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                  <select id="admin-quick-add-song-select" class="form-select" style="width:240px;padding:10px 14px;font-size:0.86rem;"></select>
+                  <button class="btn btn-sm btn-amber" onclick="ProViewApp.addSongToActiveService()">+ Add Song</button>
                 </div>
-                <div class="form-group">
-                  <label class="form-label" for="new-service-date">Day &amp; Time</label>
-                  <input type="text" id="new-service-date" class="form-input" placeholder="Sunday • 8:00 AM Sanctuary" />
+              </div>
+              <div class="panel-body">
+                <div id="admin-service-order-items" class="service-order-list">
+                  <!-- Populated by JS -->
                 </div>
-                <div class="form-group">
-                  <label class="form-label" for="new-service-pastor">Lead Pastor / Director</label>
-                  <input type="text" id="new-service-pastor" class="form-input" placeholder="Pastor David Vance" />
-                </div>
-                <button type="submit" class="btn btn-sm btn-amber" style="width:100%;">Create Service Collection</button>
-              </form>
+              </div>
             </div>
           </div>
 
-          <!-- Column 2: Active Service Order & Hierarchy -->
+          <!-- Bottom Full-Width: Smart Collection & Nested Sermon Builder -->
           <div class="panel-card">
             <div class="panel-header">
-              <div>
-                <h3 id="admin-active-service-title">Sunday Morning Traditional</h3>
-                <div id="admin-active-service-meta" class="font-mono" style="font-size:0.72rem;color:var(--text-secondary);"></div>
-              </div>
-              <div style="display:flex;gap:8px;align-items:center;">
-                <select id="admin-quick-add-song-select" class="form-select" style="width:210px;padding:6px 10px;font-size:0.8rem;"></select>
-                <button class="btn btn-sm btn-amber" onclick="ProViewApp.addSongToActiveService()">+ Add Song</button>
-              </div>
+              <h3>🗂️ Smart Collection &amp; Nested Sermon Folder Builder</h3>
+              <span class="font-mono" style="font-size:0.76rem;color:var(--text-secondary);">Groups series title, scripture, and sermon points under one folder</span>
             </div>
             <div class="panel-body">
-              <div id="admin-service-order-items" class="service-order-list">
-                <!-- Populated by JS -->
-              </div>
-            </div>
-          </div>
-
-          <!-- Column 3: Smart Collection & Nested Sermon Builder -->
-          <div class="panel-card">
-            <div class="panel-header">
-              <h3>🗂️ Smart Sermon Folder Builder</h3>
-            </div>
-            <div class="panel-body">
-              <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:14px;">
-                Group an entire multi-part sermon series, scripture references, and presentation points under a single nested parent folder.
-              </p>
               <form onsubmit="ProViewApp.addNestedSermonToService(event)">
-                <div class="form-group">
-                  <label class="form-label" for="sermon-builder-title">Sermon Series &amp; Message Title</label>
-                  <input type="text" id="sermon-builder-title" class="form-input" placeholder="e.g. Walking by Faith (Part 4)" required />
+                <div class="dual-workspace-grid" style="gap:28px;">
+                  <div>
+                    <div class="form-group">
+                      <label class="form-label" for="sermon-builder-title">Sermon Series &amp; Message Title</label>
+                      <input type="text" id="sermon-builder-title" class="form-input" placeholder="e.g. Walking by Faith (Part 4)" required />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="sermon-builder-scripture">Anchor Scripture Reference</label>
+                      <input type="text" id="sermon-builder-scripture" class="form-input" placeholder="e.g. Hebrews 11:1-6 (ESV)" />
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                      <label class="form-label" for="sermon-builder-notes">Private Pastor Stage Notes</label>
+                      <input type="text" id="sermon-builder-notes" class="form-input" placeholder="e.g. 35:00 Timer • Invite worship keys on Point 3" />
+                    </div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;justify-content:space-between;">
+                    <div class="form-group">
+                      <label class="form-label" for="sermon-builder-points">Nested Presentation Points (One slide per line)</label>
+                      <textarea
+                        id="sermon-builder-points"
+                        class="form-textarea"
+                        style="min-height:150px;"
+                        placeholder="Point 1: Faith Sees Beyond Present Circumstances&#10;Point 2: Obedience Precedes Understanding&#10;Point 3: God Rewards Those Who Earnestly Seek Him"
+                        required
+                      ></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-amber" style="width:100%;">
+                      + Append Nested Sermon Folder to Active Service
+                    </button>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label class="form-label" for="sermon-builder-scripture">Anchor Scripture Reference</label>
-                  <input type="text" id="sermon-builder-scripture" class="form-input" placeholder="e.g. Hebrews 11:1-6 (ESV)" />
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="sermon-builder-points">Nested Presentation Points (One slide per line)</label>
-                  <textarea
-                    id="sermon-builder-points"
-                    class="form-textarea"
-                    placeholder="Point 1: Faith Sees Beyond Present Circumstances&#10;Point 2: Obedience Precedes Understanding&#10;Point 3: God Rewards Those Who Earnestly Seek Him"
-                    required
-                  ></textarea>
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="sermon-builder-notes">Private Pastor Stage Notes</label>
-                  <input type="text" id="sermon-builder-notes" class="form-input" placeholder="e.g. 35:00 Timer • Invite worship keys on Point 3" />
-                </div>
-                <button type="submit" class="btn btn-amber" style="width:100%;">
-                  + Append Nested Sermon Folder to Service
-                </button>
               </form>
             </div>
           </div>
@@ -888,7 +830,7 @@
                   <label class="form-label" for="song-form-authors">Authors / Composers</label>
                   <input type="text" id="song-form-authors" class="form-input" placeholder="Pat Barrett, Brett Younker, Karl Martin" required />
                 </div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
                   <div class="form-group">
                     <label class="form-label" for="song-form-ccli">CCLI Song #</label>
                     <input type="text" id="song-form-ccli" class="form-input" placeholder="7070345" required />
@@ -903,7 +845,7 @@
                   <textarea
                     id="song-form-lyrics"
                     class="form-textarea"
-                    style="min-height:150px;"
+                    style="min-height:160px;"
                     placeholder="[Verse 1]&#10;Worthy of every song we could ever sing&#10;Worthy of all the praise we could ever bring&#10;&#10;[Chorus]&#10;Holy, there is no one like You&#10;There is none beside You"
                     required
                   ></textarea>
@@ -915,11 +857,11 @@
             </div>
           </div>
 
-          <div style="display:flex;flex-direction:column;gap:20px;">
+          <div style="display:flex;flex-direction:column;gap:32px;">
             <div class="panel-card">
               <div class="panel-header">
                 <h3>Master Worship Song Repository (`proview_songs`)</h3>
-                <span class="font-mono" style="font-size:0.72rem;color:var(--accent-emerald);">Auto-CCLI Attribution Active</span>
+                <span class="font-mono" style="font-size:0.76rem;color:var(--accent-emerald);">Auto-CCLI Attribution Active</span>
               </div>
               <div class="panel-body">
                 <div id="admin-songs-library-list" class="service-order-list"></div>
@@ -955,7 +897,7 @@
                 </select>
               </div>
 
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
                 <div class="form-group">
                   <label class="form-label" for="scripture-ref-input">Scripture Reference</label>
                   <input
@@ -978,9 +920,9 @@
               </div>
 
               <div class="form-group">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
                   <label class="form-label" for="scripture-reflow-slider" style="margin:0;">Smart Text-Flow Reflow Length:</label>
-                  <span id="scripture-char-label" class="font-mono" style="font-size:0.78rem;color:var(--accent-cyan);">145 characters / slide</span>
+                  <span id="scripture-char-label" class="font-mono" style="font-size:0.84rem;color:var(--accent-cyan);">145 characters / slide</span>
                 </div>
                 <input
                   type="range"
@@ -998,7 +940,7 @@
                 <textarea
                   id="scripture-custom-textarea"
                   class="form-textarea"
-                  style="min-height:130px;"
+                  style="min-height:140px;"
                   oninput="ProViewApp.renderAdminScriptureTab()"
                 >For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life. For God did not send his Son into the world to condemn the world, but in order that the world might be saved through him. Whoever believes in him is not condemned, but whoever does not believe is condemned already, because he has not believed in the name of the only Son of God.</textarea>
               </div>
@@ -1012,10 +954,10 @@
           <div class="panel-card">
             <div class="panel-header">
               <h3>⚡ Real-Time Auto-Formatted Sub-Slides Preview</h3>
-              <span class="font-mono" style="font-size:0.72rem;color:var(--accent-cyan);">Smart Text-Flow Reflow Engine</span>
+              <span class="font-mono" style="font-size:0.76rem;color:var(--accent-cyan);">Smart Text-Flow Reflow Engine</span>
             </div>
             <div class="panel-body">
-              <p style="font-size:0.86rem;color:var(--text-secondary);margin-bottom:14px;">
+              <p style="font-size:0.95rem;color:var(--text-secondary);margin-bottom:20px;">
                 ProView automatically calculates character density and word boundaries so verses never overflow or clip on the sanctuary screen.
               </p>
               <div id="scripture-engine-slides-preview" class="reflow-slides-preview"></div>
@@ -1032,7 +974,7 @@
               <h3>☁️ Upload Media to Cloud (`bread.files.upload`)</h3>
             </div>
             <div class="panel-body">
-              <p style="font-size:0.84rem;color:var(--text-secondary);margin-bottom:16px;">
+              <p style="font-size:0.92rem;color:var(--text-secondary);margin-bottom:22px;">
                 Upload high-resolution worship photos, sermon graphics, motion loops, or foreground videos (up to 50MB) directly to <code>https://kaidaz18.duckdns.org/api/v1/proview/files/</code>.
               </p>
               <form onsubmit="ProViewApp.handleMediaUpload(event)">
@@ -1047,13 +989,13 @@
             </div>
           </div>
 
-          <div style="display:flex;flex-direction:column;gap:20px;">
+          <div style="display:flex;flex-direction:column;gap:32px;">
             <div class="panel-card">
               <div class="panel-header">
                 <h3>Uploaded Church Media Files (`bread.files.list`)</h3>
               </div>
               <div class="panel-body">
-                <div id="admin-uploaded-files-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;"></div>
+                <div id="admin-uploaded-files-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;"></div>
               </div>
             </div>
 
@@ -1062,7 +1004,7 @@
                 <h3>Built-In 60fps Sanctuary Motion Canvases</h3>
               </div>
               <div class="panel-body">
-                <div id="admin-builtin-backgrounds" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;"></div>
+                <div id="admin-builtin-backgrounds" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;"></div>
               </div>
             </div>
           </div>
@@ -1100,16 +1042,16 @@
               <h3>🛡️ Decoupled Permission Architecture</h3>
             </div>
             <div class="panel-body">
-              <div style="display:flex;flex-direction:column;gap:14px;font-size:0.9rem;">
-                <div style="padding:14px;background:var(--bg-obsidian);border:1px solid var(--border-amber);border-radius:8px;">
-                  <strong style="color:var(--accent-amber);">✓ Master Template Lock: ENABLED</strong>
-                  <p style="color:var(--text-secondary);font-size:0.82rem;margin-top:4px;">
+              <div style="display:flex;flex-direction:column;gap:20px;font-size:0.95rem;">
+                <div style="padding:22px;background:var(--bg-obsidian);border:1px solid var(--border-amber);border-radius:14px;">
+                  <strong style="color:var(--accent-amber);font-size:1.05rem;">✓ Master Template Lock: ENABLED</strong>
+                  <p style="color:var(--text-secondary);font-size:0.92rem;margin-top:8px;">
                     Volunteers on the Project Operator Page cannot accidentally overwrite or delete songs, sermon templates, or global themes in the master database.
                   </p>
                 </div>
-                <div style="padding:14px;background:var(--bg-obsidian);border:1px solid var(--border-emerald);border-radius:8px;">
-                  <strong style="color:var(--accent-emerald);">✓ Operator On-the-Fly Micro-Edits: ENABLED</strong>
-                  <p style="color:var(--text-secondary);font-size:0.82rem;margin-top:4px;">
+                <div style="padding:22px;background:var(--bg-obsidian);border:1px solid var(--border-emerald);border-radius:14px;">
+                  <strong style="color:var(--accent-emerald);font-size:1.05rem;">✓ Operator On-the-Fly Micro-Edits: ENABLED</strong>
+                  <p style="color:var(--text-secondary);font-size:0.92rem;margin-top:8px;">
                     Projectionists can adjust slide text density, split overflowing sermon text, swap backgrounds, and inject emergency slides during a live service without breaking presentation flow.
                   </p>
                 </div>
@@ -1125,88 +1067,60 @@
 
   <!-- ============================================================
        VIEW 3: THE PROJECT OPERATOR PAGE (THE LIVE EXECUTION HUB)
+       Calm, Spacious, Volunteer-Friendly Live Presentation Deck
   ============================================================ -->
   <section id="view-operator" class="app-view">
     <div class="workspace-shell">
       <div class="workspace-subbar">
         <div class="subbar-left">
           <span class="ws-role-pill" style="margin:0;background:var(--accent-emerald-soft);color:var(--accent-emerald);border:1px solid var(--border-emerald);">
-            ● WORKSPACE B • PROJECT OPERATOR PAGE (LIVE EXECUTION HUB)
+            ● LIVE OPERATOR DECK
           </span>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <label for="operator-service-select" class="font-mono" style="font-size:0.74rem;color:var(--text-secondary);">ACTIVE COLLECTION:</label>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <label for="operator-service-select" class="font-mono" style="font-size:0.8rem;color:var(--text-secondary);">SERVICE:</label>
             <select
               id="operator-service-select"
               class="form-select"
-              style="width:270px;padding:6px 10px;font-size:0.82rem;"
+              style="width:300px;padding:10px 14px;font-size:0.9rem;"
               onchange="ProViewApp.changeOperatorService(this.value)"
             ></select>
           </div>
         </div>
 
-        <div style="display:flex;align-items:center;gap:8px;">
-          <span class="font-mono" style="font-size:0.72rem;color:var(--text-secondary);">
-            HOTKEYS: [←/→] Prev/Next Slide • [B] Blackout • [C] Clear Text • [L] Logo
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <span class="font-mono" style="font-size:0.78rem;color:var(--text-secondary);">
+            KEYS: [←/→] Slide • [B] Blackout • [C] Clear Text • [L] Logo
           </span>
           <button class="btn btn-sm btn-outline" onclick="ProViewApp.switchView('admin')">
-            Edit Master in Admin Hub
+            Open Admin Hub
           </button>
         </div>
       </div>
 
-      <div class="operator-grid">
-        <!-- LEFT COLUMN: ACTIVE SERVICE PLAYLIST & EMERGENCY SLIDE INJECTOR -->
-        <div class="operator-col">
+      <div class="operator-workspace-container">
+        <!-- PRIMARY LIVE ROW: PLAYLIST + SLIDE CUE GRID + LIVE OUTPUT -->
+        <div class="operator-top-live-grid">
+          <!-- Column 1: Service Playlist -->
           <div class="panel-card">
             <div class="panel-header">
-              <h3>📋 Active Service Playlist</h3>
-              <span class="font-mono" style="font-size:0.68rem;color:var(--accent-emerald);">LIVE DECK</span>
+              <h3>📋 Service Playlist</h3>
+              <span class="font-mono" style="font-size:0.74rem;color:var(--accent-emerald);">LIVE ORDER</span>
             </div>
             <div class="panel-body">
               <div id="operator-playlist-items" class="collection-list"></div>
             </div>
           </div>
 
-          <!-- Emergency Slide / Clip Injector -->
-          <div class="panel-card">
-            <div class="panel-header">
-              <h3>⚡ Append Last-Minute Slide</h3>
-            </div>
-            <div class="panel-body">
-              <form onsubmit="ProViewApp.appendEmergencyOperatorSlide(event)">
-                <div class="form-group">
-                  <label class="form-label" for="emergency-slide-label">Slide Cue Label</label>
-                  <input type="text" id="emergency-slide-label" class="form-input" placeholder="e.g. Impromptu Scripture / Alert" />
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="emergency-slide-text">Slide Text Content</label>
-                  <textarea
-                    id="emergency-slide-text"
-                    class="form-textarea"
-                    style="min-height:70px;"
-                    placeholder="Type an announcement, scripture, or sermon point to project immediately..."
-                    required
-                  ></textarea>
-                </div>
-                <button type="submit" class="btn btn-sm btn-amber" style="width:100%;">
-                  + Inject Slide &amp; Project Now
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <!-- CENTER COLUMN: HIGH-VISIBILITY SLIDE CUE GRID + ON-THE-FLY MICRO-EDITOR -->
-        <div class="operator-col">
+          <!-- Column 2: Active Slide Cue Grid -->
           <div class="panel-card">
             <div class="panel-header">
               <div>
                 <h3 id="operator-active-item-title">10,000 Reasons (Bless the Lord)</h3>
-                <div id="operator-active-item-subtitle" class="font-mono" style="font-size:0.72rem;color:var(--text-secondary);"></div>
+                <div id="operator-active-item-subtitle" class="font-mono" style="font-size:0.78rem;color:var(--text-secondary);margin-top:4px;"></div>
               </div>
-              <div style="display:flex;gap:8px;">
-                <button class="btn btn-sm btn-outline" onclick="ProViewApp.prevSlide()">← Prev Slide</button>
-                <button class="btn btn-sm btn-emerald" onclick="ProViewApp.nextSlide()">Next Slide →</button>
+              <div style="display:flex;gap:10px;">
+                <button class="btn btn-sm btn-outline" onclick="ProViewApp.prevSlide()">← Prev</button>
+                <button class="btn btn-sm btn-emerald" onclick="ProViewApp.nextSlide()">Next →</button>
               </div>
             </div>
             <div class="panel-body">
@@ -1214,41 +1128,90 @@
             </div>
           </div>
 
-          <!-- ON-THE-FLY OPERATOR MICRO-EDITING DECK -->
+          <!-- Column 3: Live Main Projection Output -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <h3>🟢 Main Sanctuary Output</h3>
+              <span class="font-mono" style="font-size:0.74rem;color:var(--accent-emerald);">1080p60 + NDI</span>
+            </div>
+            <div class="panel-body">
+              <div id="operator-live-screen" class="live-output-screen">
+                <div class="live-output-overlay"></div>
+                <div id="operator-nursery-banner" class="live-nursery-banner" style="display:none;"></div>
+                <div id="operator-live-text" class="live-output-text"></div>
+                <div class="live-output-ccli">
+                  <span id="operator-live-ccli-left"></span>
+                  <span id="operator-live-ccli-right"></span>
+                </div>
+              </div>
+
+              <!-- Master Display Override Controls -->
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px;">
+                <button class="btn btn-sm btn-danger" onclick="ProViewApp.setDisplayOverride('blackout')">
+                  ⬛ Blackout
+                </button>
+                <button class="btn btn-sm btn-outline" onclick="ProViewApp.setDisplayOverride('clear-text')">
+                  ◌ Clear Text
+                </button>
+                <button class="btn btn-sm btn-amber" onclick="ProViewApp.setDisplayOverride('logo')">
+                  ✦ Logo
+                </button>
+              </div>
+
+              <!-- Nursery Pager Alert -->
+              <div style="display:flex;gap:10px;margin-top:16px;">
+                <input
+                  type="text"
+                  id="operator-nursery-input"
+                  class="form-input"
+                  style="padding:10px 14px;font-size:0.86rem;"
+                  placeholder="Nursery Pager # (e.g. 408)"
+                />
+                <button class="btn btn-sm btn-outline" onclick="ProViewApp.triggerNurseryAlert()">
+                  Flash Pager
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECONDARY OPERATOR TOOLS ROW: ON-THE-FLY MICRO-EDITING + STAGE & QUICK ADD -->
+        <div class="operator-bottom-tools-grid">
+          <!-- Left: On-the-Fly Operator Micro-Editing Deck -->
           <div class="panel-card" style="border-color:var(--border-amber);">
-            <div class="panel-header" style="background:rgba(245,158,11,0.08);">
-              <h3>🛠️ Operator On-the-Fly Micro-Editing Deck</h3>
-              <span class="font-mono" style="font-size:0.68rem;padding:3px 8px;border-radius:4px;background:var(--accent-amber-soft);color:var(--accent-amber);border:1px solid var(--border-amber);">
-                OPERATOR OVERRIDE • MASTER DATABASE PROTECTED
+            <div class="panel-header" style="background:rgba(245,158,11,0.06);">
+              <h3>🛠️ On-the-Fly Micro-Editing Deck</h3>
+              <span class="font-mono" style="font-size:0.74rem;color:var(--accent-amber);">
+                Master Database Protected
               </span>
             </div>
             <div class="panel-body">
-              <div style="display:grid;grid-template-columns:1.15fr 0.85fr;gap:18px;" class="hero-top-grid">
+              <div class="dual-workspace-grid" style="gap:28px;">
                 <div>
                   <label class="form-label" for="operator-micro-text">
-                    Live Slide Text Fix (Instantly updates live screen without corrupting Master Template):
+                    Live Slide Text Fix (Updates live screen immediately):
                   </label>
                   <textarea
                     id="operator-micro-text"
                     class="form-textarea"
-                    style="min-height:86px;"
+                    style="min-height:110px;"
                     oninput="ProViewApp.applyOperatorMicroText(this.value)"
                   ></textarea>
-                  <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+                  <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
                     <button type="button" class="btn btn-sm btn-cyan" onclick="ProViewApp.splitOverflowingOperatorSlide()">
-                      ✂️ Smart Reflow: Split Overflowing Slide into A + B
+                      ✂️ Smart Reflow: Split Slide into A + B
                     </button>
                     <button type="button" class="btn btn-sm btn-outline" onclick="ProViewApp.resetOperatorSlideOverride()">
-                      ↺ Revert to Master Template
+                      ↺ Revert to Master
                     </button>
                   </div>
                 </div>
 
                 <div>
                   <div class="form-group">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
                       <label class="form-label" for="operator-micro-scale" style="margin:0;">Slide Text Density / Font Scale:</label>
-                      <span id="operator-micro-scale-val" class="font-mono" style="font-size:0.78rem;color:var(--accent-amber);">100%</span>
+                      <span id="operator-micro-scale-val" class="font-mono" style="font-size:0.84rem;color:var(--accent-amber);">100%</span>
                     </div>
                     <input
                       type="range"
@@ -1269,87 +1232,68 @@
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- RIGHT COLUMN: MULTI-SCREEN LIVE ENGINE MONITORS & OVERRIDES -->
-        <div class="operator-col">
-          <div class="panel-card">
-            <div class="panel-header">
-              <h3>🟢 Live Main Projection Output</h3>
-              <span class="font-mono" style="font-size:0.68rem;color:var(--accent-emerald);">1080p60 + NDI STREAM</span>
-            </div>
-            <div class="panel-body">
-              <div id="operator-live-screen" class="live-output-screen">
-                <div class="live-output-overlay"></div>
-                <div id="operator-nursery-banner" class="live-nursery-banner" style="display:none;"></div>
-                <div id="operator-live-text" class="live-output-text"></div>
-                <div class="live-output-ccli">
-                  <span id="operator-live-ccli-left"></span>
-                  <span id="operator-live-ccli-right"></span>
+          <!-- Right: Stage Confidence Monitor & Last-Minute Slide Injector -->
+          <div style="display:flex;flex-direction:column;gap:32px;">
+            <div class="panel-card">
+              <div class="panel-header">
+                <h3>📺 Stage Confidence Monitor</h3>
+                <button class="btn btn-sm btn-cyan" onclick="ProViewApp.switchView('stage')">Open Stage View</button>
+              </div>
+              <div class="panel-body">
+                <div class="stage-confidence-preview">
+                  <div class="stage-conf-top">
+                    <span id="operator-stage-clock">10:45:00 AM</span>
+                    <span>TIMER: <strong id="operator-stage-timer" style="color:#FBBF24;">35:00</strong></span>
+                  </div>
+                  <div id="operator-stage-curr" class="stage-conf-current"></div>
+                  <div id="operator-stage-next" class="stage-conf-next"></div>
+                  <div id="operator-stage-notes" style="font-size:0.78rem;color:var(--accent-emerald);margin-top:10px;"></div>
+                </div>
+
+                <div style="display:flex;gap:10px;margin-top:14px;">
+                  <input
+                    type="text"
+                    id="operator-stage-msg-input"
+                    class="form-input"
+                    style="padding:10px 14px;font-size:0.86rem;"
+                    placeholder="Send private stage cue to Pastor..."
+                  />
+                  <button class="btn btn-sm btn-cyan" onclick="ProViewApp.sendStageCustomMessage()">Send</button>
                 </div>
               </div>
-
-              <!-- Master Display Override Controls -->
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;">
-                <button class="btn btn-sm btn-danger" onclick="ProViewApp.setDisplayOverride('blackout')">
-                  ⬛ Blackout [B]
-                </button>
-                <button class="btn btn-sm btn-outline" onclick="ProViewApp.setDisplayOverride('clear-text')">
-                  ◌ Clear Text [C]
-                </button>
-                <button class="btn btn-sm btn-amber" onclick="ProViewApp.setDisplayOverride('logo')">
-                  ✦ Church Logo [L]
-                </button>
-              </div>
-
-              <!-- Nursery Pager Alert -->
-              <div style="display:flex;gap:8px;margin-top:10px;">
-                <input
-                  type="text"
-                  id="operator-nursery-input"
-                  class="form-input"
-                  style="padding:6px 10px;font-size:0.8rem;"
-                  placeholder="Parent Nursery Pager # (e.g. 408)"
-                />
-                <button class="btn btn-sm btn-outline" onclick="ProViewApp.triggerNurseryAlert()">
-                  Flash Pager
-                </button>
-              </div>
             </div>
-          </div>
 
-          <!-- Stage Confidence Monitor Preview -->
-          <div class="panel-card">
-            <div class="panel-header">
-              <h3>📺 Stage Confidence Monitor Sync</h3>
-              <button class="btn btn-sm btn-cyan" onclick="ProViewApp.switchView('stage')">Full View</button>
-            </div>
-            <div class="panel-body">
-              <div class="stage-confidence-preview">
-                <div class="stage-conf-top">
-                  <span id="operator-stage-clock">10:45:00 AM</span>
-                  <span>SERMON TIMER: <strong id="operator-stage-timer" style="color:#FBBF24;">35:00</strong></span>
-                </div>
-                <div id="operator-stage-curr" class="stage-conf-current"></div>
-                <div id="operator-stage-next" class="stage-conf-next"></div>
-                <div id="operator-stage-notes" style="font-size:0.72rem;color:var(--accent-emerald);margin-top:8px;"></div>
+            <div class="panel-card">
+              <div class="panel-header">
+                <h3>⚡ Append Last-Minute Slide</h3>
               </div>
-
-              <div style="display:flex;gap:8px;margin-top:10px;">
-                <input
-                  type="text"
-                  id="operator-stage-msg-input"
-                  class="form-input"
-                  style="padding:6px 10px;font-size:0.8rem;"
-                  placeholder="Send private stage cue to Pastor..."
-                />
-                <button class="btn btn-sm btn-cyan" onclick="ProViewApp.sendStageCustomMessage()">Send</button>
+              <div class="panel-body">
+                <form onsubmit="ProViewApp.appendEmergencyOperatorSlide(event)">
+                  <div class="form-group">
+                    <label class="form-label" for="emergency-slide-label">Slide Cue Label</label>
+                    <input type="text" id="emergency-slide-label" class="form-input" placeholder="e.g. Impromptu Scripture / Announcement" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="emergency-slide-text">Slide Text Content</label>
+                    <textarea
+                      id="emergency-slide-text"
+                      class="form-textarea"
+                      style="min-height:85px;"
+                      placeholder="Type an announcement or verse to project immediately..."
+                      required
+                    ></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-sm btn-amber" style="width:100%;">
+                    + Inject Slide &amp; Project Now
+                  </button>
+                </form>
               </div>
             </div>
           </div>
         </div>
-
       </div>
+
     </div>
   </section>
 
@@ -1366,11 +1310,11 @@
         </div>
 
         <div class="telemetry-box">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <span class="telemetry-label">SEGMENT COUNTDOWN TIMER</span>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+            <span class="telemetry-label">SEGMENT COUNTDOWN</span>
             <div style="display:flex;gap:6px;">
-              <button class="btn btn-sm btn-emerald" style="padding:3px 8px;font-size:0.7rem;" onclick="ProViewApp.toggleStageTimer()">Start/Pause</button>
-              <button class="btn btn-sm btn-outline" style="padding:3px 8px;font-size:0.7rem;" onclick="ProViewApp.resetStageTimer(35)">Reset 35m</button>
+              <button class="btn btn-sm btn-emerald" style="padding:4px 10px;font-size:0.74rem;" onclick="ProViewApp.toggleStageTimer()">Start/Pause</button>
+              <button class="btn btn-sm btn-outline" style="padding:4px 10px;font-size:0.74rem;" onclick="ProViewApp.resetStageTimer(35)">Reset</button>
             </div>
           </div>
           <div id="stage-countdown-timer" class="telemetry-value" style="color:var(--accent-amber);">35:00</div>
@@ -1382,9 +1326,9 @@
         </div>
 
         <div class="telemetry-box" style="display:flex;flex-direction:column;justify-content:space-between;">
-          <span class="telemetry-label">CROWD-SOURCED STAGE SYNC</span>
-          <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;">
-            <span class="font-mono" style="font-size:0.85rem;color:var(--accent-emerald);">● PIN #7742 LOCKED</span>
+          <span class="telemetry-label">STAGE CONFIDENCE SYNC</span>
+          <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;">
+            <span class="font-mono" style="font-size:0.9rem;color:var(--accent-emerald);">● PIN #7742</span>
             <button class="btn btn-sm btn-outline" onclick="ProViewApp.switchView('operator')">← Operator Deck</button>
           </div>
         </div>
@@ -1393,7 +1337,7 @@
       <div class="stage-main-grid">
         <div class="stage-current-slide-box">
           <div style="display:flex;justify-content:space-between;align-items:center;">
-            <span id="stage-full-item-title" class="font-mono" style="font-size:0.9rem;color:var(--accent-emerald);">
+            <span id="stage-full-item-title" class="font-mono" style="font-size:0.95rem;color:var(--accent-emerald);">
               CURRENT LIVE SLIDE
             </span>
             <span class="cue-type-badge badge-media">ON AIR</span>
@@ -1404,7 +1348,7 @@
             Worship His holy name
           </div>
 
-          <div style="display:flex;gap:10px;">
+          <div style="display:flex;gap:14px;">
             <button class="btn btn-outline" onclick="ProViewApp.prevSlide()">← Previous Slide</button>
             <button class="btn btn-emerald" onclick="ProViewApp.nextSlide()">Next Slide Cue →</button>
           </div>
@@ -1412,17 +1356,17 @@
 
         <div class="stage-side-stack">
           <div class="stage-next-box">
-            <div class="font-mono" style="font-size:0.8rem;color:var(--accent-cyan);margin-bottom:10px;">
+            <div class="font-mono" style="font-size:0.84rem;color:var(--accent-cyan);margin-bottom:14px;">
               UP NEXT SLIDE PREVIEW
             </div>
-            <div id="stage-full-next-lyric" style="font-size:1.25rem;color:var(--text-primary);line-height:1.45;"></div>
+            <div id="stage-full-next-lyric" style="font-size:1.3rem;color:var(--text-primary);line-height:1.55;"></div>
           </div>
 
           <div class="stage-notes-box">
-            <div class="font-mono" style="font-size:0.8rem;color:var(--accent-amber);margin-bottom:10px;">
+            <div class="font-mono" style="font-size:0.84rem;color:var(--accent-amber);margin-bottom:14px;">
               PRIVATE SPEAKER &amp; BAND CUE NOTES
             </div>
-            <div id="stage-full-notes" style="font-size:1.1rem;color:var(--accent-emerald);line-height:1.5;"></div>
+            <div id="stage-full-notes" style="font-size:1.15rem;color:var(--accent-emerald);line-height:1.6;"></div>
           </div>
         </div>
       </div>
@@ -1444,9 +1388,9 @@
         </button>
       </div>
 
-      <form id="auth-modal-form" data-mode="signup" onsubmit="ProViewApp.submitModalAuth(event)" style="padding:28px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-          <h3 id="auth-modal-heading" style="font-size:1.25rem;">ProView Sanctuary Account</h3>
+      <form id="auth-modal-form" data-mode="signup" onsubmit="ProViewApp.submitModalAuth(event)" style="padding:36px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+          <h3 id="auth-modal-heading" style="font-size:1.35rem;">ProView Sanctuary Account</h3>
           <span class="brand-badge-free">100% Free Forever</span>
         </div>
 
@@ -1466,7 +1410,7 @@
             <input type="text" id="auth-church" class="form-input" placeholder="e.g. Grace Sanctuary Fellowship" />
           </div>
 
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
             <div class="form-group">
               <label class="form-label" for="auth-ccli">Church CCLI License #</label>
               <input type="text" id="auth-ccli" class="form-input" placeholder="CCLI #11482903" />
@@ -1481,7 +1425,7 @@
           </div>
         </div>
 
-        <div style="display:flex;gap:10px;margin-top:8px;">
+        <div style="display:flex;gap:14px;margin-top:12px;">
           <button type="submit" id="auth-submit-btn" class="btn btn-amber" style="flex:1;">
             Create Free Sanctuary Account
           </button>

@@ -99,7 +99,6 @@ const ProViewApp = {
     // Fetch cloud songs & services if available
     const cloudSongs = await window.ProViewBackend.fetchCollection("proview_songs");
     if (cloudSongs && cloudSongs.length > 0) {
-      // Merge cloud songs with built-in defaults
       const existingIds = new Set(cloudSongs.map(s => s.id));
       const merged = [...cloudSongs, ...this.songs.filter(s => !existingIds.has(s.id))];
       this.songs = merged;
@@ -119,8 +118,8 @@ const ProViewApp = {
     if (statusEl && statusText) {
       statusEl.classList.add("connected");
       statusText.textContent = isOnline
-        ? "BreadBackend Cloud Live"
-        : "BreadBackend Ready (Hybrid Sync)";
+        ? "Cloud Live"
+        : "Cloud Ready";
     }
 
     this.renderAdminWorkspace();
@@ -403,10 +402,10 @@ const ProViewApp = {
 
     if (user && user.email) {
       navArea.innerHTML = `
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="text-align:right;line-height:1.25;">
-            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);">${this.escapeHtml(user.churchName || user.email)}</div>
-            <div class="font-mono" style="font-size:0.68rem;color:var(--accent-emerald);">FREE FOREVER • ${this.escapeHtml(user.email)}</div>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="text-align:right;line-height:1.35;">
+            <div style="font-size:0.9rem;font-weight:700;color:var(--text-primary);">${this.escapeHtml(user.churchName || user.email)}</div>
+            <div class="font-mono" style="font-size:0.74rem;color:var(--accent-emerald);">FREE • ${this.escapeHtml(user.email)}</div>
           </div>
           <button class="btn btn-sm btn-outline" onclick="ProViewApp.handleLogout()">Sign Out</button>
         </div>
@@ -449,10 +448,10 @@ const ProViewApp = {
           srv => `
         <button class="collection-item-btn ${srv.id === activeService.id ? "active" : ""}" onclick="ProViewApp.selectAdminService('${srv.id}')">
           <div>
-            <div style="font-weight:700;font-size:0.92rem;">${this.escapeHtml(srv.title)}</div>
-            <div class="font-mono" style="font-size:0.72rem;color:var(--text-secondary);">${this.escapeHtml(srv.date)}</div>
+            <div style="font-weight:700;font-size:1rem;margin-bottom:4px;">${this.escapeHtml(srv.title)}</div>
+            <div class="font-mono" style="font-size:0.78rem;color:var(--text-secondary);">${this.escapeHtml(srv.date)}</div>
           </div>
-          <span class="font-mono" style="font-size:0.74rem;padding:3px 8px;border-radius:99px;background:rgba(255,255,255,0.06);">
+          <span class="font-mono" style="font-size:0.78rem;padding:5px 12px;border-radius:99px;background:rgba(255,255,255,0.06);">
             ${srv.items.length} cues
           </span>
         </button>
@@ -492,16 +491,16 @@ const ProViewApp = {
           return `
           <div class="service-cue-row">
             <div class="cue-left">
-              <span class="font-mono" style="color:var(--text-muted);font-size:0.8rem;width:22px;">0${idx + 1}</span>
+              <span class="font-mono" style="color:var(--text-muted);font-size:0.86rem;width:28px;">0${idx + 1}</span>
               <span class="cue-type-badge ${badgeClass}">${item.type}</span>
               <div>
-                <div style="font-weight:700;font-size:0.94rem;">${this.escapeHtml(item.title)}</div>
-                <div style="font-size:0.78rem;color:var(--text-secondary);">
+                <div style="font-weight:700;font-size:1.02rem;margin-bottom:3px;">${this.escapeHtml(item.title)}</div>
+                <div style="font-size:0.86rem;color:var(--text-secondary);">
                   ${this.escapeHtml(item.subtitle || "")} • <strong>${item.slides.length} slides</strong>
                 </div>
               </div>
             </div>
-            <div style="display:flex;align-items:center;gap:6px;">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
               <button class="btn btn-sm btn-outline" title="Move Up" onclick="ProViewApp.moveServiceItem(${idx}, -1)">↑</button>
               <button class="btn btn-sm btn-outline" title="Move Down" onclick="ProViewApp.moveServiceItem(${idx}, 1)">↓</button>
               <button class="btn btn-sm btn-cyan" onclick="ProViewApp.sendServiceItemToOperator('${activeService.id}', '${item.id}')">Cue in Operator</button>
@@ -696,11 +695,11 @@ const ProViewApp = {
         song => `
       <div class="service-cue-row ${song.id === this.selectedSongId ? "active-cue" : ""}" style="cursor:pointer;" onclick="ProViewApp.selectAdminSong('${song.id}')">
         <div>
-          <div style="font-weight:700;font-size:0.95rem;">${this.escapeHtml(song.title)}</div>
-          <div class="font-mono" style="font-size:0.72rem;color:var(--accent-amber);">
+          <div style="font-weight:700;font-size:1.04rem;margin-bottom:4px;">${this.escapeHtml(song.title)}</div>
+          <div class="font-mono" style="font-size:0.78rem;color:var(--accent-amber);">
             CCLI #${this.escapeHtml(song.ccliSongNumber)} • ${this.escapeHtml(song.authors)}
           </div>
-          <div style="font-size:0.75rem;color:var(--text-secondary);margin-top:2px;">
+          <div style="font-size:0.84rem;color:var(--text-secondary);margin-top:4px;">
             ${song.sections.length} slide sections • ${this.escapeHtml(song.key || "G Major")}
           </div>
         </div>
@@ -715,23 +714,23 @@ const ProViewApp = {
       const previewEl = document.getElementById("admin-song-ccli-preview");
       if (previewEl) {
         previewEl.innerHTML = `
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
             <div>
-              <h4 style="font-size:1.1rem;">${this.escapeHtml(selected.title)}</h4>
-              <p class="font-mono" style="font-size:0.75rem;color:var(--accent-amber);">
+              <h4 style="font-size:1.25rem;margin-bottom:4px;">${this.escapeHtml(selected.title)}</h4>
+              <p class="font-mono" style="font-size:0.82rem;color:var(--accent-amber);">
                 Author Credits: ${this.escapeHtml(selected.authors)} • CCLI Song #${this.escapeHtml(selected.ccliSongNumber)}
               </p>
             </div>
             <span class="brand-badge-free">CCLI Compliant</span>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;">
             ${selected.sections
               .map(
                 sec => `
-              <div style="background:var(--bg-obsidian);border:1px solid var(--border-subtle);border-radius:8px;padding:12px;">
-                <div class="font-mono" style="font-size:0.68rem;color:var(--accent-cyan);margin-bottom:6px;">${this.escapeHtml(sec.label)}</div>
-                <div style="font-size:0.82rem;white-space:pre-line;margin-bottom:10px;">${this.escapeHtml(sec.lyrics)}</div>
-                <div class="font-mono" style="font-size:0.62rem;color:var(--text-muted);border-top:1px solid var(--border-subtle);padding-top:6px;">
+              <div style="background:var(--bg-obsidian);border:1px solid var(--border-subtle);border-radius:14px;padding:20px;">
+                <div class="font-mono" style="font-size:0.75rem;color:var(--accent-cyan);margin-bottom:10px;">${this.escapeHtml(sec.label)}</div>
+                <div style="font-size:0.92rem;white-space:pre-line;margin-bottom:16px;line-height:1.6;">${this.escapeHtml(sec.lyrics)}</div>
+                <div class="font-mono" style="font-size:0.7rem;color:var(--text-muted);border-top:1px solid var(--border-subtle);padding-top:10px;">
                   "${this.escapeHtml(selected.title)}" • CCLI #${this.escapeHtml(selected.ccliSongNumber)} • ${this.escapeHtml(this.churchProfile.ccliLicense)}
                 </div>
               </div>
@@ -759,7 +758,6 @@ const ProViewApp = {
 
     if (!title || !rawLyrics) return;
 
-    // Parse blocks separated by blank lines into sections
     const rawBlocks = rawLyrics.split(/\n\s*\n/).filter(Boolean);
     const sections = rawBlocks.map((block, idx) => {
       const lines = block.trim().split("\n");
@@ -821,7 +819,7 @@ const ProViewApp = {
     if (previewContainer) {
       previewContainer.innerHTML = reflowed
         .map(
-          (slide, idx) => `
+          (slide) => `
         <div class="reflow-slide-chip">
           <div class="chip-head">
             <span>${this.escapeHtml(slide.label)}</span>
@@ -899,13 +897,13 @@ const ProViewApp = {
       builtinGrid.innerHTML = this.backgrounds
         .map(
           bg => `
-        <div style="border:1px solid var(--border-subtle);border-radius:10px;overflow:hidden;background:var(--bg-obsidian);">
-          <div style="height:100px;background:${bg.css};display:flex;align-items:flex-end;padding:10px;">
-            <span class="font-mono" style="font-size:0.7rem;background:rgba(0,0,0,0.65);padding:3px 8px;border-radius:4px;">${this.escapeHtml(bg.type)}</span>
+        <div style="border:1px solid var(--border-subtle);border-radius:14px;overflow:hidden;background:var(--bg-obsidian);">
+          <div style="height:125px;background:${bg.css};display:flex;align-items:flex-end;padding:14px;">
+            <span class="font-mono" style="font-size:0.74rem;background:rgba(0,0,0,0.65);padding:4px 10px;border-radius:6px;">${this.escapeHtml(bg.type)}</span>
           </div>
-          <div style="padding:12px;display:flex;justify-content:space-between;align-items:center;">
-            <strong style="font-size:0.86rem;">${this.escapeHtml(bg.name)}</strong>
-            <span class="font-mono" style="font-size:0.68rem;color:var(--accent-emerald);">60fps Ready</span>
+          <div style="padding:18px;display:flex;justify-content:space-between;align-items:center;">
+            <strong style="font-size:0.94rem;">${this.escapeHtml(bg.name)}</strong>
+            <span class="font-mono" style="font-size:0.74rem;color:var(--accent-emerald);">60fps Ready</span>
           </div>
         </div>
       `
@@ -918,8 +916,8 @@ const ProViewApp = {
 
     if (!this.uploadedFiles || this.uploadedFiles.length === 0) {
       uploadedGrid.innerHTML = `
-        <div style="grid-column:1/-1;padding:28px;text-align:center;border:1px dashed var(--border-strong);border-radius:10px;color:var(--text-secondary);">
-          No custom media files uploaded yet. Upload a worship photo, background loop, or sermon slide graphic above (Max 50MB via BreadBackend <code>bread.files.upload</code>).
+        <div style="grid-column:1/-1;padding:40px;text-align:center;border:1px dashed var(--border-strong);border-radius:14px;color:var(--text-secondary);">
+          No custom media files uploaded yet. Upload a worship photo, background loop, or sermon slide graphic on the left (Max 50MB via BreadBackend <code>bread.files.upload</code>).
         </div>
       `;
       return;
@@ -928,26 +926,26 @@ const ProViewApp = {
     uploadedGrid.innerHTML = this.uploadedFiles
       .map(
         file => `
-      <div style="border:1px solid var(--border-strong);border-radius:10px;overflow:hidden;background:var(--bg-obsidian);">
-        <div style="height:120px;background:#050811;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;">
+      <div style="border:1px solid var(--border-strong);border-radius:14px;overflow:hidden;background:var(--bg-obsidian);">
+        <div style="height:140px;background:#050811;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;">
           ${
             file.type && file.type.startsWith("video")
               ? `<video src="${file.url}" style="width:100%;height:100%;object-fit:cover;" muted loop autoplay playsinline></video>`
               : `<img src="${file.url}" alt="${this.escapeHtml(file.filename)}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'" />`
           }
-          <span class="font-mono" style="position:absolute;top:8px;right:8px;font-size:0.65rem;background:rgba(16,185,129,0.2);border:1px solid var(--accent-emerald);color:#34D399;padding:2px 6px;border-radius:4px;">
+          <span class="font-mono" style="position:absolute;top:12px;right:12px;font-size:0.7rem;background:rgba(16,185,129,0.2);border:1px solid var(--accent-emerald);color:#34D399;padding:3px 8px;border-radius:6px;">
             ${file.cloudHosted ? "Cloud URL" : "Synced"}
           </span>
         </div>
-        <div style="padding:12px;">
-          <div style="font-weight:700;font-size:0.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${this.escapeHtml(file.filename)}">
+        <div style="padding:18px;">
+          <div style="font-weight:700;font-size:0.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${this.escapeHtml(file.filename)}">
             ${this.escapeHtml(file.originalName || file.filename)}
           </div>
-          <div class="font-mono" style="font-size:0.66rem;color:var(--text-secondary);margin:4px 0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+          <div class="font-mono" style="font-size:0.72rem;color:var(--text-secondary);margin:6px 0 14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
             ${this.escapeHtml(file.publicEndpointUrl || file.url)}
           </div>
-          <div style="display:flex;gap:6px;">
-            <button class="btn btn-sm btn-cyan" style="flex:1;" onclick="ProViewApp.applyUploadedMediaToActiveSlide('${this.escapeHtml(file.url)}')">Use on Live Slide</button>
+          <div style="display:flex;gap:10px;">
+            <button class="btn btn-sm btn-cyan" style="flex:1;" onclick="ProViewApp.applyUploadedMediaToActiveSlide('${this.escapeHtml(file.url)}')">Use on Slide</button>
             <button class="btn btn-sm btn-danger" onclick="ProViewApp.deleteUploadedMedia('${this.escapeHtml(file.filename)}')">Delete</button>
           </div>
         </div>
@@ -1106,18 +1104,18 @@ const ProViewApp = {
           return `
           <button class="collection-item-btn ${active ? "active" : ""}" onclick="ProViewApp.selectOperatorPlaylistItem('${it.id}')">
             <div style="min-width:0;">
-              <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-                <span class="font-mono" style="font-size:0.7rem;color:var(--text-muted);">0${idx + 1}</span>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span class="font-mono" style="font-size:0.76rem;color:var(--text-muted);">0${idx + 1}</span>
                 <span class="cue-type-badge ${badgeClass}">${it.type}</span>
               </div>
-              <div style="font-weight:700;font-size:0.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+              <div style="font-weight:700;font-size:0.96rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;">
                 ${this.escapeHtml(it.title)}
               </div>
-              <div style="font-size:0.73rem;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+              <div style="font-size:0.8rem;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
                 ${this.escapeHtml(it.subtitle || "")}
               </div>
             </div>
-            <span class="font-mono" style="font-size:0.72rem;color:var(--text-secondary);">${it.slides.length}</span>
+            <span class="font-mono" style="font-size:0.78rem;color:var(--text-secondary);">${it.slides.length}</span>
           </button>
         `;
         })
@@ -1131,7 +1129,7 @@ const ProViewApp = {
 
     if (item && itemHeader && itemSub && cueGrid) {
       itemHeader.textContent = item.title;
-      itemSub.textContent = `${item.subtitle || ""} • Stage Notes: ${item.stageNotes || "None"}`;
+      itemSub.textContent = `${item.subtitle || ""}`;
 
       cueGrid.innerHTML = item.slides
         .map((sl, idx) => {
@@ -1148,7 +1146,7 @@ const ProViewApp = {
             </div>
             <div class="slide-card-footer">
               <span>${this.escapeHtml(eff.bgName)}</span>
-              <span>Scale: ${eff.fontScale}%</span>
+              <span>${eff.fontScale}%</span>
             </div>
           </button>
         `;
@@ -1200,7 +1198,6 @@ const ProViewApp = {
     const nurseryBanner = document.getElementById("operator-nursery-banner");
 
     if (screenEl && textEl) {
-      // Background rendering
       if (this.displayOverride === "blackout") {
         screenEl.style.background = "#000000";
         textEl.innerHTML = "";
@@ -1221,14 +1218,14 @@ const ProViewApp = {
         if (this.displayOverride === "clear-text") {
           textEl.innerHTML = "";
         } else {
-          const basePx = 18 * (eff.fontScale / 100);
+          const basePx = 19 * (eff.fontScale / 100);
           textEl.style.fontSize = `${basePx}px`;
           textEl.innerHTML = this.escapeHtml(eff.text).replace(/\n/g, "<br>");
         }
 
         if (ccliLeft && ccliRight) {
           if (item && item.type === "song") {
-            ccliLeft.textContent = `"${item.title}" • ${item.authors || ""} • CCLI Song #${item.ccliSongNumber || ""}`;
+            ccliLeft.textContent = `"${item.title}" • CCLI #${item.ccliSongNumber || ""}`;
             ccliRight.textContent = this.churchProfile.ccliLicense;
           } else if (item && item.type === "scripture") {
             ccliLeft.textContent = eff.label;
@@ -1250,7 +1247,6 @@ const ProViewApp = {
       }
     }
 
-    // Stage Confidence Monitor Preview in Operator Right Column
     const confCurr = document.getElementById("operator-stage-curr");
     const confNext = document.getElementById("operator-stage-next");
     const confNotes = document.getElementById("operator-stage-notes");
@@ -1302,7 +1298,6 @@ const ProViewApp = {
     if (this.operatorActiveSlideIndex < item.slides.length - 1) {
       this.operatorActiveSlideIndex++;
     } else {
-      // Advance to next item in playlist if available
       const srv = this.getActiveOperatorService();
       const currIdx = srv.items.findIndex(i => i.id === item.id);
       if (currIdx >= 0 && currIdx < srv.items.length - 1) {
@@ -1366,7 +1361,6 @@ const ProViewApp = {
     this.broadcastStageSync();
   },
 
-  // Split an overflowing live slide into 2 balanced sub-slides on the fly!
   splitOverflowingOperatorSlide() {
     const item = this.getActiveOperatorItem();
     const slide = this.getActiveOperatorSlide();
@@ -1383,7 +1377,6 @@ const ProViewApp = {
     const partA = words.slice(0, mid).join(" ");
     const partB = words.slice(mid).join(" ");
 
-    // Update current slide override and insert sub-slide B right after it in operator deck
     this.operatorMicroOverrides[slide.id] = {
       ...(this.operatorMicroOverrides[slide.id] || {}),
       text: partA,
@@ -1583,7 +1576,6 @@ const ProViewApp = {
     this.showToast("Opened Crowd-Sourced Stage View in new window (Real-time sync active)!");
   },
 
-  // Keyboard shortcuts in Operator mode
   handleGlobalKeydown(e) {
     if (this.currentView !== "operator") return;
     const tag = (e.target && e.target.tagName) || "";
@@ -1604,7 +1596,6 @@ const ProViewApp = {
     }
   },
 
-  // Utilities
   showToast(message) {
     const container = document.getElementById("toast-container");
     if (!container) return;

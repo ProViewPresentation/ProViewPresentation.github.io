@@ -1,30 +1,18 @@
-# ProView — Next-Generation Church Presentation Software
+# ProView — Next-Generation Free Church Presentation Software
 
-**ProView** is a 100% free, purpose-built church presentation platform engineered specifically for houses of worship. It eliminates the clunkiness of secular slide tools like PowerPoint and the steep learning curves and heavy hardware requirements of legacy church software—combining fluid speed, intuitive multi-layered management, and a decoupled dual-interface workflow.
-
----
-
-## 1. How ProView Works
-
-ProView operates on a **decoupled permission and dual-workspace architecture**, separating deep structural preparation during the week from real-time Sunday-morning execution:
-
-* **The Database Core:** All songs, media files (photos, loops, background videos), Bible translations, and sermon elements are stored in a centralized, cloud-synced BreadBackend (`/api/v1/proview`) or local database.
-* **The Service Organizer:** Services are built as chronological **"Collections"** (*Sunday Morning Traditional*, *Youth Night*, *Midweek Bible Study*). Items can be reordered, grouped, and nested effortlessly.
-* **The Live Engine:** When **Go Live** is clicked, ProView transitions into a high-performance rendering engine that outputs customized feeds to main projection screens, stage confidence monitors, and NDI/video streams.
+**ProView** is a 100% free, purpose-built church presentation platform engineered specifically for houses of worship. It eliminates the clunkiness of secular presentation tools like PowerPoint and the steep learning curves and heavy hardware requirements of legacy church software—combining fluid speed, intuitive multi-layered management, and a decoupled dual-interface workflow.
 
 ---
 
-## 2. Core Features
+## Multi-Page Architecture
 
-* **Seamless Multi-Media Integration:** Blends text slides, lyrics, background loops, high-resolution photos, and foreground videos without stuttering or format conversion delays.
-* **Smart Collection & Sermon Builder:** Create nested slide collections grouping an entire sermon series, scripture references, and presentation points under a single parent folder.
-* **Built-In Copyright & CCLI Automation:** Automatically tracks and appends CCLI license numbers, song titles, and author credits to the bottom corner of lyric slides.
-* **Instant Scripture Engine:** Pulls verses from multiple Bible translations (ESV, NIV, KJV, NLT) on the fly, auto-formatting them across slides based on user-defined character length preferences.
+ProView separates every workflow into its own dedicated, spacious page designed in **Light Mode Modern Minimalism** with a persistent **Dark Mode** option:
 
----
-
-## 3. Dual Workspaces: Admin Page vs. Project Operator Page
-
-1. **The Admin Page (The Control & Creation Hub):** Where 90% of preparation, song importing, media library management (`bread.files`), global theme setup, and service collection mapping happens ahead of time.
-2. **The Project Operator Page (The Live Execution Hub):** Built for volunteers and projectionists during a live service. Includes **On-the-Fly Micro-Editing Capabilities** (adjusting slide text density, splitting overflowing slides with Smart Text-Flow Reflow, swapping backgrounds, or injecting emergency slides) while keeping master templates 100% protected.
-3. **Crowd-Sourced Stage View Sync:** Real-time confidence monitor for pastors and worship musicians with live clock, segment countdown timer, next-slide preview, and private stage notes.
+- **`index.html` — Overview & Landing Page**: Architectural overview, interactive live engine preview, Admin vs. Operator summary, and full platform directory.
+- **`features.html` — Features, Competitive Analysis & Reflow Demo**: Core features, side-by-side comparison matrix against ProPresenter, EasyWorship, and PowerPoint, and the interactive Smart Text-Flow Reflow sandbox.
+- **`admin.html` — The Admin Page (The Control & Creation Hub)**: Dedicated weekly preparation hub with the Service Organizer, Smart Collection & Nested Sermon Folder Builder, Master Worship Song & CCLI Automation Library, and Global Sanctuary Settings.
+- **`operator.html` — The Project Operator Page (The Live Execution Hub)**: Dedicated Sunday-morning execution deck with Service Playlist, Slide Cue Grid, 16:9 Main Sanctuary Output, Display Overrides (Blackout, Clear Text, Logo, Nursery Pager), and On-the-Fly Micro-Editing Deck (live text fix, Smart Reflow A+B split, font scale, background swap, and last-minute slide injection—all while keeping Master Templates protected).
+- **`scripture.html` — Instant Scripture Engine**: Multi-translation Bible lookup (ESV, NIV, KJV, NLT) with customizable character-density reflow and instant push to any Service Collection.
+- **`media.html` — Master Media Library & Cloud Upload**: Upload high-resolution photos, background loops, and videos (up to 50MB) via BreadBackend (`bread.files`) or assign built-in 60fps sanctuary motion canvases.
+- **`stage.html` — Crowd-Sourced Stage View Sync**: Real-time confidence monitor for pastors and musicians with sanctuary clock, 35-minute countdown timer, current/next slide preview, and private speaker cues synced across tabs/windows.
+- **`account.html` — Free Sanctuary Account Creation & Sign-In**: 100% Free Forever account creation (`bread.auth.signup`) and login (`bread.auth.login`) powered by BreadBackend (`https://kaidaz18.duckdns.org/api/v1/proview`).

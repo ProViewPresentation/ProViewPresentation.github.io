@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free Sanctuary Account Creation &amp; Sign-In — ProView Presentation</title>
+  <meta name="description" content="Create your church's 100% Free Forever ProView account to sync worship songs, CCLI metadata, media files, and service collections across your team." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <script src="https://kaidaz18.duckdns.org/sdk/bread-client.js"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- GLOBAL TOP NAVIGATION BAR -->
+  <header class="site-navbar">
+    <a href="index.html" class="brand-link">
+      <div class="brand-mark">PV</div>
+      <span>ProView</span>
+      <span class="badge-free">100% Free</span>
+    </a>
+
+    <nav class="page-nav-links" aria-label="Main Navigation">
+      <a href="index.html" class="page-nav-link">Overview</a>
+      <a href="features.html" class="page-nav-link">Features &amp; Compare</a>
+      <a href="admin.html" class="page-nav-link">Admin Page</a>
+      <a href="operator.html" class="page-nav-link">Operator Page</a>
+      <a href="scripture.html" class="page-nav-link">Scripture Engine</a>
+      <a href="media.html" class="page-nav-link">Media Library</a>
+      <a href="stage.html" class="page-nav-link">Stage View</a>
+    </nav>
+
+    <div class="nav-right-controls">
+      <button id="theme-toggle-btn" class="theme-toggle-btn" onclick="ProViewApp.toggleTheme()">
+        <span>🌙</span> <span>Dark Mode</span>
+      </button>
+      <div id="nav-auth-area">
+        <a href="account.html" class="btn btn-sm btn-primary">Free Account</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero-header">
+      <div class="container">
+        <div class="eyebrow">100% FREE FOREVER • CLOUD SYNC VIA BREADBACKEND</div>
+        <h1 style="font-size:clamp(2.1rem,3.6vw,3rem);margin-bottom:12px;">
+          Create Your Church’s Free ProView Account
+        </h1>
+        <p class="hero-lead">
+          Zero license fees, zero per-seat subscriptions, and no credit card required. Sync your songs, CCLI metadata, uploaded media, and service collections across your worship pastor and Sunday volunteers.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <!-- Active Session Banner (Shown when logged in) -->
+        <div id="active-session-card" class="card" style="display:none;margin-bottom:48px;border-color:var(--accent-emerald);"></div>
+
+        <div class="grid-2" style="align-items:start;">
+          <!-- Left: Why Free Forever + Cloud Endpoints -->
+          <div style="display:flex;flex-direction:column;gap:28px;">
+            <div class="card">
+              <span class="card-step-num">FREE FOREVER GUARANTEE</span>
+              <h3>Everything Included for Every Church</h3>
+              <ul class="clean-list">
+                <li><strong>Unlimited Songs &amp; CCLI Automation:</strong> Store your entire worship catalog with automatic legal copyright attribution on every slide.</li>
+                <li><strong>Separate Admin &amp; Operator Pages:</strong> Prepare services during the week on the Admin Page and execute stress-free on the Operator Page.</li>
+                <li><strong>50MB Cloud Media Storage per File:</strong> Upload background loops, sermon title graphics, and high-res photography via BreadBackend (`bread.files`).</li>
+                <li><strong>Instant Scripture Engine &amp; Stage View Sync:</strong> Multi-translation Bible lookup (ESV, NIV, KJV, NLT) and real-time stage confidence displays.</li>
+              </ul>
+            </div>
+
+            <div class="card">
+              <span class="card-step-num">CLOUD BACKEND CONNECTION</span>
+              <h3>Connected to BreadBackend</h3>
+              <p style="font-size:0.95rem;">
+                Your account and collections sync directly with <code>https://kaidaz18.duckdns.org/api/v1/proview</code> using <code>bread.auth</code>, <code>bread.collection()</code>, and <code>bread.files</code>.
+              </p>
+            </div>
+          </div>
+
+          <!-- Right: Sign Up / Sign In Card -->
+          <div class="card" style="padding:44px;">
+            <div class="auth-tabs">
+              <button id="tab-btn-signup" class="auth-tab-btn active" type="button" onclick="ProViewApp.switchAccountTab('signup')">
+                Create Free Account
+              </button>
+              <button id="tab-btn-login" class="auth-tab-btn" type="button" onclick="ProViewApp.switchAccountTab('login')">
+                Sign In
+              </button>
+            </div>
+
+            <form id="auth-page-form" data-mode="signup" onsubmit="ProViewApp.submitAccountForm(event)">
+              <div id="signup-extra-fields">
+                <div class="form-group">
+                  <label class="form-label" for="auth-church">Church / Ministry Name</label>
+                  <input type="text" id="auth-church" class="form-input" placeholder="Grace Community Sanctuary" />
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                  <div class="form-group">
+                    <label class="form-label" for="auth-role">Primary Role</label>
+                    <select id="auth-role" class="form-select">
+                      <option value="Admin & Worship Pastor">Worship Pastor / Media Admin</option>
+                      <option value="Project Operator Volunteer">Projectionist / Tech Volunteer</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="auth-ccli">CCLI License # (Optional)</label>
+                    <input type="text" id="auth-ccli" class="form-input" placeholder="CCLI #11482903" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="auth-launch-target">Open Workspace After Sign-Up</label>
+                  <select id="auth-launch-target" class="form-select">
+                    <option value="admin.html">The Admin Page (Control &amp; Creation Hub)</option>
+                    <option value="operator.html">The Project Operator Page (Live Execution Hub)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="auth-email">Ministry Email Address</label>
+                <input type="email" id="auth-email" class="form-input" placeholder="worship@gracesanctuary.org" required />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="auth-password">Password</label>
+                <input type="password" id="auth-password" class="form-input" placeholder="Minimum 6 characters" minlength="6" required />
+              </div>
+
+              <button type="submit" id="auth-submit-btn" class="btn btn-lg btn-primary" style="width:100%;">
+                Create Free Sanctuary Account
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="brand-mark" style="width:28px;height:28px;font-size:0.75rem;">PV</div>
+        <strong style="color:var(--text-primary);">ProView Presentation</strong>
+        <span>• 100% Free Sanctuary Account</span>
+      </div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;">
+        <a href="index.html">Overview</a>
+        <a href="features.html">Features &amp; Compare</a>
+        <a href="admin.html">Admin Page</a>
+        <a href="operator.html">Operator Page</a>
+        <a href="scripture.html">Scripture Engine</a>
+        <a href="media.html">Media Library</a>
+        <a href="stage.html">Stage View</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="js/default-data.js"></script>
+  <script src="js/bread-service.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

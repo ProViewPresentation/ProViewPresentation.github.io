@@ -1,13 +1,25 @@
 /* ============================================================
-   PROVIEW — MAIN APPLICATION CONTROLLER
-   Dual-Workspace Engine: Landing + Admin Hub + Operator Live Deck + Stage Sync
+   PROVIEW — MULTI-PAGE APPLICATION CONTROLLER
+   Modern Minimalism (Light Mode Default + Dark Mode Option)
+   Pages:
+     - index.html     (Landing & Overview)
+     - features.html  (Architecture, Features, Comparison & Reflow Sandbox)
+     - admin.html     (The Admin Page — Control & Creation Hub)
+     - operator.html  (The Project Operator Page — Live Execution Hub)
+     - scripture.html (Instant Scripture Engine & Reflow Studio)
+     - media.html     (Master Media Library & Cloud Upload)
+     - stage.html     (Crowd-Sourced Stage View Sync)
+     - account.html   (Free Sanctuary Account Creation & Sign-In)
 ============================================================ */
 
-const ProViewApp = {
-  currentView: "landing",
-  activeAdminTab: "services",
+// Apply saved theme immediately to prevent flash (Default: light)
+(function applyInitialTheme() {
+  const savedTheme = localStorage.getItem("proview_theme") || "light";
+  document.documentElement.setAttribute("data-theme", savedTheme);
+})();
 
-  // Master Database State (Admin Hub)
+const ProViewApp = {
+  // Master Database State
   churchProfile: null,
   backgrounds: [],
   songs: [],
@@ -19,11 +31,10 @@ const ProViewApp = {
   selectedServiceId: "service-sunday-morning",
   selectedSongId: "song-10000-reasons",
 
-  // Operator Live Engine State (Decoupled from Master Templates!)
+  // Operator Live Engine State (Persisted across pages + synced via BroadcastChannel)
   operatorServiceId: "service-sunday-morning",
   operatorActiveItemId: "item-song-1",
   operatorActiveSlideIndex: 0,
-  isLiveOnAir: true,
   displayOverride: "none", // "none" | "blackout" | "clear-text" | "logo"
   nurseryAlertCode: "",
   operatorMicroOverrides: {}, // { [slideId]: { text, fontScale, bgId, customBgUrl } }
@@ -34,11 +45,10 @@ const ProViewApp = {
   stageTimerInterval: null,
   customStageMessage: "",
 
-  // Broadcast Channel for Crowd-Sourced Stage View Sync across tabs
+  // Cross-tab BroadcastChannel
   broadcastChannel: null,
 
   async init() {
-    // Load defaults merged with local/cloud state
     const def = window.PROVIEW_DEFAULTS;
     this.churchProfile = JSON.parse(localStorage.getItem("proview_profile") || "null") || { ...def.churchProfile };
     this.backgrounds = [...def.backgrounds];
@@ -50,7 +60,10 @@ const ProViewApp = {
     const savedServices = JSON.parse(localStorage.getItem("proview_master_services") || "null");
     this.services = savedServices && savedServices.length ? savedServices : JSON.parse(JSON.stringify(def.services));
 
-    // Setup cross-tab BroadcastChannel for Stage View Sync
+    // Restore shared operator state across pages
+    this.loadLiveOperatorState();
+
+    // Setup cross-tab & cross-page sync
     if ("BroadcastChannel" in window) {
       this.broadcastChannel = new BroadcastChannel("proview_stage_sync");
       this.broadcastChannel.onmessage = (event) => {
@@ -60,75 +73,104 @@ const ProViewApp = {
       };
     }
 
-    // Bind global keyboard shortcuts for Operator view
+    window.addEventListener("storage", (e) => {
+      if (e.key === "proview_live_operator_state" && e.newValue) {
+        try {
+          this.applyRemoteSync(JSON.parse(e.newValue));
+        } catch (_) {}
+      } else if (e.key === "proview_theme") {
+        this.updateThemeUI();
+      }
+    });
+
+    // Global keyboard shortcuts when on Operator page
     window.addEventListener("keydown", (e) => this.handleGlobalKeydown(e));
 
-    // Initialize Clock for Stage View
+    // Clocks
     setInterval(() => this.updateClocks(), 1000);
     this.updateClocks();
 
-    // Check URL hash or query param for direct workspace launch
-    const params = new URLSearchParams(window.location.search);
-    const viewParam = params.get("view") || (window.location.hash ? window.location.hash.replace("#", "") : "");
-    if (["landing", "admin", "operator", "stage"].includes(viewParam)) {
-      this.switchView(viewParam, false);
-    } else {
-      this.switchView("landing", false);
-    }
+    // Update Theme Toggle Button UI
+    this.updateThemeUI();
 
-    // Render all UI views initially
-    this.renderHeroInteractivePreview();
-    this.renderLandingReflowDemo();
-    this.renderAdminWorkspace();
-    this.renderOperatorWorkspace();
-    this.renderStageView();
+    // Render all active page components present in the current HTML page
+    this.renderCurrentPage();
     this.updateAuthUI();
 
-    // Connect to BreadBackend asynchronously
+    // Sync with BreadBackend Cloud
     this.syncWithBreadBackend();
   },
 
-  async syncWithBreadBackend() {
-    const statusEl = document.getElementById("cloud-status-indicator");
-    const statusText = document.getElementById("cloud-status-text");
+  renderCurrentPage() {
+    this.renderHeroInteractivePreview();
+    this.renderLandingReflowDemo();
+    this.renderAdminServicesTab();
+    this.renderAdminSongsTab();
+    this.renderAdminScriptureTab();
+    this.renderAdminMediaTab();
+    this.renderAdminSettingsTab();
+    this.renderOperatorWorkspace();
+    this.renderStageView();
+    this.renderAccountPageProfile();
+  },
 
+  // ============================================================
+  // LIGHT MODE (DEFAULT) & DARK MODE TOGGLE
+  // ============================================================
+  toggleTheme() {
+    const current = document.documentElement.getAttribute("data-theme") || "light";
+    const next = current === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    localStorage.setItem("proview_theme", next);
+    this.updateThemeUI();
+  },
+
+  updateThemeUI() {
+    const current = document.documentElement.getAttribute("data-theme") || "light";
+    document.documentElement.setAttribute("data-theme", current);
+    const btn = document.getElementById("theme-toggle-btn");
+    if (btn) {
+      btn.innerHTML = current === "dark"
+        ? `<span>☀️</span> <span>Light Mode</span>`
+        : `<span>🌙</span> <span>Dark Mode</span>`;
+    }
+  },
+
+  // ============================================================
+  // BREADBACKEND CLOUD SYNCHRONIZATION
+  // ============================================================
+  async syncWithBreadBackend() {
+    const statusText = document.getElementById("cloud-status-text");
     const isOnline = await window.ProViewBackend.checkConnection();
     const user = await window.ProViewBackend.getCurrentUser();
     this.updateAuthUI(user);
+    this.renderAccountPageProfile(user);
 
-    // Fetch cloud songs & services if available
     const cloudSongs = await window.ProViewBackend.fetchCollection("proview_songs");
     if (cloudSongs && cloudSongs.length > 0) {
       const existingIds = new Set(cloudSongs.map(s => s.id));
-      const merged = [...cloudSongs, ...this.songs.filter(s => !existingIds.has(s.id))];
-      this.songs = merged;
+      this.songs = [...cloudSongs, ...this.songs.filter(s => !existingIds.has(s.id))];
       localStorage.setItem("proview_master_songs", JSON.stringify(this.songs));
     }
 
     const cloudServices = await window.ProViewBackend.fetchCollection("proview_services");
     if (cloudServices && cloudServices.length > 0) {
       const existingIds = new Set(cloudServices.map(s => s.id));
-      const merged = [...cloudServices, ...this.services.filter(s => !existingIds.has(s.id))];
-      this.services = merged;
+      this.services = [...cloudServices, ...this.services.filter(s => !existingIds.has(s.id))];
       localStorage.setItem("proview_master_services", JSON.stringify(this.services));
     }
 
     this.uploadedFiles = await window.ProViewBackend.listMediaFiles();
 
-    if (statusEl && statusText) {
-      statusEl.classList.add("connected");
-      statusText.textContent = isOnline
-        ? "Cloud Live"
-        : "Cloud Ready";
+    if (statusText) {
+      statusText.textContent = isOnline ? "Cloud Live" : "Cloud Ready";
     }
 
-    this.renderAdminWorkspace();
-    this.renderOperatorWorkspace();
+    this.renderCurrentPage();
   },
 
   // ============================================================
   // SMART TEXT-FLOW REFLOW ALGORITHM
-  // Dynamically splits long scripture or sermon blocks into uniform sub-slides
   // ============================================================
   smartReflowText(rawText, maxCharsPerSlide = 140, baseLabel = "Slide") {
     const cleaned = (rawText || "").trim().replace(/\s+/g, " ");
@@ -161,57 +203,16 @@ const ProViewApp = {
   },
 
   // ============================================================
-  // VIEW SWITCHING & NAVIGATION
-  // ============================================================
-  switchView(viewName, updateHistory = true) {
-    this.currentView = viewName;
-    document.querySelectorAll(".app-view").forEach(el => {
-      el.classList.toggle("active-view", el.id === `view-${viewName}`);
-    });
-
-    // Update top workspace pills
-    const pills = {
-      landing: { id: "pill-landing", cls: "active-landing" },
-      admin: { id: "pill-admin", cls: "active-admin" },
-      operator: { id: "pill-operator", cls: "active-operator" },
-      stage: { id: "pill-stage", cls: "active-stage" }
-    };
-
-    Object.entries(pills).forEach(([key, cfg]) => {
-      const btn = document.getElementById(cfg.id);
-      if (btn) {
-        btn.classList.remove("active-landing", "active-admin", "active-operator", "active-stage");
-        if (key === viewName) btn.classList.add(cfg.cls);
-      }
-    });
-
-    if (updateHistory) {
-      window.history.replaceState(null, "", `#${viewName}`);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    if (viewName === "admin") this.renderAdminWorkspace();
-    if (viewName === "operator") this.renderOperatorWorkspace();
-    if (viewName === "stage") this.renderStageView();
-  },
-
-  switchAdminTab(tabName) {
-    this.activeAdminTab = tabName;
-    document.querySelectorAll(".subbar-tab").forEach(btn => {
-      btn.classList.toggle("active", btn.dataset.tab === tabName);
-    });
-    document.querySelectorAll(".admin-module").forEach(mod => {
-      mod.classList.toggle("active-module", mod.id === `admin-mod-${tabName}`);
-    });
-  },
-
-  // ============================================================
-  // LANDING PAGE INTERACTIVE DEMOS
+  // LANDING & FEATURES PAGE INTERACTIVE PREVIEWS
   // ============================================================
   heroSlideIdx: 0,
-  heroMode: "operator",
 
   renderHeroInteractivePreview() {
+    const lyricEl = document.getElementById("hero-stage-lyric");
+    const ccliEl = document.getElementById("hero-stage-ccli-left");
+    const stripEl = document.getElementById("hero-cue-strip");
+    if (!lyricEl && !stripEl) return;
+
     const heroSlides = [
       {
         tag: "Chorus • 10,000 Reasons",
@@ -231,10 +232,6 @@ const ProViewApp = {
     ];
 
     const active = heroSlides[this.heroSlideIdx] || heroSlides[0];
-    const lyricEl = document.getElementById("hero-stage-lyric");
-    const ccliEl = document.getElementById("hero-stage-ccli-left");
-    const stripEl = document.getElementById("hero-cue-strip");
-
     if (lyricEl) lyricEl.innerText = active.text;
     if (ccliEl) ccliEl.innerText = active.ccli;
 
@@ -242,9 +239,9 @@ const ProViewApp = {
       stripEl.innerHTML = heroSlides
         .map(
           (s, idx) => `
-        <button class="mini-cue-btn ${idx === this.heroSlideIdx ? "active" : ""}" onclick="ProViewApp.selectHeroSlide(${idx})">
-          <span class="mini-cue-tag">${s.tag}</span>
-          <span class="mini-cue-text">${s.text.replace(/\n/g, " • ")}</span>
+        <button class="collection-item-btn ${idx === this.heroSlideIdx ? "active" : ""}" style="flex-direction:column;align-items:flex-start;gap:6px;" onclick="ProViewApp.selectHeroSlide(${idx})">
+          <span class="font-mono" style="font-size:0.72rem;color:var(--accent-amber);text-transform:uppercase;">${s.tag}</span>
+          <span style="font-size:0.88rem;color:var(--text-primary);line-height:1.5;">${s.text.replace(/\n/g, " • ")}</span>
         </button>
       `
         )
@@ -284,20 +281,9 @@ const ProViewApp = {
   },
 
   // ============================================================
-  // ACCOUNT CREATION & AUTHENTICATION (100% FREE FOREVER)
+  // ACCOUNT CREATION & AUTHENTICATION (account.html + navbar)
   // ============================================================
-  openAuthModal(mode = "signup") {
-    const modal = document.getElementById("auth-modal");
-    if (modal) modal.classList.add("open");
-    this.switchAuthTab(mode);
-  },
-
-  closeAuthModal() {
-    const modal = document.getElementById("auth-modal");
-    if (modal) modal.classList.remove("open");
-  },
-
-  switchAuthTab(mode) {
+  switchAccountTab(mode) {
     const isSignup = mode === "signup";
     document.getElementById("tab-btn-signup")?.classList.toggle("active", isSignup);
     document.getElementById("tab-btn-login")?.classList.toggle("active", !isSignup);
@@ -309,11 +295,11 @@ const ProViewApp = {
         ? "Create Free Sanctuary Account"
         : "Sign In to ProView Workspace";
     }
-    const form = document.getElementById("auth-modal-form");
+    const form = document.getElementById("auth-page-form");
     if (form) form.dataset.mode = mode;
   },
 
-  async submitModalAuth(event) {
+  async submitAccountForm(event) {
     event.preventDefault();
     const form = event.target;
     const mode = form.dataset.mode || "signup";
@@ -322,6 +308,7 @@ const ProViewApp = {
     const churchName = document.getElementById("auth-church")?.value.trim() || "Grace Sanctuary Fellowship";
     const ccliLicense = document.getElementById("auth-ccli")?.value.trim() || "CCLI #11482903";
     const role = document.getElementById("auth-role")?.value || "Admin & Worship Pastor";
+    const targetPage = document.getElementById("auth-launch-target")?.value || "admin.html";
 
     const btn = document.getElementById("auth-submit-btn");
     if (btn) {
@@ -340,7 +327,7 @@ const ProViewApp = {
         this.churchProfile.churchName = churchName;
         this.churchProfile.ccliLicense = ccliLicense;
         localStorage.setItem("proview_profile", JSON.stringify(this.churchProfile));
-        this.showToast(`Welcome to ProView, ${churchName}! Free account created & synced.`);
+        this.showToast(`Welcome to ProView, ${churchName}! Free account created.`);
       } else {
         const res = await window.ProViewBackend.handleLogin(email, password);
         user = res.user;
@@ -348,49 +335,17 @@ const ProViewApp = {
       }
 
       this.updateAuthUI(user);
-      this.closeAuthModal();
-      this.renderAdminWorkspace();
-      this.renderOperatorWorkspace();
+      this.renderAccountPageProfile(user);
+
+      setTimeout(() => {
+        window.location.href = targetPage;
+      }, 650);
     } catch (err) {
-      this.showToast(`Auth notice: ${err.message}`);
+      this.showToast(`Account notice: ${err.message}`);
     } finally {
       if (btn) {
         btn.disabled = false;
         btn.textContent = mode === "signup" ? "Create Free Sanctuary Account" : "Sign In to ProView Workspace";
-      }
-    }
-  },
-
-  async submitInlineLandingSignup(event) {
-    event.preventDefault();
-    const email = document.getElementById("inline-signup-email").value.trim();
-    const password = document.getElementById("inline-signup-password").value;
-    const churchName = document.getElementById("inline-signup-church").value.trim() || "New Life Fellowship";
-    const ccliLicense = document.getElementById("inline-signup-ccli").value.trim() || "CCLI #11482903";
-    const targetWorkspace = document.getElementById("inline-signup-workspace").value || "admin";
-
-    const btn = document.getElementById("inline-signup-btn");
-    if (btn) {
-      btn.disabled = true;
-      btn.textContent = "Creating Free Account on BreadBackend...";
-    }
-
-    try {
-      const user = await window.ProViewBackend.handleSignup(email, password, {
-        churchName,
-        ccliLicense,
-        role: targetWorkspace === "admin" ? "Admin & Worship Pastor" : "Project Operator"
-      });
-      this.churchProfile.churchName = churchName;
-      this.churchProfile.ccliLicense = ccliLicense;
-      localStorage.setItem("proview_profile", JSON.stringify(this.churchProfile));
-      this.updateAuthUI(user);
-      this.showToast(`Account created for ${churchName}! Launching ${targetWorkspace.toUpperCase()} Hub...`);
-      this.switchView(targetWorkspace);
-    } finally {
-      if (btn) {
-        btn.disabled = false;
-        btn.textContent = "Create 100% Free Account & Launch ProView";
       }
     }
   },
@@ -402,40 +357,54 @@ const ProViewApp = {
 
     if (user && user.email) {
       navArea.innerHTML = `
-        <div style="display:flex;align-items:center;gap:14px;">
-          <div style="text-align:right;line-height:1.35;">
-            <div style="font-size:0.9rem;font-weight:700;color:var(--text-primary);">${this.escapeHtml(user.churchName || user.email)}</div>
-            <div class="font-mono" style="font-size:0.74rem;color:var(--accent-emerald);">FREE • ${this.escapeHtml(user.email)}</div>
-          </div>
-          <button class="btn btn-sm btn-outline" onclick="ProViewApp.handleLogout()">Sign Out</button>
-        </div>
+        <a href="account.html" class="btn btn-sm btn-outline" title="Manage Free Church Account">
+          <span>${this.escapeHtml(user.churchName || user.email)}</span>
+        </a>
       `;
     } else {
       navArea.innerHTML = `
-        <button class="btn btn-sm btn-outline" onclick="ProViewApp.openAuthModal('login')">Log In</button>
-        <button class="btn btn-sm btn-amber" onclick="ProViewApp.openAuthModal('signup')">Free Account</button>
+        <a href="account.html" class="btn btn-sm btn-primary">Free Account</a>
       `;
+    }
+  },
+
+  renderAccountPageProfile(userObj) {
+    const card = document.getElementById("active-session-card");
+    if (!card) return;
+    const user = userObj || window.ProViewBackend.getStoredUser();
+    if (user && user.email) {
+      card.style.display = "block";
+      card.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+          <div>
+            <span class="badge-free" style="margin-bottom:8px;display:inline-block;">ACTIVE FREE SANCTUARY SESSION</span>
+            <h3 style="font-size:1.35rem;margin-bottom:4px;">${this.escapeHtml(user.churchName || "Grace Sanctuary Fellowship")}</h3>
+            <p class="font-mono" style="font-size:0.84rem;color:var(--text-secondary);">
+              ${this.escapeHtml(user.email)} • ${this.escapeHtml(user.ccliLicense || this.churchProfile.ccliLicense)}
+            </p>
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <a href="admin.html" class="btn btn-sm btn-primary">Open Admin Page →</a>
+            <a href="operator.html" class="btn btn-sm btn-emerald">Open Operator Page →</a>
+            <button class="btn btn-sm btn-outline" onclick="ProViewApp.handleLogout()">Sign Out</button>
+          </div>
+        </div>
+      `;
+    } else {
+      card.style.display = "none";
     }
   },
 
   handleLogout() {
     window.ProViewBackend.logout();
     this.updateAuthUI(null);
+    this.renderAccountPageProfile(null);
     this.showToast("Signed out of ProView account.");
   },
 
   // ============================================================
-  // ADMIN PAGE: THE CONTROL & CREATION HUB
+  // ADMIN PAGE: THE CONTROL & CREATION HUB (admin.html)
   // ============================================================
-  renderAdminWorkspace() {
-    this.renderAdminServicesTab();
-    this.renderAdminSongsTab();
-    this.renderAdminScriptureTab();
-    this.renderAdminMediaTab();
-    this.renderAdminSettingsTab();
-  },
-
-  // 1. Admin Service Organizer & Smart Collection Builder
   renderAdminServicesTab() {
     const colListEl = document.getElementById("admin-service-collections-list");
     const activeService = this.services.find(s => s.id === this.selectedServiceId) || this.services[0];
@@ -451,7 +420,7 @@ const ProViewApp = {
             <div style="font-weight:700;font-size:1rem;margin-bottom:4px;">${this.escapeHtml(srv.title)}</div>
             <div class="font-mono" style="font-size:0.78rem;color:var(--text-secondary);">${this.escapeHtml(srv.date)}</div>
           </div>
-          <span class="font-mono" style="font-size:0.78rem;padding:5px 12px;border-radius:99px;background:rgba(255,255,255,0.06);">
+          <span class="font-mono" style="font-size:0.76rem;padding:4px 10px;border-radius:99px;background:var(--bg-subtle);color:var(--text-secondary);">
             ${srv.items.length} cues
           </span>
         </button>
@@ -467,7 +436,6 @@ const ProViewApp = {
       metaHeader.textContent = `${activeService.date} • Lead: ${activeService.leadPastor || "Worship Team"} • ${activeService.items.length} Service Items`;
     }
 
-    // Populate Quick-Add Song dropdown in Service Organizer
     const songSelect = document.getElementById("admin-quick-add-song-select");
     if (songSelect) {
       songSelect.innerHTML = this.songs
@@ -491,19 +459,19 @@ const ProViewApp = {
           return `
           <div class="service-cue-row">
             <div class="cue-left">
-              <span class="font-mono" style="color:var(--text-muted);font-size:0.86rem;width:28px;">0${idx + 1}</span>
+              <span class="font-mono" style="color:var(--text-muted);font-size:0.84rem;width:26px;">0${idx + 1}</span>
               <span class="cue-type-badge ${badgeClass}">${item.type}</span>
               <div>
-                <div style="font-weight:700;font-size:1.02rem;margin-bottom:3px;">${this.escapeHtml(item.title)}</div>
+                <div style="font-weight:700;font-size:1rem;margin-bottom:2px;">${this.escapeHtml(item.title)}</div>
                 <div style="font-size:0.86rem;color:var(--text-secondary);">
                   ${this.escapeHtml(item.subtitle || "")} • <strong>${item.slides.length} slides</strong>
                 </div>
               </div>
             </div>
-            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
               <button class="btn btn-sm btn-outline" title="Move Up" onclick="ProViewApp.moveServiceItem(${idx}, -1)">↑</button>
               <button class="btn btn-sm btn-outline" title="Move Down" onclick="ProViewApp.moveServiceItem(${idx}, 1)">↓</button>
-              <button class="btn btn-sm btn-cyan" onclick="ProViewApp.sendServiceItemToOperator('${activeService.id}', '${item.id}')">Cue in Operator</button>
+              <button class="btn btn-sm btn-cyan" onclick="ProViewApp.sendServiceItemToOperator('${activeService.id}', '${item.id}')">Launch in Operator →</button>
               <button class="btn btn-sm btn-danger" onclick="ProViewApp.removeServiceItem(${idx})">✕</button>
             </div>
           </div>
@@ -558,12 +526,12 @@ const ProViewApp = {
     this.selectedServiceId = newService.id;
     this.operatorServiceId = newService.id;
     this.saveMasterServices();
+    this.saveLiveOperatorState();
     await window.ProViewBackend.createDocument("proview_services", newService);
 
     titleInput.value = "";
     dateInput.value = "";
     this.renderAdminServicesTab();
-    this.renderOperatorWorkspace();
     this.showToast(`Created Service Collection "${title}" & synced to BreadBackend!`);
   },
 
@@ -596,8 +564,7 @@ const ProViewApp = {
     this.saveMasterServices();
     await window.ProViewBackend.updateDocument("proview_services", activeService.id, activeService);
     this.renderAdminServicesTab();
-    this.renderOperatorWorkspace();
-    this.showToast(`Added "${song.title}" with CCLI #${song.ccliSongNumber} to ${activeService.title}.`);
+    this.showToast(`Added "${song.title}" (CCLI #${song.ccliSongNumber}) to ${activeService.title}.`);
   },
 
   async addNestedSermonToService(event) {
@@ -651,7 +618,6 @@ const ProViewApp = {
     document.getElementById("sermon-builder-scripture").value = "";
     document.getElementById("sermon-builder-points").value = "";
     this.renderAdminServicesTab();
-    this.renderOperatorWorkspace();
     this.showToast(`Nested Sermon Folder "${seriesTitle}" added (${slides.length} slides)!`);
   },
 
@@ -665,7 +631,6 @@ const ProViewApp = {
     activeService.items[target] = temp;
     this.saveMasterServices();
     this.renderAdminServicesTab();
-    this.renderOperatorWorkspace();
   },
 
   removeServiceItem(index) {
@@ -674,15 +639,15 @@ const ProViewApp = {
     activeService.items.splice(index, 1);
     this.saveMasterServices();
     this.renderAdminServicesTab();
-    this.renderOperatorWorkspace();
   },
 
   sendServiceItemToOperator(serviceId, itemId) {
     this.operatorServiceId = serviceId;
     this.operatorActiveItemId = itemId;
     this.operatorActiveSlideIndex = 0;
-    this.switchView("operator");
+    this.saveLiveOperatorState();
     this.broadcastStageSync();
+    window.location.href = "operator.html";
   },
 
   // 2. Admin Song & CCLI Automation Library
@@ -695,7 +660,7 @@ const ProViewApp = {
         song => `
       <div class="service-cue-row ${song.id === this.selectedSongId ? "active-cue" : ""}" style="cursor:pointer;" onclick="ProViewApp.selectAdminSong('${song.id}')">
         <div>
-          <div style="font-weight:700;font-size:1.04rem;margin-bottom:4px;">${this.escapeHtml(song.title)}</div>
+          <div style="font-weight:700;font-size:1.02rem;margin-bottom:4px;">${this.escapeHtml(song.title)}</div>
           <div class="font-mono" style="font-size:0.78rem;color:var(--accent-amber);">
             CCLI #${this.escapeHtml(song.ccliSongNumber)} • ${this.escapeHtml(song.authors)}
           </div>
@@ -716,19 +681,19 @@ const ProViewApp = {
         previewEl.innerHTML = `
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
             <div>
-              <h4 style="font-size:1.25rem;margin-bottom:4px;">${this.escapeHtml(selected.title)}</h4>
-              <p class="font-mono" style="font-size:0.82rem;color:var(--accent-amber);">
+              <h4 style="font-size:1.2rem;margin-bottom:4px;">${this.escapeHtml(selected.title)}</h4>
+              <p class="font-mono" style="font-size:0.8rem;color:var(--text-secondary);">
                 Author Credits: ${this.escapeHtml(selected.authors)} • CCLI Song #${this.escapeHtml(selected.ccliSongNumber)}
               </p>
             </div>
-            <span class="brand-badge-free">CCLI Compliant</span>
+            <span class="badge-free">CCLI Compliant</span>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;">
             ${selected.sections
               .map(
                 sec => `
-              <div style="background:var(--bg-obsidian);border:1px solid var(--border-subtle);border-radius:14px;padding:20px;">
-                <div class="font-mono" style="font-size:0.75rem;color:var(--accent-cyan);margin-bottom:10px;">${this.escapeHtml(sec.label)}</div>
+              <div style="background:var(--bg-page);border:1px solid var(--border-subtle);border-radius:12px;padding:20px;">
+                <div class="font-mono" style="font-size:0.74rem;color:var(--accent-blue);margin-bottom:10px;">${this.escapeHtml(sec.label)}</div>
                 <div style="font-size:0.92rem;white-space:pre-line;margin-bottom:16px;line-height:1.6;">${this.escapeHtml(sec.lyrics)}</div>
                 <div class="font-mono" style="font-size:0.7rem;color:var(--text-muted);border-top:1px solid var(--border-subtle);padding-top:10px;">
                   "${this.escapeHtml(selected.title)}" • CCLI #${this.escapeHtml(selected.ccliSongNumber)} • ${this.escapeHtml(this.churchProfile.ccliLicense)}
@@ -798,13 +763,22 @@ const ProViewApp = {
     this.showToast(`Saved "${title}" (CCLI #${ccliSongNumber}) to Master Database!`);
   },
 
-  // 3. Admin Instant Scripture Engine + Smart Text-Flow Reflow
+  // ============================================================
+  // INSTANT SCRIPTURE ENGINE PAGE (scripture.html)
+  // ============================================================
   renderAdminScriptureTab() {
     const presetSelect = document.getElementById("scripture-preset-select");
     const translationSelect = document.getElementById("scripture-translation-select");
     const maxCharsSlider = document.getElementById("scripture-reflow-slider");
     const customText = document.getElementById("scripture-custom-textarea");
     const refInput = document.getElementById("scripture-ref-input");
+    const targetServiceSelect = document.getElementById("scripture-target-service");
+
+    if (targetServiceSelect && !targetServiceSelect.innerHTML.trim()) {
+      targetServiceSelect.innerHTML = this.services
+        .map(s => `<option value="${s.id}">${this.escapeHtml(s.title)} (${this.escapeHtml(s.date)})</option>`)
+        .join("");
+    }
 
     if (!presetSelect || !translationSelect || !maxCharsSlider || !customText) return;
 
@@ -849,11 +823,12 @@ const ProViewApp = {
     }
   },
 
-  async pushScriptureToActiveService() {
+  async pushScriptureToActiveService(launchOperatorAfter = false) {
     const refInput = document.getElementById("scripture-ref-input");
     const translationSelect = document.getElementById("scripture-translation-select");
     const maxCharsSlider = document.getElementById("scripture-reflow-slider");
     const customText = document.getElementById("scripture-custom-textarea");
+    const targetServiceSelect = document.getElementById("scripture-target-service");
 
     const ref = (refInput && refInput.value.trim()) || "John 3:16";
     const trans = (translationSelect && translationSelect.value) || "ESV";
@@ -861,9 +836,11 @@ const ProViewApp = {
     const raw = (customText && customText.value.trim()) || "";
     if (!raw) return;
 
-    const reflowed = this.smartReflowText(raw, maxChars, `${ref} (${trans})`);
-    const activeService = this.services.find(s => s.id === this.selectedServiceId) || this.services[0];
+    const targetServiceId = (targetServiceSelect && targetServiceSelect.value) || this.selectedServiceId;
+    const activeService = this.services.find(s => s.id === targetServiceId) || this.services[0];
     if (!activeService) return;
+
+    const reflowed = this.smartReflowText(raw, maxChars, `${ref} (${trans})`);
 
     const scriptureItem = {
       id: "item-scr-" + Date.now(),
@@ -885,25 +862,36 @@ const ProViewApp = {
     this.saveMasterServices();
     await window.ProViewBackend.updateDocument("proview_services", activeService.id, activeService);
 
-    this.renderAdminServicesTab();
-    this.renderOperatorWorkspace();
+    this.operatorServiceId = activeService.id;
+    this.operatorActiveItemId = scriptureItem.id;
+    this.operatorActiveSlideIndex = 0;
+    this.saveLiveOperatorState();
+    this.broadcastStageSync();
+
     this.showToast(`Added ${ref} (${trans}) [${reflowed.length} slides] to ${activeService.title}!`);
+    if (launchOperatorAfter) {
+      setTimeout(() => {
+        window.location.href = "operator.html";
+      }, 500);
+    }
   },
 
-  // 4. Admin Master Media Library (Powered by bread.files.upload / list / delete)
+  // ============================================================
+  // MASTER MEDIA LIBRARY PAGE (media.html)
+  // ============================================================
   renderAdminMediaTab() {
     const builtinGrid = document.getElementById("admin-builtin-backgrounds");
     if (builtinGrid) {
       builtinGrid.innerHTML = this.backgrounds
         .map(
           bg => `
-        <div style="border:1px solid var(--border-subtle);border-radius:14px;overflow:hidden;background:var(--bg-obsidian);">
-          <div style="height:125px;background:${bg.css};display:flex;align-items:flex-end;padding:14px;">
-            <span class="font-mono" style="font-size:0.74rem;background:rgba(0,0,0,0.65);padding:4px 10px;border-radius:6px;">${this.escapeHtml(bg.type)}</span>
+        <div style="border:1px solid var(--border-subtle);border-radius:14px;overflow:hidden;background:var(--bg-surface);">
+          <div style="height:130px;background:${bg.css};display:flex;align-items:flex-end;padding:14px;">
+            <span class="font-mono" style="font-size:0.72rem;background:rgba(0,0,0,0.65);color:#fff;padding:4px 10px;border-radius:6px;">${this.escapeHtml(bg.type)}</span>
           </div>
           <div style="padding:18px;display:flex;justify-content:space-between;align-items:center;">
-            <strong style="font-size:0.94rem;">${this.escapeHtml(bg.name)}</strong>
-            <span class="font-mono" style="font-size:0.74rem;color:var(--accent-emerald);">60fps Ready</span>
+            <strong style="font-size:0.95rem;">${this.escapeHtml(bg.name)}</strong>
+            <button class="btn btn-sm btn-outline" onclick="ProViewApp.applyOperatorMicroBg('${bg.id}', true)">Use Live</button>
           </div>
         </div>
       `
@@ -916,7 +904,7 @@ const ProViewApp = {
 
     if (!this.uploadedFiles || this.uploadedFiles.length === 0) {
       uploadedGrid.innerHTML = `
-        <div style="grid-column:1/-1;padding:40px;text-align:center;border:1px dashed var(--border-strong);border-radius:14px;color:var(--text-secondary);">
+        <div style="grid-column:1/-1;padding:44px;text-align:center;border:1px dashed var(--border-strong);border-radius:14px;color:var(--text-secondary);">
           No custom media files uploaded yet. Upload a worship photo, background loop, or sermon slide graphic on the left (Max 50MB via BreadBackend <code>bread.files.upload</code>).
         </div>
       `;
@@ -926,8 +914,8 @@ const ProViewApp = {
     uploadedGrid.innerHTML = this.uploadedFiles
       .map(
         file => `
-      <div style="border:1px solid var(--border-strong);border-radius:14px;overflow:hidden;background:var(--bg-obsidian);">
-        <div style="height:140px;background:#050811;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;">
+      <div style="border:1px solid var(--border-subtle);border-radius:14px;overflow:hidden;background:var(--bg-surface);">
+        <div style="height:140px;background:#090D16;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;">
           ${
             file.type && file.type.startsWith("video")
               ? `<video src="${file.url}" style="width:100%;height:100%;object-fit:cover;" muted loop autoplay playsinline></video>`
@@ -945,7 +933,7 @@ const ProViewApp = {
             ${this.escapeHtml(file.publicEndpointUrl || file.url)}
           </div>
           <div style="display:flex;gap:10px;">
-            <button class="btn btn-sm btn-cyan" style="flex:1;" onclick="ProViewApp.applyUploadedMediaToActiveSlide('${this.escapeHtml(file.url)}')">Use on Slide</button>
+            <button class="btn btn-sm btn-primary" style="flex:1;" onclick="ProViewApp.applyUploadedMediaToActiveSlide('${this.escapeHtml(file.url)}')">Use on Live Slide</button>
             <button class="btn btn-sm btn-danger" onclick="ProViewApp.deleteUploadedMedia('${this.escapeHtml(file.filename)}')">Delete</button>
           </div>
         </div>
@@ -975,7 +963,6 @@ const ProViewApp = {
       this.uploadedFiles = await window.ProViewBackend.listMediaFiles();
       fileInput.value = "";
       this.renderAdminMediaTab();
-      this.renderOperatorWorkspace();
       this.showToast(`Uploaded "${uploaded.filename}" to ProView Media Library!`);
     } finally {
       if (btn) {
@@ -1000,13 +987,15 @@ const ProViewApp = {
       ...prev,
       customBgUrl: fileUrl
     };
-    this.switchView("operator");
-    this.renderOperatorWorkspace();
+    this.saveLiveOperatorState();
     this.broadcastStageSync();
-    this.showToast("Applied uploaded media to active operator slide!");
+    this.showToast("Applied uploaded media to active operator slide! Opening Operator Page...");
+    setTimeout(() => {
+      window.location.href = "operator.html";
+    }, 500);
   },
 
-  // 5. Admin Global Settings & Role Permissions
+  // Global Sanctuary Settings
   renderAdminSettingsTab() {
     const churchInput = document.getElementById("settings-church-name");
     const ccliInput = document.getElementById("settings-ccli-number");
@@ -1033,8 +1022,31 @@ const ProViewApp = {
   },
 
   // ============================================================
-  // PROJECT OPERATOR PAGE: THE LIVE EXECUTION HUB
+  // PROJECT OPERATOR PAGE: THE LIVE EXECUTION HUB (operator.html)
   // ============================================================
+  loadLiveOperatorState() {
+    try {
+      const saved = JSON.parse(localStorage.getItem("proview_live_operator_state") || "null");
+      if (saved) {
+        Object.assign(this, saved);
+      }
+    } catch (_) {}
+  },
+
+  saveLiveOperatorState() {
+    const state = {
+      operatorServiceId: this.operatorServiceId,
+      operatorActiveItemId: this.operatorActiveItemId,
+      operatorActiveSlideIndex: this.operatorActiveSlideIndex,
+      displayOverride: this.displayOverride,
+      nurseryAlertCode: this.nurseryAlertCode,
+      operatorMicroOverrides: this.operatorMicroOverrides,
+      customStageMessage: this.customStageMessage,
+      stageTimerSeconds: this.stageTimerSeconds
+    };
+    localStorage.setItem("proview_live_operator_state", JSON.stringify(state));
+  },
+
   getActiveOperatorService() {
     return this.services.find(s => s.id === this.operatorServiceId) || this.services[0];
   },
@@ -1079,7 +1091,6 @@ const ProViewApp = {
     const item = this.getActiveOperatorItem();
     if (item) this.operatorActiveItemId = item.id;
 
-    // 1. Service Selector Dropdown
     const srvSelect = document.getElementById("operator-service-select");
     if (srvSelect) {
       srvSelect.innerHTML = this.services
@@ -1087,7 +1098,6 @@ const ProViewApp = {
         .join("");
     }
 
-    // 2. Left Column: Playlist Items
     const playlistEl = document.getElementById("operator-playlist-items");
     if (playlistEl) {
       playlistEl.innerHTML = srv.items
@@ -1122,7 +1132,6 @@ const ProViewApp = {
         .join("");
     }
 
-    // 3. Center Column: Slide Cue Grid
     const itemHeader = document.getElementById("operator-active-item-title");
     const itemSub = document.getElementById("operator-active-item-subtitle");
     const cueGrid = document.getElementById("operator-slide-cue-grid");
@@ -1154,7 +1163,6 @@ const ProViewApp = {
         .join("");
     }
 
-    // 4. Populate Micro-Editor Deck for Current Slide
     const activeSlide = this.getActiveOperatorSlide();
     if (activeSlide && item) {
       const eff = this.getEffectiveSlideData(activeSlide, item);
@@ -1182,7 +1190,6 @@ const ProViewApp = {
       }
     }
 
-    // 5. Right Column: Live Output Monitor & Stage Confidence Monitor
     this.renderLiveOutputMonitors();
   },
 
@@ -1205,7 +1212,7 @@ const ProViewApp = {
         if (ccliRight) ccliRight.textContent = "";
       } else if (this.displayOverride === "logo") {
         screenEl.style.background = this.backgrounds[0].css;
-        textEl.innerHTML = `<div style="font-size:1.35rem;letter-spacing:0.06em;color:var(--accent-amber);">✦ ${this.escapeHtml(this.churchProfile.churchName.toUpperCase())} ✦</div>`;
+        textEl.innerHTML = `<div style="font-size:1.35rem;letter-spacing:0.06em;color:#FBBF24;">✦ ${this.escapeHtml(this.churchProfile.churchName.toUpperCase())} ✦</div>`;
         if (ccliLeft) ccliLeft.textContent = "";
         if (ccliRight) ccliRight.textContent = "";
       } else if (eff) {
@@ -1272,6 +1279,7 @@ const ProViewApp = {
       this.operatorActiveItemId = srv.items[0].id;
     }
     this.operatorActiveSlideIndex = 0;
+    this.saveLiveOperatorState();
     this.renderOperatorWorkspace();
     this.broadcastStageSync();
   },
@@ -1280,6 +1288,7 @@ const ProViewApp = {
     this.operatorActiveItemId = itemId;
     this.operatorActiveSlideIndex = 0;
     this.displayOverride = "none";
+    this.saveLiveOperatorState();
     this.renderOperatorWorkspace();
     this.broadcastStageSync();
   },
@@ -1287,6 +1296,7 @@ const ProViewApp = {
   triggerOperatorSlide(slideIndex) {
     this.operatorActiveSlideIndex = slideIndex;
     this.displayOverride = "none";
+    this.saveLiveOperatorState();
     this.renderOperatorWorkspace();
     this.renderStageView();
     this.broadcastStageSync();
@@ -1306,6 +1316,7 @@ const ProViewApp = {
       }
     }
     this.displayOverride = "none";
+    this.saveLiveOperatorState();
     this.renderOperatorWorkspace();
     this.renderStageView();
     this.broadcastStageSync();
@@ -1315,6 +1326,7 @@ const ProViewApp = {
     if (this.operatorActiveSlideIndex > 0) {
       this.operatorActiveSlideIndex--;
       this.displayOverride = "none";
+      this.saveLiveOperatorState();
       this.renderOperatorWorkspace();
       this.renderStageView();
       this.broadcastStageSync();
@@ -1323,19 +1335,19 @@ const ProViewApp = {
 
   setDisplayOverride(mode) {
     this.displayOverride = this.displayOverride === mode ? "none" : mode;
+    this.saveLiveOperatorState();
     this.renderOperatorWorkspace();
     this.renderStageView();
     this.broadcastStageSync();
   },
 
-  // ============================================================
-  // OPERATOR ON-THE-FLY MICRO-EDITING (Protects Master Database!)
-  // ============================================================
+  // Operator On-the-Fly Micro-Editing
   applyOperatorMicroText(newText) {
     const slide = this.getActiveOperatorSlide();
     if (!slide) return;
     const prev = this.operatorMicroOverrides[slide.id] || {};
     this.operatorMicroOverrides[slide.id] = { ...prev, text: newText };
+    this.saveLiveOperatorState();
     this.renderOperatorWorkspace();
     this.renderStageView();
     this.broadcastStageSync();
@@ -1346,19 +1358,27 @@ const ProViewApp = {
     if (!slide) return;
     const prev = this.operatorMicroOverrides[slide.id] || {};
     this.operatorMicroOverrides[slide.id] = { ...prev, fontScale: parseInt(scaleVal, 10) || 100 };
+    this.saveLiveOperatorState();
     this.renderOperatorWorkspace();
     this.renderStageView();
     this.broadcastStageSync();
   },
 
-  applyOperatorMicroBg(bgId) {
+  applyOperatorMicroBg(bgId, navigateToOperator = false) {
     const slide = this.getActiveOperatorSlide();
     if (!slide) return;
     const prev = this.operatorMicroOverrides[slide.id] || {};
     this.operatorMicroOverrides[slide.id] = { ...prev, bgId, customBgUrl: null };
+    this.saveLiveOperatorState();
     this.renderOperatorWorkspace();
     this.renderStageView();
     this.broadcastStageSync();
+    if (navigateToOperator) {
+      this.showToast("Applied background canvas! Opening Operator Page...");
+      setTimeout(() => {
+        window.location.href = "operator.html";
+      }, 450);
+    }
   },
 
   splitOverflowingOperatorSlide() {
@@ -1392,6 +1412,8 @@ const ProViewApp = {
     };
 
     item.slides.splice(this.operatorActiveSlideIndex + 1, 0, newSubSlide);
+    this.saveMasterServices();
+    this.saveLiveOperatorState();
     this.renderOperatorWorkspace();
     this.broadcastStageSync();
     this.showToast("Smart Text-Flow Reflow split overflowing slide into Part A & Part B!");
@@ -1401,6 +1423,7 @@ const ProViewApp = {
     const slide = this.getActiveOperatorSlide();
     if (!slide) return;
     delete this.operatorMicroOverrides[slide.id];
+    this.saveLiveOperatorState();
     this.renderOperatorWorkspace();
     this.renderStageView();
     this.broadcastStageSync();
@@ -1427,6 +1450,8 @@ const ProViewApp = {
     if (labelInput) labelInput.value = "";
     textInput.value = "";
 
+    this.saveMasterServices();
+    this.saveLiveOperatorState();
     this.renderOperatorWorkspace();
     this.renderStageView();
     this.broadcastStageSync();
@@ -1437,6 +1462,7 @@ const ProViewApp = {
     const input = document.getElementById("operator-nursery-input");
     const code = input ? input.value.trim() : "";
     this.nurseryAlertCode = code;
+    this.saveLiveOperatorState();
     this.renderLiveOutputMonitors();
     this.broadcastStageSync();
     if (code) {
@@ -1447,7 +1473,7 @@ const ProViewApp = {
   },
 
   // ============================================================
-  // CROWD-SOURCED STAGE VIEW SYNC (PASTORS & WORSHIP BAND)
+  // CROWD-SOURCED STAGE VIEW SYNC PAGE (stage.html)
   // ============================================================
   renderStageView() {
     const srv = this.getActiveOperatorService();
@@ -1522,6 +1548,7 @@ const ProViewApp = {
     clearInterval(this.stageTimerInterval);
     this.stageTimerRunning = false;
     this.stageTimerSeconds = minutes * 60;
+    this.saveLiveOperatorState();
     this.renderStageCountdownDisplay();
     this.broadcastStageSync();
   },
@@ -1540,6 +1567,7 @@ const ProViewApp = {
     const input = document.getElementById("operator-stage-msg-input");
     if (!input) return;
     this.customStageMessage = input.value.trim();
+    this.saveLiveOperatorState();
     this.renderOperatorWorkspace();
     this.renderStageView();
     this.broadcastStageSync();
@@ -1571,13 +1599,14 @@ const ProViewApp = {
   },
 
   openStageMonitorWindow() {
-    const url = `${window.location.origin}${window.location.pathname}?view=stage`;
-    window.open(url, "ProViewStageMonitor", "width=1100,height=720");
-    this.showToast("Opened Crowd-Sourced Stage View in new window (Real-time sync active)!");
+    window.open("stage.html", "ProViewStageMonitor", "width=1120,height=740");
+    this.showToast("Opened Stage View Sync in new window!");
   },
 
   handleGlobalKeydown(e) {
-    if (this.currentView !== "operator") return;
+    if (!document.getElementById("operator-slide-cue-grid") && !document.getElementById("stage-full-current-lyric")) {
+      return;
+    }
     const tag = (e.target && e.target.tagName) || "";
     if (["INPUT", "TEXTAREA", "SELECT"].includes(tag)) return;
 

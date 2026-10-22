@@ -3,174 +3,110 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Admin Page (Control &amp; Creation Hub) — ProView Presentation</title>
-  <meta name="description" content="The Admin Page is ProView's Control & Creation Hub where worship pastors, media directors, and tech leads prepare services, songs, CCLI metadata, and sermon collections." />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-
-  <script src="https://kaidaz18.duckdns.org/sdk/bread-client.js"></script>
+  <title>Admin Page — ProView</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
 
-  <!-- GLOBAL TOP NAVIGATION BAR -->
+  <!-- CLEAN, UNCROWDED TOP NAVBAR FOR ADMIN PAGE -->
   <header class="site-navbar">
-    <a href="index.html" class="brand-link">
-      <div class="brand-mark">PV</div>
-      <span>ProView</span>
-      <span class="badge-free">100% Free</span>
-    </a>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <a href="index.html" class="brand-link">
+        <div class="brand-mark">PV</div>
+        <span>ProView</span>
+      </a>
+      <span class="page-context-pill">Admin</span>
+    </div>
 
-    <nav class="page-nav-links" aria-label="Main Navigation">
-      <a href="index.html" class="page-nav-link">Overview</a>
-      <a href="features.html" class="page-nav-link">Features &amp; Compare</a>
-      <a href="admin.html" class="page-nav-link active">Admin Page</a>
-      <a href="operator.html" class="page-nav-link">Operator Page</a>
+    <nav class="page-nav-links" aria-label="Admin Navigation">
       <a href="scripture.html" class="page-nav-link">Scripture Engine</a>
       <a href="media.html" class="page-nav-link">Media Library</a>
-      <a href="stage.html" class="page-nav-link">Stage View</a>
+      <a href="operator.html" class="page-nav-link">Switch to Operator →</a>
     </nav>
 
     <div class="nav-right-controls">
       <button id="theme-toggle-btn" class="theme-toggle-btn" onclick="ProViewApp.toggleTheme()">
-        <span>🌙</span> <span>Dark Mode</span>
+        🌙 Dark
       </button>
-      <div id="nav-auth-area">
-        <a href="account.html" class="btn btn-sm btn-primary">Free Account</a>
-      </div>
     </div>
   </header>
 
   <main>
-    <!-- ADMIN PAGE HEADER -->
     <section class="page-hero-header">
-      <div class="container-wide" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;">
+      <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;">
         <div>
-          <div class="eyebrow">WORKSPACE A • THE CONTROL &amp; CREATION HUB</div>
-          <h1 style="font-size:clamp(2rem,3.4vw,2.85rem);margin-bottom:10px;">
-            The Admin Page
-          </h1>
-          <p style="color:var(--text-secondary);font-size:1.05rem;max-width:68ch;">
-            This is where 90% of preparation, song importing, sermon folder building, and global slide configuration happens during the week. Master templates here remain protected during Sunday live execution.
-          </p>
+          <div class="eyebrow">CONTROL &amp; CREATION HUB</div>
+          <h1 style="font-size:2rem;margin-bottom:6px;">The Admin Page</h1>
+          <p style="color:var(--text-secondary);">Prepare church services, import worship songs with CCLI attribution, and build sermon slide sets.</p>
         </div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;">
-          <a href="scripture.html" class="btn btn-outline">Scripture Engine →</a>
-          <a href="media.html" class="btn btn-outline">Media Library →</a>
-          <a href="operator.html" class="btn btn-emerald">● Go Live in Operator Page →</a>
-        </div>
+        <a href="operator.html" class="btn btn-emerald">Open Project Operator →</a>
       </div>
     </section>
 
-    <div class="workspace-page-body">
-      <div class="container-wide" style="display:flex;flex-direction:column;gap:48px;">
+    <section class="section" style="padding:48px 0;">
+      <div class="container" style="display:flex;flex-direction:column;gap:36px;">
 
-        <!-- 1. SERVICE ORGANIZER & COLLECTIONS -->
-        <div style="display:grid;grid-template-columns:380px 1fr;gap:36px;align-items:start;" class="grid-2">
-          <!-- Service Collections List & Creator -->
+        <!-- 1. SERVICE ORGANIZER -->
+        <div class="grid-2" style="align-items:start;">
           <div class="panel-card">
             <div class="panel-header">
               <h3>Service Collections</h3>
-              <span class="font-mono" style="font-size:0.74rem;color:var(--text-muted);" id="cloud-status-text">Cloud Ready</span>
             </div>
             <div class="panel-body">
-              <div id="admin-service-collections-list" class="collection-list" style="margin-bottom:28px;">
-                <!-- Populated by JS -->
-              </div>
+              <div id="admin-service-collections-list" class="sidebar-scroll-list" style="margin-bottom:24px;"></div>
 
-              <form onsubmit="ProViewApp.createNewServiceCollection(event)" style="border-top:1px solid var(--border-subtle);padding-top:24px;">
-                <div class="font-mono" style="font-size:0.75rem;color:var(--text-muted);margin-bottom:16px;">
-                  + CREATE NEW SERVICE COLLECTION
-                </div>
+              <form onsubmit="ProViewApp.createNewServiceCollection(event)" style="border-top:1px solid var(--border-subtle);padding-top:20px;">
                 <div class="form-group">
-                  <label class="form-label" for="new-service-title">Collection Title</label>
-                  <input type="text" id="new-service-title" class="form-input" placeholder="e.g. Easter Sunrise Service" required />
+                  <label class="form-label" for="new-service-title">New Service Title</label>
+                  <input type="text" id="new-service-title" class="form-input" placeholder="e.g. Easter Sunday Service" required />
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="new-service-date">Day &amp; Time</label>
-                  <input type="text" id="new-service-date" class="form-input" placeholder="Sunday • 8:00 AM Sanctuary" />
+                  <input type="text" id="new-service-date" class="form-input" placeholder="Sunday • 9:30 AM" />
                 </div>
-                <div class="form-group">
-                  <label class="form-label" for="new-service-pastor">Lead Pastor / Director</label>
-                  <input type="text" id="new-service-pastor" class="form-input" placeholder="Pastor David Vance" />
-                </div>
-                <button type="submit" class="btn btn-primary" style="width:100%;">Create Service Collection</button>
+                <button type="submit" class="btn btn-primary" style="width:100%;">+ Create Service</button>
               </form>
             </div>
           </div>
 
-          <!-- Active Service Order -->
           <div class="panel-card">
             <div class="panel-header">
-              <div>
-                <h3 id="admin-active-service-title">Sunday Morning Traditional</h3>
-                <div id="admin-active-service-meta" class="font-mono" style="font-size:0.78rem;color:var(--text-secondary);margin-top:4px;"></div>
-              </div>
-              <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
-                <select id="admin-quick-add-song-select" class="form-select" style="width:240px;padding:10px 14px;font-size:0.86rem;"></select>
-                <button class="btn btn-sm btn-primary" onclick="ProViewApp.addSongToActiveService()">+ Add Song to Service</button>
+              <h3 id="admin-active-service-title">Sunday Morning Service</h3>
+              <div style="display:flex;gap:8px;">
+                <select id="admin-quick-add-song-select" class="form-select" style="width:180px;padding:6px 10px;font-size:0.84rem;"></select>
+                <button class="btn btn-sm btn-primary" onclick="ProViewApp.addSongToActiveService()">+ Add Song</button>
               </div>
             </div>
             <div class="panel-body">
-              <div id="admin-service-order-items" class="service-order-list">
-                <!-- Populated by JS -->
-              </div>
+              <div id="admin-service-order-items" class="sidebar-scroll-list"></div>
             </div>
           </div>
         </div>
 
-        <!-- 2. SMART COLLECTION & NESTED SERMON FOLDER BUILDER -->
-        <div class="panel-card">
-          <div class="panel-header">
-            <h3>Smart Collection &amp; Nested Sermon Folder Builder</h3>
-            <span class="font-mono" style="font-size:0.76rem;color:var(--text-muted);">
-              Groups sermon series title, scripture references, and presentation points under one folder
-            </span>
-          </div>
-          <div class="panel-body">
-            <form onsubmit="ProViewApp.addNestedSermonToService(event)">
-              <div class="grid-2">
-                <div>
-                  <div class="form-group">
-                    <label class="form-label" for="sermon-builder-title">Sermon Series &amp; Message Title</label>
-                    <input type="text" id="sermon-builder-title" class="form-input" placeholder="e.g. Walking by Faith (Part 4)" required />
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label" for="sermon-builder-scripture">Anchor Scripture Reference</label>
-                    <input type="text" id="sermon-builder-scripture" class="form-input" placeholder="e.g. Hebrews 11:1-6 (ESV)" />
-                  </div>
-                  <div class="form-group" style="margin-bottom:0;">
-                    <label class="form-label" for="sermon-builder-notes">Private Pastor Stage Notes</label>
-                    <input type="text" id="sermon-builder-notes" class="form-input" placeholder="e.g. 35:00 Timer • Invite worship keys on Point 3" />
-                  </div>
-                </div>
-                <div style="display:flex;flex-direction:column;justify-content:space-between;">
-                  <div class="form-group">
-                    <label class="form-label" for="sermon-builder-points">Nested Presentation Points (One slide per line)</label>
-                    <textarea
-                      id="sermon-builder-points"
-                      class="form-textarea"
-                      style="min-height:150px;"
-                      placeholder="Point 1: Faith Sees Beyond Present Circumstances&#10;Point 2: Obedience Precedes Understanding&#10;Point 3: God Rewards Those Who Earnestly Seek Him"
-                      required
-                    ></textarea>
-                  </div>
-                  <button type="submit" class="btn btn-primary" style="width:100%;">
-                    + Append Nested Sermon Folder to Active Service
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <!-- 3. MASTER SONG & CCLI AUTOMATION LIBRARY -->
-        <div style="display:grid;grid-template-columns:400px 1fr;gap:36px;align-items:start;" class="grid-2">
+        <!-- 2. SERMON BUILDER & SONG IMPORT -->
+        <div class="grid-2" style="align-items:start;">
           <div class="panel-card">
             <div class="panel-header">
-              <h3>Import Song to Master Database</h3>
+              <h3>Sermon Slide Builder</h3>
+            </div>
+            <div class="panel-body">
+              <form onsubmit="ProViewApp.addNestedSermonToService(event)">
+                <div class="form-group">
+                  <label class="form-label" for="sermon-builder-title">Sermon Title</label>
+                  <input type="text" id="sermon-builder-title" class="form-input" placeholder="e.g. Walking by Faith" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="sermon-builder-points">Sermon Slides (One slide per line)</label>
+                  <textarea id="sermon-builder-points" class="form-textarea" placeholder="Point 1: Faith Sees Beyond Circumstances&#10;Point 2: Obedience Precedes Understanding" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">+ Add Sermon to Active Service</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-header">
+              <h3>Import Song &amp; CCLI</h3>
             </div>
             <div class="panel-body">
               <form onsubmit="ProViewApp.createNewSongInDatabase(event)">
@@ -178,126 +114,60 @@
                   <label class="form-label" for="song-form-title">Song Title</label>
                   <input type="text" id="song-form-title" class="form-input" placeholder="e.g. Build My Life" required />
                 </div>
-                <div class="form-group">
-                  <label class="form-label" for="song-form-authors">Authors / Composers</label>
-                  <input type="text" id="song-form-authors" class="form-input" placeholder="Pat Barrett, Brett Younker, Karl Martin" required />
-                </div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                  <div class="form-group">
+                    <label class="form-label" for="song-form-authors">Authors</label>
+                    <input type="text" id="song-form-authors" class="form-input" placeholder="Pat Barrett" />
+                  </div>
                   <div class="form-group">
                     <label class="form-label" for="song-form-ccli">CCLI Song #</label>
-                    <input type="text" id="song-form-ccli" class="form-input" placeholder="7070345" required />
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label" for="song-form-key">Musical Key &amp; BPM</label>
-                    <input type="text" id="song-form-key" class="form-input" placeholder="G Major • 70 BPM" />
+                    <input type="text" id="song-form-ccli" class="form-input" placeholder="7070345" />
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="form-label" for="song-form-lyrics">Lyrics (Separate verses/choruses with a blank line)</label>
-                  <textarea
-                    id="song-form-lyrics"
-                    class="form-textarea"
-                    style="min-height:150px;"
-                    placeholder="[Verse 1]&#10;Worthy of every song we could ever sing&#10;Worthy of all the praise we could ever bring&#10;&#10;[Chorus]&#10;Holy, there is no one like You&#10;There is none beside You"
-                    required
-                  ></textarea>
+                  <label class="form-label" for="song-form-lyrics">Lyrics (Blank line between sections)</label>
+                  <textarea id="song-form-lyrics" class="form-textarea" placeholder="Worthy of every song we could ever sing&#10;&#10;Holy, there is no one like You" required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width:100%;">
-                  Save Song &amp; Auto-Generate CCLI Slides
-                </button>
+                <button type="submit" class="btn btn-primary" style="width:100%;">Save Song to Library</button>
               </form>
-            </div>
-          </div>
-
-          <div style="display:flex;flex-direction:column;gap:32px;">
-            <div class="panel-card">
-              <div class="panel-header">
-                <h3>Master Worship Song Repository (`proview_songs`)</h3>
-                <span class="badge-free">Auto-CCLI Attribution</span>
-              </div>
-              <div class="panel-body">
-                <div id="admin-songs-library-list" class="service-order-list"></div>
-              </div>
-            </div>
-
-            <div class="panel-card">
-              <div class="panel-header">
-                <h3>Built-In Copyright &amp; CCLI Slide Compliance Preview</h3>
-              </div>
-              <div class="panel-body" id="admin-song-ccli-preview"></div>
             </div>
           </div>
         </div>
 
-        <!-- 4. GLOBAL SANCTUARY SETTINGS & PERMISSIONS -->
-        <div class="grid-2">
+        <!-- 3. SONG REPOSITORY & CHURCH CCLI SETTINGS -->
+        <div class="grid-2" style="align-items:start;">
           <div class="panel-card">
             <div class="panel-header">
-              <h3>Global Sanctuary Theme &amp; CCLI License</h3>
+              <h3>Song Library</h3>
+            </div>
+            <div class="panel-body">
+              <div id="admin-songs-library-list" class="sidebar-scroll-list"></div>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-header">
+              <h3>Church &amp; CCLI Settings</h3>
             </div>
             <div class="panel-body">
               <form onsubmit="ProViewApp.saveGlobalSettings(event)">
                 <div class="form-group">
-                  <label class="form-label" for="settings-church-name">Church / Sanctuary Name</label>
+                  <label class="form-label" for="settings-church-name">Church Name</label>
                   <input type="text" id="settings-church-name" class="form-input" value="Grace Sanctuary Fellowship" />
                 </div>
                 <div class="form-group">
-                  <label class="form-label" for="settings-ccli-number">Master CCLI Copyright License #</label>
+                  <label class="form-label" for="settings-ccli-number">CCLI License #</label>
                   <input type="text" id="settings-ccli-number" class="form-input" value="CCLI #11482903" />
                 </div>
-                <div class="form-group">
-                  <label class="form-label" for="settings-global-fontsize">Default Projection Font Size (pt)</label>
-                  <input type="number" id="settings-global-fontsize" class="form-input" value="28" min="16" max="64" />
-                </div>
-                <button type="submit" class="btn btn-primary" style="width:100%;">Save Global Settings</button>
+                <button type="submit" class="btn btn-outline" style="width:100%;">Save Settings</button>
               </form>
-            </div>
-          </div>
-
-          <div class="panel-card">
-            <div class="panel-header">
-              <h3>Decoupled Permission Architecture</h3>
-            </div>
-            <div class="panel-body" style="display:flex;flex-direction:column;gap:20px;">
-              <div style="padding:22px;background:var(--bg-page);border:1px solid var(--border-subtle);border-radius:12px;">
-                <strong>✓ Master Template Lock: ENABLED</strong>
-                <p style="color:var(--text-secondary);font-size:0.92rem;margin-top:6px;">
-                  Volunteers on the separate Project Operator Page (`operator.html`) cannot accidentally overwrite or delete songs, sermon templates, or global themes in the master database.
-                </p>
-              </div>
-              <div style="padding:22px;background:var(--bg-page);border:1px solid var(--border-subtle);border-radius:12px;">
-                <strong>✓ Operator On-the-Fly Micro-Edits: ENABLED</strong>
-                <p style="color:var(--text-secondary);font-size:0.92rem;margin-top:6px;">
-                  Projectionists can adjust slide text density, split overflowing sermon text, swap backgrounds, and inject emergency slides during a live service without breaking presentation flow.
-                </p>
-              </div>
             </div>
           </div>
         </div>
 
       </div>
-    </div>
+    </section>
   </main>
-
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container-wide" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div class="brand-mark" style="width:28px;height:28px;font-size:0.75rem;">PV</div>
-        <strong style="color:var(--text-primary);">ProView Presentation</strong>
-        <span>• The Admin Page (Control &amp; Creation Hub)</span>
-      </div>
-      <div style="display:flex;gap:24px;flex-wrap:wrap;">
-        <a href="index.html">Overview</a>
-        <a href="features.html">Features &amp; Compare</a>
-        <a href="operator.html">Operator Page</a>
-        <a href="scripture.html">Scripture Engine</a>
-        <a href="media.html">Media Library</a>
-        <a href="stage.html">Stage View</a>
-        <a href="account.html">Free Account</a>
-      </div>
-    </div>
-  </footer>
 
   <div id="toast-container" class="toast-container"></div>
 

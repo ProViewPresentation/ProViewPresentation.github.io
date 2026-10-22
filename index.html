@@ -3,19 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ProView — Next-Generation Free Church Presentation Software</title>
-  <meta name="description" content="ProView is a 100% free, next-generation church presentation software engineered specifically for houses of worship." />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-
-  <script src="https://kaidaz18.duckdns.org/sdk/bread-client.js"></script>
+  <title>ProView — Free Church Presentation Software</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
 
-  <!-- GLOBAL TOP NAVIGATION BAR -->
+  <!-- CLEAN, UNCROWDED TOP NAVBAR FOR LANDING PAGE -->
   <header class="site-navbar">
     <a href="index.html" class="brand-link">
       <div class="brand-mark">PV</div>
@@ -24,18 +17,14 @@
     </a>
 
     <nav class="page-nav-links" aria-label="Main Navigation">
-      <a href="index.html" class="page-nav-link active">Overview</a>
-      <a href="features.html" class="page-nav-link">Features &amp; Compare</a>
-      <a href="admin.html" class="page-nav-link">Admin Page</a>
-      <a href="operator.html" class="page-nav-link">Operator Page</a>
-      <a href="scripture.html" class="page-nav-link">Scripture Engine</a>
-      <a href="media.html" class="page-nav-link">Media Library</a>
-      <a href="stage.html" class="page-nav-link">Stage View</a>
+      <a href="operator.html" class="page-nav-link">Project Operator</a>
+      <a href="admin.html" class="page-nav-link">Admin</a>
+      <a href="features.html" class="page-nav-link">Features</a>
     </nav>
 
     <div class="nav-right-controls">
       <button id="theme-toggle-btn" class="theme-toggle-btn" onclick="ProViewApp.toggleTheme()">
-        <span>🌙</span> <span>Dark Mode</span>
+        🌙 Dark
       </button>
       <div id="nav-auth-area">
         <a href="account.html" class="btn btn-sm btn-primary">Free Account</a>
@@ -44,230 +33,82 @@
   </header>
 
   <main>
-    <!-- HERO SECTION -->
-    <section class="section" style="padding-top:96px;padding-bottom:108px;">
-      <div class="container">
-        <div style="max-width:820px;margin:0 auto 72px;text-align:center;">
-          <div class="eyebrow">NEXT-GENERATION CHURCH PRESENTATION SOFTWARE • 100% FREE FOREVER</div>
-          <h1 class="hero-display-title">
-            Purpose-built for the sanctuary. Effortless for every volunteer.
-          </h1>
-          <p class="hero-lead" style="margin:0 auto 40px;">
-            <strong>ProView</strong> is a next-generation, purpose-built church presentation software engineered specifically for houses of worship. It eliminates the clunkiness of secular programs like PowerPoint and the steep learning curves and heavy hardware requirements of legacy church software—combining fluid speed, intuitive multi-layered management, and a robust dual-interface workflow.
-          </p>
+    <!-- SPACIOUS, SIMPLE HERO -->
+    <section class="section" style="padding:100px 0 88px;">
+      <div class="container" style="text-align:center;max-width:780px;">
+        <div class="eyebrow">CHURCH PRESENTATION SOFTWARE • 100% FREE FOREVER</div>
+        <h1 class="hero-display-title">
+          Built for the sanctuary. Simple for every volunteer.
+        </h1>
+        <p class="hero-lead" style="margin:0 auto 36px;">
+          ProView separates weekday service preparation from Sunday-morning live operation—giving your team fast lyrics, scripture readings, sermon slides, and dual-screen FOH &amp; BOH projection without the bloat.
+        </p>
 
-          <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
-            <a href="account.html" class="btn btn-lg btn-primary">Create Free Church Account →</a>
-            <a href="operator.html" class="btn btn-lg btn-emerald">● Open Project Operator Page</a>
-            <a href="admin.html" class="btn btn-lg btn-outline">Open Admin Page</a>
-          </div>
-        </div>
-
-        <!-- Clean Interactive Live Preview Card -->
-        <div class="card" style="max-width:1000px;margin:0 auto;padding:36px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
-            <span class="font-mono" style="font-size:0.78rem;color:var(--text-muted);">
-              INTERACTIVE LIVE ENGINE PREVIEW — CLICK ANY CUE BELOW
-            </span>
-            <div style="display:flex;gap:10px;">
-              <a href="operator.html" class="btn btn-sm btn-emerald">Full Operator Page →</a>
-              <a href="admin.html" class="btn btn-sm btn-outline">Full Admin Page →</a>
-            </div>
-          </div>
-
-          <div class="mini-stage-screen" style="margin-bottom:24px;">
-            <div id="hero-stage-lyric" class="mini-stage-lyric" style="font-size:clamp(1.35rem,2.2vw,1.9rem);">
-              Bless the Lord, O my soul, O my soul
-              Worship His holy name
-            </div>
-            <div class="mini-stage-ccli">
-              <span id="hero-stage-ccli-left">CCLI Song #6016351 • License #11482903</span>
-              <span>Grace Sanctuary Fellowship</span>
-            </div>
-          </div>
-
-          <div id="hero-cue-strip" class="grid-3" style="gap:16px;">
-            <!-- Populated by JS -->
-          </div>
+        <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
+          <a href="operator.html" class="btn btn-lg btn-emerald">Open Project Operator →</a>
+          <a href="admin.html" class="btn btn-lg btn-outline">Open Admin Page</a>
+          <a href="account.html" class="btn btn-lg btn-primary">Create Free Account</a>
         </div>
       </div>
     </section>
 
-    <!-- HOW PROVIEW WORKS (3 PILLARS) -->
+    <!-- TWO CORE WORKSPACES -->
     <section class="section-subtle">
       <div class="container">
-        <div style="max-width:700px;margin:0 auto 64px;text-align:center;">
-          <div class="eyebrow">01 • ARCHITECTURAL FOUNDATION</div>
-          <h2 style="font-size:2.4rem;margin-bottom:16px;">How ProView Works</h2>
-          <p style="color:var(--text-secondary);font-size:1.1rem;">
-            ProView operates on a decoupled permission and dual-workspace architecture, separating deep structural management from real-time Sunday-morning execution.
-          </p>
-        </div>
-
-        <div class="grid-3">
-          <div class="card">
-            <span class="card-step-num">01</span>
-            <h3>The Database Core</h3>
-            <p>
-              All songs, media files (photos, loops, background videos), Bible translations, and sermon elements are stored in a centralized, cloud-synced, or local database.
-            </p>
+        <div class="grid-2">
+          <div class="card" style="display:flex;flex-direction:column;justify-content:space-between;gap:24px;">
+            <div>
+              <span class="cue-type-badge badge-video" style="margin-bottom:14px;display:inline-block;">LIVE EXECUTION</span>
+              <h3>Project Operator Page</h3>
+              <p>
+                A clean left-sidebar workspace for Sunday mornings. Select your church service, click any item (sermon slides, music lyrics, scripture, or videos with timeline controls), and launch FOH (Front of House) and BOH (Back of House) screens from the top-right <strong>Live</strong> menu.
+              </p>
+            </div>
+            <a href="operator.html" class="btn btn-emerald">Launch Operator Page →</a>
           </div>
 
-          <div class="card">
-            <span class="card-step-num">02</span>
-            <h3>The Service Organizer</h3>
-            <p>
-              Services are built as chronological "Collections" (e.g., <em>Sunday Morning Traditional</em>, <em>Youth Night</em>, <em>Midweek Bible Study</em>). Items can be reordered and grouped effortlessly.
-            </p>
-          </div>
-
-          <div class="card">
-            <span class="card-step-num">03</span>
-            <h3>The Live Engine</h3>
-            <p>
-              When "Go Live" is clicked, ProView transitions into a high-performance rendering engine that outputs customized feeds to main projection screens, stage confidence monitors, and NDI streams.
-            </p>
+          <div class="card" style="display:flex;flex-direction:column;justify-content:space-between;gap:24px;">
+            <div>
+              <span class="cue-type-badge badge-song" style="margin-bottom:14px;display:inline-block;">WEEKDAY PREPARATION</span>
+              <h3>Admin Page</h3>
+              <p>
+                Prepare services ahead of time. Manage the master song library with automatic CCLI attribution, build sermon slide sets, pull Bible translations in the Scripture Engine, and upload media files.
+              </p>
+            </div>
+            <a href="admin.html" class="btn btn-primary">Open Admin Page →</a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- THE TWO CORE PAGES: ADMIN PAGE VS. PROJECT OPERATOR PAGE -->
+    <!-- SIMPLE 3-PILLAR OVERVIEW -->
     <section class="section">
       <div class="container">
-        <div style="max-width:720px;margin:0 auto 64px;text-align:center;">
-          <div class="eyebrow">02 • DEDICATED WORKSPACE PAGES</div>
-          <h2 style="font-size:2.4rem;margin-bottom:16px;">Two Separate Workspaces for Zero Sunday Panic</h2>
-          <p style="color:var(--text-secondary);font-size:1.1rem;">
-            To ensure Sunday services run without a hitch while keeping the main platform secure, ProView is divided into two separate workspace pages.
-          </p>
-        </div>
-
-        <div class="grid-2">
-          <!-- Admin Page Card -->
-          <div class="card" style="display:flex;flex-direction:column;justify-content:space-between;">
-            <div>
-              <span class="cue-type-badge badge-song" style="margin-bottom:20px;display:inline-block;">WORKSPACE A • PREPARATION</span>
-              <h3 style="font-size:1.75rem;margin-bottom:14px;">The Admin Page (The Control &amp; Creation Hub)</h3>
-              <p>
-                This is where 90% of the heavy lifting, preparation, and template designing happens ahead of time during the week.
-              </p>
-              <ul class="clean-list">
-                <li><strong>What you do here:</strong> Import and edit new songs, manage the master media library, configure global slide themes, set up default font sizes, manage user permissions, and map out upcoming service collections weeks in advance.</li>
-                <li><strong>Who uses it:</strong> Worship pastors, media directors, and tech leads during the week.</li>
-              </ul>
-            </div>
-            <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border-subtle);">
-              <a href="admin.html" class="btn btn-primary" style="width:100%;">Go to Separate Admin Page →</a>
-            </div>
-          </div>
-
-          <!-- Operator Page Card -->
-          <div class="card" style="display:flex;flex-direction:column;justify-content:space-between;">
-            <div>
-              <span class="cue-type-badge badge-media" style="margin-bottom:20px;display:inline-block;">WORKSPACE B • LIVE EXECUTION</span>
-              <h3 style="font-size:1.75rem;margin-bottom:14px;">The Project Operator Page (The Live Execution Hub)</h3>
-              <p>
-                Designed for absolute simplicity, speed, and clean visibility during a live service. It gives the volunteer or projectionist complete control over the active service playlist.
-              </p>
-              <ul class="clean-list">
-                <li><strong>What you do here:</strong> Run the live service by clicking through slides, songs, and announcements.</li>
-                <li><strong>Mini-Editing Capabilities:</strong> Adjust text density on overflowing slides, split slides via Smart Reflow, swap a background photo, or append a last-minute slide item right from the operator deck without corrupting master templates.</li>
-              </ul>
-            </div>
-            <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border-subtle);">
-              <a href="operator.html" class="btn btn-emerald" style="width:100%;">Go to Separate Project Operator Page →</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- EXPLORE ALL SEPARATE PAGES DIRECTORY -->
-    <section class="section-subtle">
-      <div class="container">
-        <div style="max-width:700px;margin:0 auto 56px;text-align:center;">
-          <div class="eyebrow">03 • COMPLETE PLATFORM DIRECTORY</div>
-          <h2 style="font-size:2.2rem;margin-bottom:14px;">Explore Every Dedicated Page</h2>
-          <p style="color:var(--text-secondary);font-size:1.05rem;">
-            Each tool in ProView lives on its own clean, uncluttered page.
-          </p>
-        </div>
-
         <div class="grid-3">
-          <a href="features.html" class="card" style="display:flex;flex-direction:column;justify-content:space-between;gap:20px;">
-            <div>
-              <span class="card-step-num">FEATURES &amp; COMPARE</span>
-              <h3>Competitive Analysis &amp; Reflow Demo</h3>
-              <p>Compare ProView against ProPresenter, EasyWorship, and PowerPoint, and test the live Smart Text-Flow Reflow calculator.</p>
-            </div>
-            <span style="font-weight:600;font-size:0.9rem;">View Features Page →</span>
-          </a>
-
-          <a href="scripture.html" class="card" style="display:flex;flex-direction:column;justify-content:space-between;gap:20px;">
-            <div>
-              <span class="card-step-num">SCRIPTURE STUDIO</span>
-              <h3>Instant Scripture Engine</h3>
-              <p>Pull Bible verses from ESV, NIV, KJV, and NLT on the fly and auto-format them across uniform slides.</p>
-            </div>
-            <span style="font-weight:600;font-size:0.9rem;">Open Scripture Page →</span>
-          </a>
-
-          <a href="media.html" class="card" style="display:flex;flex-direction:column;justify-content:space-between;gap:20px;">
-            <div>
-              <span class="card-step-num">CLOUD MEDIA</span>
-              <h3>Master Media Library</h3>
-              <p>Upload photos, motion loops, and videos up to 50MB to BreadBackend cloud storage or pick 60fps sanctuary canvases.</p>
-            </div>
-            <span style="font-weight:600;font-size:0.9rem;">Open Media Page →</span>
-          </a>
-
-          <a href="stage.html" class="card" style="display:flex;flex-direction:column;justify-content:space-between;gap:20px;">
-            <div>
-              <span class="card-step-num">CONFIDENCE DISPLAY</span>
-              <h3>Crowd-Sourced Stage View Sync</h3>
-              <p>Live sanctuary clock, 35-minute sermon timer, next-slide preview, and private notes for pastors and musicians.</p>
-            </div>
-            <span style="font-weight:600;font-size:0.9rem;">Open Stage View Page →</span>
-          </a>
-
-          <a href="account.html" class="card" style="display:flex;flex-direction:column;justify-content:space-between;gap:20px;">
-            <div>
-              <span class="card-step-num">100% FREE FOREVER</span>
-              <h3>Account Creation &amp; Cloud Sync</h3>
-              <p>Create your church's free account or sign in to sync songs, CCLI numbers, and service playlists with BreadBackend.</p>
-            </div>
-            <span style="font-weight:600;font-size:0.9rem;">Open Account Page →</span>
-          </a>
-
-          <a href="operator.html" class="card" style="display:flex;flex-direction:column;justify-content:space-between;gap:20px;">
-            <div>
-              <span class="card-step-num">SUNDAY EXECUTION</span>
-              <h3>Project Operator Live Deck</h3>
-              <p>Run Sunday services with one-click slide cues, display overrides, and safe on-the-fly micro-editing.</p>
-            </div>
-            <span style="font-weight:600;font-size:0.9rem;">Open Operator Page →</span>
-          </a>
+          <div class="card">
+            <h3>1. Database Core</h3>
+            <p>Centralized library for worship songs, CCLI numbers, Bible translations, and sanctuary media.</p>
+          </div>
+          <div class="card">
+            <h3>2. Service Organizer</h3>
+            <p>Build chronological service orders for Sunday Morning, Youth Night, or Midweek Study in seconds.</p>
+          </div>
+          <div class="card">
+            <h3>3. FOH &amp; BOH Live Engine</h3>
+            <p>Send full slides and videos to the Front of House projector while singers and pastors see clean, background-free lyrics and timers on the Back of House display.</p>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- FOOTER -->
   <footer class="site-footer">
-    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div class="brand-mark" style="width:28px;height:28px;font-size:0.75rem;">PV</div>
-        <strong style="color:var(--text-primary);">ProView Presentation</strong>
-        <span>• 100% Free Church Presentation Software</span>
-      </div>
-      <div style="display:flex;gap:24px;flex-wrap:wrap;">
-        <a href="features.html">Features &amp; Compare</a>
-        <a href="admin.html">Admin Page</a>
-        <a href="operator.html">Operator Page</a>
-        <a href="scripture.html">Scripture Engine</a>
-        <a href="media.html">Media Library</a>
-        <a href="stage.html">Stage View</a>
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+      <span><strong>ProView</strong> — 100% Free Church Presentation Software</span>
+      <div style="display:flex;gap:20px;">
+        <a href="operator.html">Operator</a>
+        <a href="admin.html">Admin</a>
+        <a href="features.html">Features</a>
         <a href="account.html">Free Account</a>
       </div>
     </div>

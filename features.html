@@ -3,121 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Features &amp; Competitive Analysis — ProView Presentation</title>
-  <meta name="description" content="Explore ProView's Core Features, Competitive Analysis Matrix against ProPresenter and EasyWorship, and test the Smart Text-Flow Reflow Engine." />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-
-  <script src="https://kaidaz18.duckdns.org/sdk/bread-client.js"></script>
+  <title>Features &amp; Comparison — ProView</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
 
-  <!-- GLOBAL TOP NAVIGATION BAR -->
+  <!-- CLEAN, UNCROWDED TOP NAVBAR FOR FEATURES PAGE -->
   <header class="site-navbar">
     <a href="index.html" class="brand-link">
       <div class="brand-mark">PV</div>
       <span>ProView</span>
-      <span class="badge-free">100% Free</span>
     </a>
 
-    <nav class="page-nav-links" aria-label="Main Navigation">
-      <a href="index.html" class="page-nav-link">Overview</a>
-      <a href="features.html" class="page-nav-link active">Features &amp; Compare</a>
-      <a href="admin.html" class="page-nav-link">Admin Page</a>
-      <a href="operator.html" class="page-nav-link">Operator Page</a>
-      <a href="scripture.html" class="page-nav-link">Scripture Engine</a>
-      <a href="media.html" class="page-nav-link">Media Library</a>
-      <a href="stage.html" class="page-nav-link">Stage View</a>
+    <nav class="page-nav-links" aria-label="Features Navigation">
+      <a href="index.html" class="page-nav-link">← Overview</a>
+      <a href="operator.html" class="page-nav-link">Operator</a>
+      <a href="admin.html" class="page-nav-link">Admin</a>
     </nav>
 
     <div class="nav-right-controls">
       <button id="theme-toggle-btn" class="theme-toggle-btn" onclick="ProViewApp.toggleTheme()">
-        <span>🌙</span> <span>Dark Mode</span>
+        🌙 Dark
       </button>
-      <div id="nav-auth-area">
-        <a href="account.html" class="btn btn-sm btn-primary">Free Account</a>
-      </div>
     </div>
   </header>
 
   <main>
-    <!-- PAGE HEADER -->
     <section class="page-hero-header">
       <div class="container">
-        <div class="eyebrow">ARCHITECTURE • CORE FEATURES • COMPETITIVE BENCHMARK</div>
-        <h1 style="font-size:clamp(2.2rem,3.8vw,3.25rem);margin-bottom:16px;">
-          Engineered Specifically for Houses of Worship
-        </h1>
-        <p class="hero-lead">
-          Discover how ProView combines fluid speed, intuitive multi-layered management, and a decoupled dual-interface workflow—completely free.
-        </p>
+        <div class="eyebrow">FEATURES &amp; COMPETITIVE ANALYSIS</div>
+        <h1 style="font-size:2.2rem;margin-bottom:8px;">Core Features &amp; Comparison</h1>
+        <p style="color:var(--text-secondary);">How ProView compares to legacy church presentation software and secular slide tools.</p>
       </div>
     </section>
 
-    <!-- 1. CORE FEATURES OF PROVIEW -->
     <section class="section">
       <div class="container">
-        <div style="margin-bottom:56px;">
-          <div class="eyebrow">01 • CORE CAPABILITIES</div>
-          <h2 style="font-size:2.2rem;margin-bottom:12px;">Core Features of ProView</h2>
-          <p style="color:var(--text-secondary);font-size:1.05rem;">
-            Purpose-built tools for lyric projection, sermon organization, legal CCLI compliance, and instant scripture formatting.
-          </p>
-        </div>
-
-        <div class="grid-2">
+        <div class="grid-2" style="margin-bottom:64px;">
           <div class="card">
-            <span class="card-step-num">MULTI-MEDIA COMPOSITOR</span>
             <h3>Seamless Multi-Media Integration</h3>
-            <p>
-              Effortlessly blends text slides, lyrics, background loops, high-resolution photos, and foreground videos without stuttering or format conversion delays.
-            </p>
+            <p>Blends sermon slides, lyrics, scripture readings, and video playback with interactive timeline controls.</p>
           </div>
-
           <div class="card">
-            <span class="card-step-num">NESTED COLLECTIONS</span>
             <h3>Smart Collection &amp; Sermon Builder</h3>
-            <p>
-              Makes structuring multi-part sermons simple. Pastors or media teams can create nested slide collections, grouping an entire sermon series, scripture references, and presentation points under a single parent folder.
-            </p>
+            <p>Group sermon points, scripture references, and service items into clean collections.</p>
           </div>
-
           <div class="card">
-            <span class="card-step-num">LEGAL COMPLIANCE</span>
             <h3>Built-In Copyright &amp; CCLI Automation</h3>
-            <p>
-              Automatically tracks and appends CCLI license numbers, song titles, and author credits to the bottom corner of lyric slides to keep the church legally compliant.
-            </p>
+            <p>Automatically appends CCLI license numbers and song credits on Front of House lyric slides.</p>
           </div>
-
           <div class="card">
-            <span class="card-step-num">ESV • NIV • KJV • NLT</span>
             <h3>Instant Scripture Engine</h3>
-            <p>
-              Pulls verses from multiple Bible translations on the fly, auto-formatting them across slides based on user-defined text length preferences.
-            </p>
-            <div style="margin-top:24px;">
-              <a href="scripture.html" class="btn btn-sm btn-outline">Open Instant Scripture Engine Page →</a>
-            </div>
+            <p>Pull verses from ESV, NIV, KJV, and NLT and auto-format them across uniform slides.</p>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- 2. COMPETITIVE ANALYSIS MATRIX -->
-    <section class="section-subtle">
-      <div class="container">
-        <div style="margin-bottom:56px;">
-          <div class="eyebrow">02 • COMPETITIVE ANALYSIS</div>
-          <h2 style="font-size:2.2rem;margin-bottom:12px;">How ProView Compares</h2>
-          <p style="color:var(--text-secondary);font-size:1.05rem;">
-            A side-by-side look at ProView versus legacy church presentation software and secular slide tools.
-          </p>
-        </div>
-
+        <h2 style="font-size:1.75rem;margin-bottom:24px;">Competitive Analysis</h2>
         <div class="comp-table-wrapper" style="margin-bottom:64px;">
           <table class="comp-table">
             <thead>
@@ -134,14 +75,14 @@
                 <td><strong>ProView</strong></td>
                 <td><strong>Incredible (Designed for volunteers &amp; pros)</strong></td>
                 <td><strong>High (Operator micro-edits + Admin depth)</strong></td>
-                <td><strong>Native multi-output, NDI, &amp; Stage displays</strong></td>
-                <td><strong>Lightweight, optimized for all hardware (100% Free)</strong></td>
+                <td><strong>Native FOH &amp; BOH Stage displays</strong></td>
+                <td><strong>Lightweight &amp; 100% Free</strong></td>
               </tr>
               <tr>
                 <td><strong>ProPresenter</strong></td>
                 <td>Moderate-to-Steep</td>
                 <td>High</td>
-                <td>Exceptional (Industry Standard)</td>
+                <td>Exceptional</td>
                 <td>Expensive; resource-heavy</td>
               </tr>
               <tr>
@@ -155,142 +96,35 @@
                 <td><strong>PowerPoint / Google Slides</strong></td>
                 <td>High</td>
                 <td>Low (No native lyric/Bible tools)</td>
-                <td>Poor (Requires clumsy workarounds)</td>
-                <td>Free/Cheap, but lacks church architecture</td>
+                <td>Poor</td>
+                <td>Lacks church architecture</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <h3 style="font-size:1.65rem;margin-bottom:32px;">ProView’s Standout Strengths (and Eliminated Weaknesses)</h3>
+        <!-- SMART TEXT-FLOW REFLOW DEMO -->
+        <div class="card">
+          <h3>Smart Text-Flow Reflow Demo</h3>
+          <p style="margin-bottom:20px;">Adjust the slider or paste long text to see how ProView splits overflowing blocks across uniform slides.</p>
 
-        <div class="grid-3">
-          <div class="card">
-            <h3>Zero Bloat &amp; Universal Hardware Compatibility</h3>
-            <p>
-              Unlike competitors that bog down low-spec church laptops or demand expensive dedicated graphic cards, ProView is optimized to run smoothly on almost any system.
-            </p>
+          <div class="form-group">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+              <label class="form-label" for="landing-reflow-slider">Max Characters per Slide</label>
+              <span id="landing-reflow-char-val" class="font-mono" style="font-size:0.84rem;font-weight:700;">130 chars/slide</span>
+            </div>
+            <input type="range" id="landing-reflow-slider" min="75" max="260" value="130" style="width:100%;" oninput="ProViewApp.renderLandingReflowDemo()" />
           </div>
 
-          <div class="card">
-            <h3>No "Locked-Down" Panic</h3>
-            <p>
-              Traditional software either locks operators out completely (causing chaos if a typo slips onto a slide mid-sermon) or lets them ruin master templates. ProView’s split Admin/Operator model completely solves this: the operator can fix text length, swap media, or add micro-items instantly, while the master database stays pristine.
-            </p>
+          <div class="form-group">
+            <textarea id="landing-reflow-input" class="form-textarea" oninput="ProViewApp.renderLandingReflowDemo()">For I am sure that neither death nor life, nor angels nor rulers, nor things present nor things to come, nor powers, nor height nor depth, nor anything else in all creation, will be able to separate us from the love of God in Christ Jesus our Lord.</textarea>
           </div>
 
-          <div class="card">
-            <h3>Frictionless Sunday Workflow</h3>
-            <p>
-              Moving multiple sub-slides into a sermon collection takes seconds via drag-and-drop hierarchy, avoiding the multi-window nesting nightmares found in legacy platforms.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3. COOL SPECIAL FEATURES + SMART TEXT-FLOW REFLOW INTERACTIVE SANDBOX -->
-    <section class="section">
-      <div class="container">
-        <div style="margin-bottom:56px;">
-          <div class="eyebrow">03 • COOL SPECIAL FEATURES</div>
-          <h2 style="font-size:2.2rem;margin-bottom:12px;">Intelligent Sanctuary Automation</h2>
-          <p style="color:var(--text-secondary);font-size:1.05rem;">
-            Test ProView's Smart Text-Flow Reflow engine below or launch the Crowd-Sourced Stage View Sync display.
-          </p>
-        </div>
-
-        <div class="grid-2">
-          <!-- Smart Text-Flow Reflow Interactive Demo -->
-          <div class="card">
-            <span class="cue-type-badge badge-scripture" style="margin-bottom:16px;display:inline-block;">INTERACTIVE SANDBOX</span>
-            <h3>Smart Text-Flow Reflow</h3>
-            <p style="margin-bottom:24px;">
-              If an operator pastes a massive block of scripture or sermon notes into a slide, ProView auto-calculates text length and dynamically splits it across multiple clean, uniform sub-slides.
-            </p>
-
-            <div class="form-group">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                <label class="form-label" for="landing-reflow-slider" style="margin:0;">Target Character Density per Slide:</label>
-                <span id="landing-reflow-char-val" class="font-mono" style="font-size:0.86rem;font-weight:700;">130 chars/slide</span>
-              </div>
-              <input
-                type="range"
-                id="landing-reflow-slider"
-                min="75"
-                max="260"
-                value="130"
-                style="width:100%;"
-                oninput="ProViewApp.renderLandingReflowDemo()"
-              />
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="landing-reflow-input">Paste Scripture or Sermon Notes Block:</label>
-              <textarea
-                id="landing-reflow-input"
-                class="form-textarea"
-                oninput="ProViewApp.renderLandingReflowDemo()"
-              >For I am sure that neither death nor life, nor angels nor rulers, nor things present nor things to come, nor powers, nor height nor depth, nor anything else in all creation, will be able to separate us from the love of God in Christ Jesus our Lord.</textarea>
-            </div>
-
-            <div id="landing-reflow-output" class="reflow-slides-preview">
-              <!-- Populated by JS -->
-            </div>
-          </div>
-
-          <!-- Crowd-Sourced Stage View Sync -->
-          <div class="card" style="display:flex;flex-direction:column;justify-content:space-between;gap:28px;">
-            <div>
-              <span class="cue-type-badge badge-media" style="margin-bottom:16px;display:inline-block;">REAL-TIME CONFIDENCE LINK</span>
-              <h3>Crowd-Sourced Stage View Sync</h3>
-              <p style="margin-bottom:28px;">
-                Allows speakers and musicians to view tailored countdowns, next-slide previews, and custom private notes on tablets or confidence monitors via a secure local web link.
-              </p>
-
-              <div class="stage-confidence-preview">
-                <div class="stage-conf-top">
-                  <span>● STAGE SYNC #7742</span>
-                  <span>SERMON TIMER: <strong>35:00</strong></span>
-                </div>
-                <div class="stage-conf-current">
-                  "Bless the Lord, O my soul, O my soul / Worship His holy name"
-                </div>
-                <div class="stage-conf-next">
-                  NEXT SLIDE: The sun comes up, it's a new day dawning...
-                </div>
-              </div>
-            </div>
-
-            <div style="display:flex;gap:12px;flex-wrap:wrap;">
-              <a href="stage.html" class="btn btn-primary" style="flex:1;">Open Separate Stage View Page →</a>
-              <button class="btn btn-outline" onclick="ProViewApp.openStageMonitorWindow()">Popout Window ↗</button>
-            </div>
-          </div>
+          <div id="landing-reflow-output" class="reflow-slides-preview"></div>
         </div>
       </div>
     </section>
   </main>
-
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div class="brand-mark" style="width:28px;height:28px;font-size:0.75rem;">PV</div>
-        <strong style="color:var(--text-primary);">ProView Presentation</strong>
-        <span>• 100% Free Church Presentation Software</span>
-      </div>
-      <div style="display:flex;gap:24px;flex-wrap:wrap;">
-        <a href="index.html">Overview</a>
-        <a href="admin.html">Admin Page</a>
-        <a href="operator.html">Operator Page</a>
-        <a href="scripture.html">Scripture Engine</a>
-        <a href="media.html">Media Library</a>
-        <a href="stage.html">Stage View</a>
-        <a href="account.html">Free Account</a>
-      </div>
-    </div>
-  </footer>
 
   <div id="toast-container" class="toast-container"></div>
 

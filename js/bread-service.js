@@ -8,12 +8,26 @@
 const BREAD_BASE_URL = "https://kaidaz18.duckdns.org/api/v1/proview";
 const BREAD_API_KEY = "pk_live_kzIciEsEmutDNA22zmUkx14Y";
 
-/**
- * Fallback BreadClient class if the external script is blocked in an offline/sandboxed environment.
- * When loaded in the user's browser, window.BreadClient from https://kaidaz18.duckdns.org/sdk/bread-client.js is used directly.
- */
+// Load external BreadClient SDK asynchronously after initial paint so page load is never blocked
+(function loadBreadSdkAsync() {
+  if (typeof window !== "undefined" && !document.querySelector('script[data-bread-sdk]')) {
+    const s = document.createElement("script");
+    s.src = "https://kaidaz18.duckdns.org/sdk/bread-client.js";
+    s.async = true;
+    s.defer = true;
+    s.setAttribute("data-bread-sdk", "true");
+    document.head.appendChild(s);
+  }
+})();
+
+function fetchWithTimeout(url, options = {}, timeoutMs = 2000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  return fetch(url, { ...options, signal: controller.signal }).finally(() => clearTimeout(timer));
+}
+
 if (typeof window.BreadClient === "undefined") {
-  window.BreadClient = class BreadClientFallback {
+  window.BreadClient = class BreadClientFast {
     constructor(config) {
       this.baseUrl = (config && config.baseUrl) || BREAD_BASE_URL;
       this.apiKey = (config && config.apiKey) || BREAD_API_KEY;
@@ -53,11 +67,15 @@ if (typeof window.BreadClient === "undefined") {
           formData.append("file", file);
           const headers = { "x-api-key": this.apiKey };
           if (this.token) headers["Authorization"] = `Bearer ${this.token}`;
-          const response = await fetch(`${this.baseUrl}/files`, {
-            method: "POST",
-            headers,
-            body: formData
-          });
+          const response = await fetchWithTimeout(
+            `${this.baseUrl}/files`,
+            {
+              method: "POST",
+              headers,
+              body: formData
+            },
+            8000
+          );
           if (!response.ok) throw new Error(`Upload failed (${response.status})`);
           return await response.json();
         },
@@ -108,7 +126,7 @@ if (typeof window.BreadClient === "undefined") {
       if (this.token) {
         headers["Authorization"] = `Bearer ${this.token}`;
       }
-      const response = await fetch(`${this.baseUrl}${path}`, {
+      const response = await fetchWithTimeout(`${this.baseUrl}${path}`, {
         ...options,
         headers
       });
@@ -121,9 +139,6 @@ if (typeof window.BreadClient === "undefined") {
   };
 }
 
-// ------------------------------------------------------------
-// 1. INITIALIZE THE BREAD SDK INSTANCE
-// ------------------------------------------------------------
 const bread = new window.BreadClient({
   baseUrl: BREAD_BASE_URL,
   apiKey: BREAD_API_KEY
@@ -131,10 +146,6 @@ const bread = new window.BreadClient({
 
 window.bread = bread;
 
-// ------------------------------------------------------------
-// 2. CLOUD + LOCAL HYBRID ENGINE FOR PROVIEW
-// Ensures 100% live BreadBackend usage + zero-latency local cache
-// ------------------------------------------------------------
 const ProViewBackend = {
   cloudConnected: false,
   lastSyncTime: null,
@@ -151,25 +162,19 @@ const ProViewBackend = {
   _saveLocalList(collectionName, items) {
     try {
       localStorage.setItem(`proview_col_${collectionName}`, JSON.stringify(items));
-    } catch (e) {
-      console.warn("Local cache write warning:", e);
-    }
+    } catch (_) {}
   },
 
-  // A) Sign up a new user account (100% Free Forever)
   async handleSignup(email, password, profileMeta = {}) {
     let cloudUser = null;
     try {
       const res = await bread.auth.signup(email, password);
       cloudUser = res && res.user ? res.user : res;
       this.cloudConnected = true;
-      // After signup, also log in automatically if session token isn't set yet
       try {
         await bread.auth.login(email, password);
       } catch (_) {}
     } catch (err) {
-      console.warn("BreadBackend signup notice (using hybrid local+cloud session):", err.message);
-      // Verify if account already exists on backend and try login
       try {
         const loginRes = await bread.auth.login(email, password);
         cloudUser = loginRes && loginRes.user ? loginRes.user : loginRes;
@@ -183,14 +188,13 @@ const ProViewBackend = {
       churchName: profileMeta.churchName || "Grace Sanctuary Fellowship",
       ccliLicense: profileMeta.ccliLicense || "CCLI #11482903",
       role: profileMeta.role || "Admin & Worship Director",
-      plan: "100% Free Forever (Sanctuary Edition)",
+      plan: "100% Free Forever",
       createdAt: new Date().toISOString(),
       cloudSynced: this.cloudConnected
     };
 
     localStorage.setItem("proview_active_user", JSON.stringify(userObj));
 
-    // Also store church profile in BreadBackend "profiles" collection
     try {
       await bread.collection("profiles").create(userObj);
       this.cloudConnected = true;
@@ -199,15 +203,12 @@ const ProViewBackend = {
     return userObj;
   },
 
-  // B) Log in an existing user
   async handleLogin(email, password) {
     let session = null;
     try {
       session = await bread.auth.login(email, password);
       this.cloudConnected = true;
-    } catch (err) {
-      console.warn("BreadBackend login notice:", err.message);
-    }
+    } catch (_) {}
 
     const saved = this.getStoredUser();
     const userObj = {
@@ -216,7 +217,7 @@ const ProViewBackend = {
       churchName: (saved && saved.churchName) || "Grace Sanctuary Fellowship",
       ccliLicense: (saved && saved.ccliLicense) || "CCLI #11482903",
       role: (saved && saved.role) || "Admin & Worship Director",
-      plan: "100% Free Forever (Sanctuary Edition)",
+      plan: "100% Free Forever",
       cloudSynced: this.cloudConnected
     };
 
@@ -224,7 +225,6 @@ const ProViewBackend = {
     return { user: userObj, session };
   },
 
-  // C) Get currently logged in user profile
   async getCurrentUser() {
     try {
       const me = await bread.auth.me();
@@ -260,9 +260,6 @@ const ProViewBackend = {
     localStorage.removeItem("proview_bread_token");
   },
 
-  // ------------------------------------------------------------
-  // 3. DATABASE & COLLECTIONS (CRUD Operations)
-  // ------------------------------------------------------------
   async createDocument(collectionName, payload) {
     const docWithMeta = {
       ...payload,
@@ -272,7 +269,11 @@ const ProViewBackend = {
       const created = await bread.collection(collectionName).create(docWithMeta);
       this.cloudConnected = true;
       this.lastSyncTime = new Date();
-      const finalDoc = { ...docWithMeta, ...(created || {}), id: (created && (created.id || created._id)) || payload.id || `doc_${Date.now()}` };
+      const finalDoc = {
+        ...docWithMeta,
+        ...(created || {}),
+        id: (created && (created.id || created._id)) || payload.id || `doc_${Date.now()}`
+      };
       const list = this._getLocalList(collectionName);
       this._saveLocalList(collectionName, [finalDoc, ...list.filter(i => i.id !== finalDoc.id)]);
       return finalDoc;
@@ -294,9 +295,7 @@ const ProViewBackend = {
         this._saveLocalList(collectionName, items);
         return items;
       }
-    } catch (err) {
-      // Fallback to local mirror if offline
-    }
+    } catch (_) {}
     return this._getLocalList(collectionName);
   },
 
@@ -310,7 +309,7 @@ const ProViewBackend = {
       );
       this._saveLocalList(collectionName, list);
       return updated;
-    } catch (err) {
+    } catch (_) {
       const list = this._getLocalList(collectionName).map(item =>
         item.id === id ? { ...item, ...updates } : item
       );
@@ -329,9 +328,6 @@ const ProViewBackend = {
     return true;
   },
 
-  // ------------------------------------------------------------
-  // 4. MEDIA UPLOAD & DOWNLOADS (bread.files)
-  // ------------------------------------------------------------
   async uploadMediaFile(file) {
     try {
       const result = await bread.files.upload(file);
@@ -350,8 +346,7 @@ const ProViewBackend = {
       const existing = this._getLocalList("uploaded_files");
       this._saveLocalList("uploaded_files", [mediaEntry, ...existing]);
       return mediaEntry;
-    } catch (err) {
-      // Create an instant local DataURL preview if offline or in sandbox test
+    } catch (_) {
       const dataUrl = await new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result);
@@ -409,12 +404,13 @@ const ProViewBackend = {
     return true;
   },
 
-  // Ping BreadBackend REST API directly with x-api-key header
   async checkConnection() {
     try {
-      const res = await fetch(`${BREAD_BASE_URL}/collections/posts`, {
-        headers: { "x-api-key": BREAD_API_KEY }
-      });
+      const res = await fetchWithTimeout(
+        `${BREAD_BASE_URL}/collections/posts`,
+        { headers: { "x-api-key": BREAD_API_KEY } },
+        1500
+      );
       if (res.ok || res.status === 401 || res.status === 404) {
         this.cloudConnected = true;
         return true;

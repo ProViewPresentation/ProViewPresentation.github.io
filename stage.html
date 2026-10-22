@@ -3,153 +3,79 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Crowd-Sourced Stage View Sync — ProView Presentation</title>
-  <meta name="description" content="Real-time confidence monitor for speakers, pastors, and worship musicians featuring tailored countdowns, next-slide previews, and custom private stage notes." />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-
-  <script src="https://kaidaz18.duckdns.org/sdk/bread-client.js"></script>
+  <title>BOH Output (Back of House Stage Display) — ProView</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
 
-  <!-- GLOBAL TOP NAVIGATION BAR -->
-  <header class="site-navbar">
-    <a href="index.html" class="brand-link">
-      <div class="brand-mark">PV</div>
-      <span>ProView</span>
-      <span class="badge-free">100% Free</span>
-    </a>
+  <!-- BOH (BACK OF HOUSE) STAGE SCREEN — NO BACKGROUND, SHOWS SLIDE, NEXT LYRIC, TIME & PRESENTER INFO -->
+  <main class="boh-screen-layout">
 
-    <nav class="page-nav-links" aria-label="Main Navigation">
-      <a href="index.html" class="page-nav-link">Overview</a>
-      <a href="features.html" class="page-nav-link">Features &amp; Compare</a>
-      <a href="admin.html" class="page-nav-link">Admin Page</a>
-      <a href="operator.html" class="page-nav-link">Operator Page</a>
-      <a href="scripture.html" class="page-nav-link">Scripture Engine</a>
-      <a href="media.html" class="page-nav-link">Media Library</a>
-      <a href="stage.html" class="page-nav-link active">Stage View</a>
-    </nav>
-
-    <div class="nav-right-controls">
-      <button id="theme-toggle-btn" class="theme-toggle-btn" onclick="ProViewApp.toggleTheme()">
-        <span>🌙</span> <span>Dark Mode</span>
-      </button>
-      <div id="nav-auth-area">
-        <a href="account.html" class="btn btn-sm btn-primary">Free Account</a>
-      </div>
-    </div>
-  </header>
-
-  <main class="workspace-page-body">
-    <div class="container-wide" style="display:flex;flex-direction:column;gap:36px;">
-
-      <!-- TOP TELEMETRY ROW -->
-      <div class="grid-4">
-        <div class="card" style="padding:28px;">
-          <span class="font-mono" style="font-size:0.74rem;color:var(--text-muted);display:block;margin-bottom:8px;">
-            SANCTUARY LOCAL CLOCK
-          </span>
-          <div id="stage-live-clock" class="font-mono" style="font-size:2rem;font-weight:700;">
-            10:45:00 AM
-          </div>
+    <!-- TOP BAR: TIME, TIMER, EXTRA PRESENTER/SINGER INFO & FULLSCREEN -->
+    <header class="boh-top-bar">
+      <div style="display:flex;align-items:center;gap:28px;flex-wrap:wrap;">
+        <div>
+          <div class="font-mono" style="font-size:0.74rem;color:var(--text-muted);">CURRENT TIME</div>
+          <div id="boh-live-clock" class="font-mono" style="font-size:1.75rem;font-weight:700;">10:45:00 AM</div>
         </div>
 
-        <div class="card" style="padding:28px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-            <span class="font-mono" style="font-size:0.74rem;color:var(--text-muted);">SEGMENT COUNTDOWN</span>
-            <div style="display:flex;gap:6px;">
-              <button class="btn btn-sm btn-emerald" style="padding:4px 10px;font-size:0.74rem;" onclick="ProViewApp.toggleStageTimer()">Start/Pause</button>
-              <button class="btn btn-sm btn-outline" style="padding:4px 10px;font-size:0.74rem;" onclick="ProViewApp.resetStageTimer(35)">Reset</button>
-            </div>
+        <div style="border-left:1px solid var(--border-subtle);padding-left:24px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="font-mono" style="font-size:0.74rem;color:var(--text-muted);">TIMER</span>
+            <button type="button" class="btn btn-sm btn-outline" style="padding:2px 8px;font-size:0.72rem;" onclick="ProViewApp.toggleStageTimer()">Start/Pause</button>
+            <button type="button" class="btn btn-sm btn-outline" style="padding:2px 8px;font-size:0.72rem;" onclick="ProViewApp.resetStageTimer(35)">Reset</button>
           </div>
-          <div id="stage-countdown-timer" class="font-mono" style="font-size:2rem;font-weight:700;color:var(--accent-amber);">
-            35:00
-          </div>
+          <div id="boh-countdown-timer" class="font-mono" style="font-size:1.75rem;font-weight:700;color:var(--accent-amber);">35:00</div>
         </div>
 
-        <div class="card" style="padding:28px;">
-          <span class="font-mono" style="font-size:0.74rem;color:var(--text-muted);display:block;margin-bottom:8px;">
-            SLIDE POSITION
-          </span>
-          <div id="stage-full-slide-counter" class="font-mono" style="font-size:2rem;font-weight:700;color:var(--accent-blue);">
-            SLIDE 1 OF 4
+        <div style="border-left:1px solid var(--border-subtle);padding-left:24px;">
+          <div id="boh-slide-counter" class="font-mono" style="font-size:0.76rem;color:var(--accent-blue);font-weight:700;">
+            Slide 1 of 4
           </div>
-        </div>
-
-        <div class="card" style="padding:28px;display:flex;flex-direction:column;justify-content:space-between;">
-          <span class="font-mono" style="font-size:0.74rem;color:var(--text-muted);">
-            STAGE CONFIDENCE LINK
-          </span>
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:8px;">
-            <span class="badge-free">● PIN #7742 SYNCED</span>
-            <a href="operator.html" class="btn btn-sm btn-outline">← Operator Page</a>
+          <div id="boh-extra-info" style="font-size:0.95rem;color:var(--text-secondary);font-weight:500;">
+            Presenter &amp; Singer Info
           </div>
         </div>
       </div>
 
-      <!-- MAIN CONFIDENCE MONITOR GRID -->
-      <div style="display:grid;grid-template-columns:1.35fr 0.65fr;gap:36px;" class="grid-2">
-        <!-- Current Active Slide -->
-        <div class="card" style="padding:52px;display:flex;flex-direction:column;justify-content:space-between;min-height:420px;border-width:2px;border-color:var(--accent-emerald);">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
-            <span id="stage-full-item-title" class="font-mono" style="font-size:0.9rem;color:var(--accent-emerald);font-weight:700;">
-              CURRENT LIVE SLIDE
-            </span>
-            <span class="badge-free">ON AIR</span>
-          </div>
-
-          <div id="stage-full-current-lyric" class="font-display" style="font-size:clamp(1.9rem,3.2vw,3rem);font-weight:700;line-height:1.35;margin:36px 0;">
-            Bless the Lord, O my soul, O my soul
-            Worship His holy name
-          </div>
-
-          <div style="display:flex;gap:14px;">
-            <button class="btn btn-outline" onclick="ProViewApp.prevSlide()">← Previous Slide</button>
-            <button class="btn btn-emerald" onclick="ProViewApp.nextSlide()">Next Slide Cue →</button>
-          </div>
-        </div>
-
-        <!-- Next Slide & Private Speaker Notes -->
-        <div style="display:flex;flex-direction:column;gap:32px;">
-          <div class="card" style="flex:1;">
-            <div class="font-mono" style="font-size:0.8rem;color:var(--accent-blue);margin-bottom:14px;font-weight:600;">
-              UP NEXT SLIDE PREVIEW
-            </div>
-            <div id="stage-full-next-lyric" style="font-size:1.25rem;line-height:1.55;"></div>
-          </div>
-
-          <div class="card" style="flex:1;">
-            <div class="font-mono" style="font-size:0.8rem;color:var(--accent-amber);margin-bottom:14px;font-weight:600;">
-              PRIVATE SPEAKER &amp; BAND CUE NOTES
-            </div>
-            <div id="stage-full-notes" style="font-size:1.1rem;color:var(--text-secondary);line-height:1.6;"></div>
-          </div>
-        </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button id="theme-toggle-btn" class="theme-toggle-btn" onclick="ProViewApp.toggleTheme()">
+          🌙 Dark
+        </button>
+        <button type="button" class="btn btn-sm btn-primary" onclick="ProViewApp.toggleFullscreen()">
+          ⛶ Fullscreen
+        </button>
       </div>
+    </header>
 
-    </div>
+    <!-- CURRENT SLIDE / LYRIC (NO BACKGROUND) -->
+    <section class="boh-current-slide-box">
+      <div class="font-mono" style="font-size:0.78rem;color:var(--accent-emerald);font-weight:700;margin-bottom:14px;">
+        CURRENT SLIDE / LYRIC
+      </div>
+      <div
+        id="boh-current-text"
+        style="font-size:clamp(2.1rem,3.8vw,3.4rem);font-weight:700;line-height:1.35;white-space:pre-line;"
+      >
+        Bless the Lord, O my soul, O my soul
+        Worship His holy name
+      </div>
+    </section>
+
+    <!-- NEXT LYRIC SANG / NEXT SLIDE (NO BACKGROUND) -->
+    <section class="boh-next-slide-box">
+      <div id="boh-next-heading" class="font-mono" style="font-size:0.8rem;color:var(--text-muted);font-weight:700;margin-bottom:10px;">
+        NEXT LYRIC SANG:
+      </div>
+      <div
+        id="boh-next-text"
+        style="font-size:clamp(1.25rem,2.1vw,1.75rem);color:var(--text-secondary);line-height:1.45;white-space:pre-line;font-weight:500;"
+      >
+        The sun comes up, it's a new day dawning
+      </div>
+    </section>
+
   </main>
-
-  <footer class="site-footer">
-    <div class="container-wide" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div class="brand-mark" style="width:28px;height:28px;font-size:0.75rem;">PV</div>
-        <strong style="color:var(--text-primary);">ProView Presentation</strong>
-        <span>• Crowd-Sourced Stage View Sync</span>
-      </div>
-      <div style="display:flex;gap:24px;flex-wrap:wrap;">
-        <a href="index.html">Overview</a>
-        <a href="admin.html">Admin Page</a>
-        <a href="operator.html">Operator Page</a>
-        <a href="scripture.html">Scripture Engine</a>
-        <a href="media.html">Media Library</a>
-        <a href="account.html">Free Account</a>
-      </div>
-    </div>
-  </footer>
 
   <div id="toast-container" class="toast-container"></div>
 

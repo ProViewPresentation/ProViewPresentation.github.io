@@ -3,295 +3,132 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Project Operator Page (Live Execution Hub) — ProView Presentation</title>
-  <meta name="description" content="The Project Operator Page is ProView's Live Execution Hub designed for absolute simplicity, speed, and clean visibility during a live worship service." />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-
-  <script src="https://kaidaz18.duckdns.org/sdk/bread-client.js"></script>
+  <title>Project Operator — ProView</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
 
-  <!-- GLOBAL TOP NAVIGATION BAR -->
+  <!-- CLEAN, UNCROWDED TOP NAVBAR FOR OPERATOR -->
   <header class="site-navbar">
-    <a href="index.html" class="brand-link">
-      <div class="brand-mark">PV</div>
-      <span>ProView</span>
-      <span class="badge-free">100% Free</span>
-    </a>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <a href="index.html" class="brand-link">
+        <div class="brand-mark">PV</div>
+        <span>ProView</span>
+      </a>
+      <span class="page-context-pill">Project Operator</span>
+    </div>
 
-    <nav class="page-nav-links" aria-label="Main Navigation">
-      <a href="index.html" class="page-nav-link">Overview</a>
-      <a href="features.html" class="page-nav-link">Features &amp; Compare</a>
-      <a href="admin.html" class="page-nav-link">Admin Page</a>
-      <a href="operator.html" class="page-nav-link active">Operator Page</a>
-      <a href="scripture.html" class="page-nav-link">Scripture Engine</a>
-      <a href="media.html" class="page-nav-link">Media Library</a>
-      <a href="stage.html" class="page-nav-link">Stage View</a>
+    <nav class="page-nav-links" aria-label="Operator Navigation">
+      <a href="admin.html" class="page-nav-link">Switch to Admin</a>
     </nav>
 
     <div class="nav-right-controls">
       <button id="theme-toggle-btn" class="theme-toggle-btn" onclick="ProViewApp.toggleTheme()">
-        <span>🌙</span> <span>Dark Mode</span>
+        🌙 Dark
       </button>
-      <div id="nav-auth-area">
-        <a href="account.html" class="btn btn-sm btn-primary">Free Account</a>
+
+      <!-- TOP-RIGHT LIVE BUTTON WITH FOH & BOH MENU -->
+      <div id="live-menu-wrapper" class="live-menu-wrapper">
+        <button type="button" class="btn-live-trigger" onclick="ProViewApp.toggleLiveMenu(event)">
+          <span class="live-dot-pulse"></span>
+          <span>Live</span>
+          <span>▾</span>
+        </button>
+
+        <div id="live-dropdown-menu" class="live-dropdown-menu">
+          <div class="live-menu-item">
+            <h4>FOH Output (Front of House)</h4>
+            <p>
+              Main sanctuary projection screen. Open this window, drag it to your main screen, and click Fullscreen.
+            </p>
+            <button type="button" class="btn btn-sm btn-emerald" style="width:100%;" onclick="ProViewApp.openFOHWindow()">
+              Open FOH Output ↗
+            </button>
+          </div>
+
+          <div class="live-menu-item">
+            <h4>BOH Output (Back of House)</h4>
+            <p>
+              Secondary stage screen for presenters &amp; singers. Shows current slide, next lyric, time, and notes with no background.
+            </p>
+            <button type="button" class="btn btn-sm btn-primary" style="width:100%;" onclick="ProViewApp.openBOHWindow()">
+              Open BOH Output ↗
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </header>
 
-  <main>
-    <!-- OPERATOR PAGE HEADER -->
-    <section class="page-hero-header">
-      <div class="container-wide" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;">
-        <div>
-          <div class="eyebrow">WORKSPACE B • THE LIVE EXECUTION HUB</div>
-          <h1 style="font-size:clamp(2rem,3.4vw,2.85rem);margin-bottom:10px;">
-            The Project Operator Page
-          </h1>
-          <p style="color:var(--text-secondary);font-size:1.05rem;max-width:66ch;">
-            Designed for absolute simplicity, speed, and clean visibility during a live service. Click any slide cue to project, or use the On-the-Fly Micro-Editing Deck below without affecting Master Templates.
-          </p>
+  <!-- OPERATOR WORKSPACE: LEFT SIDEBAR + RIGHT PREVIEW -->
+  <div class="operator-layout">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="operator-sidebar">
+      <!-- TOP OF SIDEBAR: CHURCH SERVICES (ADD, DELETE, SELECT) -->
+      <div class="sidebar-section-services">
+        <div class="sidebar-heading-row">
+          <h2>Church Services</h2>
+          <button type="button" class="btn btn-sm btn-outline" style="padding:4px 10px;font-size:0.76rem;" onclick="ProViewApp.toggleAddServiceForm()">
+            + Add
+          </button>
         </div>
 
-        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-          <label for="operator-service-select" class="font-mono" style="font-size:0.78rem;color:var(--text-muted);">ACTIVE COLLECTION:</label>
-          <select
-            id="operator-service-select"
-            class="form-select"
-            style="width:290px;padding:10px 14px;font-size:0.9rem;"
-            onchange="ProViewApp.changeOperatorService(this.value)"
-          ></select>
-          <a href="stage.html" class="btn btn-outline">Stage View →</a>
-          <a href="admin.html" class="btn btn-outline">Edit Master in Admin Page →</a>
+        <form id="operator-add-service-form" class="sidebar-inline-form" onsubmit="ProViewApp.addOperatorService(event)">
+          <div class="form-group" style="margin-bottom:8px;">
+            <input type="text" id="operator-new-service-title" class="form-input" style="padding:8px 10px;font-size:0.84rem;" placeholder="Service name (e.g. Easter Sunday)" required />
+          </div>
+          <div class="form-group" style="margin-bottom:10px;">
+            <input type="text" id="operator-new-service-date" class="form-input" style="padding:8px 10px;font-size:0.82rem;" placeholder="Day &amp; Time (e.g. Sunday 10:00 AM)" />
+          </div>
+          <button type="submit" class="btn btn-sm btn-primary" style="width:100%;">Create Service</button>
+        </form>
+
+        <div id="operator-services-list" class="sidebar-scroll-list">
+          <!-- Populated by JS -->
         </div>
       </div>
-    </section>
 
-    <div class="workspace-page-body">
-      <div class="container-wide">
-
-        <!-- PRIMARY LIVE ROW: PLAYLIST + SLIDE CUE GRID + MAIN OUTPUT -->
-        <div class="operator-top-live-grid">
-          <!-- Column 1: Service Playlist -->
-          <div class="panel-card">
-            <div class="panel-header">
-              <h3>Service Playlist</h3>
-              <span class="badge-free">LIVE DECK</span>
-            </div>
-            <div class="panel-body">
-              <div id="operator-playlist-items" class="collection-list"></div>
-            </div>
-          </div>
-
-          <!-- Column 2: Active Slide Cue Grid -->
-          <div class="panel-card">
-            <div class="panel-header">
-              <div>
-                <h3 id="operator-active-item-title">10,000 Reasons (Bless the Lord)</h3>
-                <div id="operator-active-item-subtitle" class="font-mono" style="font-size:0.78rem;color:var(--text-secondary);margin-top:4px;"></div>
-              </div>
-              <div style="display:flex;gap:10px;">
-                <button class="btn btn-sm btn-outline" onclick="ProViewApp.prevSlide()">← Prev</button>
-                <button class="btn btn-sm btn-emerald" onclick="ProViewApp.nextSlide()">Next →</button>
-              </div>
-            </div>
-            <div class="panel-body">
-              <div id="operator-slide-cue-grid" class="slide-cue-grid"></div>
-            </div>
-          </div>
-
-          <!-- Column 3: Main Sanctuary Projection Output -->
-          <div class="panel-card">
-            <div class="panel-header">
-              <h3>Main Sanctuary Output</h3>
-              <span class="font-mono" style="font-size:0.74rem;color:var(--accent-emerald);">● 1080p60 + NDI</span>
-            </div>
-            <div class="panel-body">
-              <div id="operator-live-screen" class="live-output-screen">
-                <div class="live-output-overlay"></div>
-                <div id="operator-nursery-banner" class="live-nursery-banner" style="display:none;"></div>
-                <div id="operator-live-text" class="live-output-text"></div>
-                <div class="live-output-ccli">
-                  <span id="operator-live-ccli-left"></span>
-                  <span id="operator-live-ccli-right"></span>
-                </div>
-              </div>
-
-              <!-- Master Display Overrides -->
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px;">
-                <button class="btn btn-sm btn-danger" onclick="ProViewApp.setDisplayOverride('blackout')">
-                  Blackout [B]
-                </button>
-                <button class="btn btn-sm btn-outline" onclick="ProViewApp.setDisplayOverride('clear-text')">
-                  Clear Text [C]
-                </button>
-                <button class="btn btn-sm btn-primary" onclick="ProViewApp.setDisplayOverride('logo')">
-                  Logo [L]
-                </button>
-              </div>
-
-              <!-- Nursery Pager Alert -->
-              <div style="display:flex;gap:10px;margin-top:16px;">
-                <input
-                  type="text"
-                  id="operator-nursery-input"
-                  class="form-input"
-                  style="padding:10px 14px;font-size:0.86rem;"
-                  placeholder="Nursery Pager # (e.g. 408)"
-                />
-                <button class="btn btn-sm btn-outline" onclick="ProViewApp.triggerNurseryAlert()">
-                  Flash Pager
-                </button>
-              </div>
-            </div>
-          </div>
+      <!-- UNDERNEATH IN SIDEBAR: SERVICE ITEMS (SERMON, LYRICS, SCRIPTURE, MEDIA/VIDEO) -->
+      <div class="sidebar-section-items">
+        <div class="sidebar-heading-row">
+          <h2>Service Items</h2>
+          <button type="button" class="btn btn-sm btn-outline" style="padding:4px 10px;font-size:0.76rem;" onclick="ProViewApp.toggleAddItemForm()">
+            + Add Item
+          </button>
         </div>
 
-        <!-- SECONDARY OPERATOR TOOLS ROW: MICRO-EDITING + STAGE & QUICK ADD -->
-        <div class="operator-bottom-tools-grid">
-          <!-- Left: On-the-Fly Micro-Editing Deck -->
-          <div class="panel-card">
-            <div class="panel-header">
-              <h3>On-the-Fly Micro-Editing Deck</h3>
-              <span class="font-mono" style="font-size:0.74rem;color:var(--accent-amber);">
-                Master Database Protected
-              </span>
-            </div>
-            <div class="panel-body">
-              <div class="grid-2" style="gap:28px;">
-                <div>
-                  <label class="form-label" for="operator-micro-text">
-                    Live Slide Text Fix (Updates active slide without altering Master Templates):
-                  </label>
-                  <textarea
-                    id="operator-micro-text"
-                    class="form-textarea"
-                    style="min-height:110px;"
-                    oninput="ProViewApp.applyOperatorMicroText(this.value)"
-                  ></textarea>
-                  <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
-                    <button type="button" class="btn btn-sm btn-cyan" onclick="ProViewApp.splitOverflowingOperatorSlide()">
-                      Smart Reflow: Split Slide into A + B
-                    </button>
-                    <button type="button" class="btn btn-sm btn-outline" onclick="ProViewApp.resetOperatorSlideOverride()">
-                      Revert to Master
-                    </button>
-                  </div>
-                </div>
-
-                <div>
-                  <div class="form-group">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                      <label class="form-label" for="operator-micro-scale" style="margin:0;">Slide Text Density / Font Scale:</label>
-                      <span id="operator-micro-scale-val" class="font-mono" style="font-size:0.84rem;font-weight:700;">100%</span>
-                    </div>
-                    <input
-                      type="range"
-                      id="operator-micro-scale"
-                      min="65"
-                      max="140"
-                      value="100"
-                      style="width:100%;"
-                      oninput="ProViewApp.applyOperatorMicroScale(this.value)"
-                    />
-                  </div>
-
-                  <div class="form-group" style="margin-bottom:0;">
-                    <label class="form-label">Instant Slide Background Override:</label>
-                    <div id="operator-bg-swatches" class="bg-swatch-grid"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <form id="operator-add-item-form" class="sidebar-inline-form" onsubmit="ProViewApp.addOperatorItem(event)">
+          <div class="form-group" style="margin-bottom:8px;">
+            <select id="operator-new-item-type" class="form-select" style="padding:7px 10px;font-size:0.82rem;">
+              <option value="sermon">Sermon Slides</option>
+              <option value="song">Music Lyrics</option>
+              <option value="scripture">Scripture Reading</option>
+              <option value="video">Video (Singular Piece)</option>
+              <option value="media">Graphic (Singular Piece)</option>
+            </select>
           </div>
-
-          <!-- Right: Stage Confidence Monitor & Last-Minute Slide Injector -->
-          <div style="display:flex;flex-direction:column;gap:32px;">
-            <div class="panel-card">
-              <div class="panel-header">
-                <h3>Stage Confidence Monitor Sync</h3>
-                <a href="stage.html" class="btn btn-sm btn-outline">Open Stage View Page →</a>
-              </div>
-              <div class="panel-body">
-                <div class="stage-confidence-preview">
-                  <div class="stage-conf-top">
-                    <span id="operator-stage-clock">10:45:00 AM</span>
-                    <span>TIMER: <strong id="operator-stage-timer">35:00</strong></span>
-                  </div>
-                  <div id="operator-stage-curr" class="stage-conf-current"></div>
-                  <div id="operator-stage-next" class="stage-conf-next"></div>
-                  <div id="operator-stage-notes" class="font-mono" style="font-size:0.78rem;color:var(--accent-emerald);margin-top:10px;"></div>
-                </div>
-
-                <div style="display:flex;gap:10px;margin-top:14px;">
-                  <input
-                    type="text"
-                    id="operator-stage-msg-input"
-                    class="form-input"
-                    style="padding:10px 14px;font-size:0.86rem;"
-                    placeholder="Send private stage cue to Pastor..."
-                  />
-                  <button class="btn btn-sm btn-primary" onclick="ProViewApp.sendStageCustomMessage()">Send</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="panel-card">
-              <div class="panel-header">
-                <h3>Append Last-Minute Slide</h3>
-              </div>
-              <div class="panel-body">
-                <form onsubmit="ProViewApp.appendEmergencyOperatorSlide(event)">
-                  <div class="form-group">
-                    <label class="form-label" for="emergency-slide-label">Slide Cue Label</label>
-                    <input type="text" id="emergency-slide-label" class="form-input" placeholder="e.g. Impromptu Scripture / Announcement" />
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label" for="emergency-slide-text">Slide Text Content</label>
-                    <textarea
-                      id="emergency-slide-text"
-                      class="form-textarea"
-                      style="min-height:85px;"
-                      placeholder="Type an announcement or verse to project immediately..."
-                      required
-                    ></textarea>
-                  </div>
-                  <button type="submit" class="btn btn-primary" style="width:100%;">
-                    + Inject Slide &amp; Project Now
-                  </button>
-                </form>
-              </div>
-            </div>
+          <div class="form-group" style="margin-bottom:8px;">
+            <input type="text" id="operator-new-item-title" class="form-input" style="padding:8px 10px;font-size:0.84rem;" placeholder="Item Title" required />
           </div>
+          <div class="form-group" style="margin-bottom:10px;">
+            <textarea id="operator-new-item-content" class="form-textarea" style="min-height:68px;padding:8px 10px;font-size:0.82rem;" placeholder="Slides text (separate slides with a blank line)"></textarea>
+          </div>
+          <button type="submit" class="btn btn-sm btn-primary" style="width:100%;">Add to Service</button>
+        </form>
+
+        <div id="operator-items-list" class="sidebar-scroll-list">
+          <!-- Populated by JS -->
         </div>
+      </div>
+    </aside>
 
-      </div>
-    </div>
-  </main>
+    <!-- RIGHT OF SIDEBAR: ITEM PREVIEW (SLIDE GRID OR SINGULAR VIDEO/MEDIA CONTROLS) -->
+    <main id="operator-preview-area" class="operator-main-area">
+      <!-- Populated by JS -->
+    </main>
 
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container-wide" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div class="brand-mark" style="width:28px;height:28px;font-size:0.75rem;">PV</div>
-        <strong style="color:var(--text-primary);">ProView Presentation</strong>
-        <span>• The Project Operator Page (Live Execution Hub)</span>
-      </div>
-      <div style="display:flex;gap:24px;flex-wrap:wrap;">
-        <a href="index.html">Overview</a>
-        <a href="features.html">Features &amp; Compare</a>
-        <a href="admin.html">Admin Page</a>
-        <a href="scripture.html">Scripture Engine</a>
-        <a href="media.html">Media Library</a>
-        <a href="stage.html">Stage View</a>
-        <a href="account.html">Free Account</a>
-      </div>
-    </div>
-  </footer>
+  </div>
 
   <div id="toast-container" class="toast-container"></div>
 

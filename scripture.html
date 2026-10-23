@@ -3,184 +3,109 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Instant Scripture Engine — ProView Presentation</title>
-  <meta name="description" content="Pull verses from multiple Bible translations (ESV, NIV, KJV, NLT) on the fly and auto-format them across uniform slides." />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-
-  <script src="https://kaidaz18.duckdns.org/sdk/bread-client.js"></script>
+  <title>Instant Scripture Engine — ProView</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
 
-  <!-- GLOBAL TOP NAVIGATION BAR -->
+  <!-- CLEAN, UNCROWDED TOP NAVBAR FOR SCRIPTURE ENGINE -->
   <header class="site-navbar">
-    <a href="index.html" class="brand-link">
-      <div class="brand-mark">PV</div>
-      <span>ProView</span>
-      <span class="badge-free">100% Free</span>
-    </a>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <a href="index.html" class="brand-link">
+        <div class="brand-mark">PV</div>
+        <span>ProView</span>
+      </a>
+      <span class="page-context-pill">Scripture Engine</span>
+    </div>
 
-    <nav class="page-nav-links" aria-label="Main Navigation">
-      <a href="index.html" class="page-nav-link">Overview</a>
-      <a href="features.html" class="page-nav-link">Features &amp; Compare</a>
-      <a href="admin.html" class="page-nav-link">Admin Page</a>
-      <a href="operator.html" class="page-nav-link">Operator Page</a>
-      <a href="scripture.html" class="page-nav-link active">Scripture Engine</a>
-      <a href="media.html" class="page-nav-link">Media Library</a>
-      <a href="stage.html" class="page-nav-link">Stage View</a>
+    <nav class="page-nav-links" aria-label="Scripture Navigation">
+      <a href="admin.html" class="page-nav-link">← Admin</a>
+      <a href="operator.html" class="page-nav-link">Operator →</a>
     </nav>
 
     <div class="nav-right-controls">
       <button id="theme-toggle-btn" class="theme-toggle-btn" onclick="ProViewApp.toggleTheme()">
-        <span>🌙</span> <span>Dark Mode</span>
+        🌙 Dark
       </button>
-      <div id="nav-auth-area">
-        <a href="account.html" class="btn btn-sm btn-primary">Free Account</a>
-      </div>
     </div>
   </header>
 
   <main>
-    <section class="page-hero-header">
-      <div class="container-wide" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;">
-        <div>
-          <div class="eyebrow">INSTANT SCRIPTURE ENGINE • SMART TEXT-FLOW REFLOW</div>
-          <h1 style="font-size:clamp(2rem,3.4vw,2.85rem);margin-bottom:10px;">
-            Instant Scripture Engine
-          </h1>
-          <p style="color:var(--text-secondary);font-size:1.05rem;max-width:65ch;">
-            Pull verses from multiple Bible translations (ESV, NIV, KJV, NLT) on the fly, auto-formatting them across uniform sub-slides based on your preferred text length.
-          </p>
-        </div>
-        <div style="display:flex;gap:12px;">
-          <a href="admin.html" class="btn btn-outline">← Admin Page</a>
-          <a href="operator.html" class="btn btn-emerald">● Operator Page →</a>
-        </div>
-      </div>
-    </section>
-
-    <div class="workspace-page-body">
-      <div class="container-wide">
-        <div style="display:grid;grid-template-columns:440px 1fr;gap:36px;align-items:start;" class="grid-2">
-          <!-- Scripture Builder Controls -->
+    <section class="section" style="padding:48px 0;">
+      <div class="container">
+        <div class="grid-2" style="align-items:start;">
           <div class="panel-card">
             <div class="panel-header">
-              <h3>Passage &amp; Translation Selector</h3>
+              <h3>Instant Scripture Engine</h3>
             </div>
             <div class="panel-body">
               <div class="form-group">
-                <label class="form-label" for="scripture-preset-select">Quick-Load Bible Passage</label>
+                <label class="form-label" for="scripture-preset-select">Select Passage</label>
                 <select id="scripture-preset-select" class="form-select" onchange="ProViewApp.loadScripturePreset()">
                   <option value="John 3:16-18">John 3:16-18</option>
                   <option value="Psalm 23:1-6">Psalm 23:1-6</option>
                   <option value="Romans 8:31-39">Romans 8:31-39</option>
                   <option value="Isaiah 40:28-31">Isaiah 40:28-31</option>
-                  <option value="Philippians 4:4-8">Philippians 4:4-8</option>
                 </select>
               </div>
 
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                 <div class="form-group">
-                  <label class="form-label" for="scripture-ref-input">Scripture Reference</label>
-                  <input
-                    type="text"
-                    id="scripture-ref-input"
-                    class="form-input"
-                    value="John 3:16-18"
-                    oninput="ProViewApp.renderAdminScriptureTab()"
-                  />
+                  <label class="form-label" for="scripture-ref-input">Reference</label>
+                  <input type="text" id="scripture-ref-input" class="form-input" value="John 3:16-18" oninput="ProViewApp.renderAdminScriptureTab()" />
                 </div>
                 <div class="form-group">
-                  <label class="form-label" for="scripture-translation-select">Bible Translation</label>
+                  <label class="form-label" for="scripture-translation-select">Translation</label>
                   <select id="scripture-translation-select" class="form-select" onchange="ProViewApp.loadScripturePreset()">
-                    <option value="ESV">ESV (English Standard)</option>
-                    <option value="NIV">NIV (New International)</option>
-                    <option value="KJV">KJV (King James)</option>
-                    <option value="NLT">NLT (New Living)</option>
+                    <option value="ESV">ESV</option>
+                    <option value="NIV">NIV</option>
+                    <option value="KJV">KJV</option>
+                    <option value="NLT">NLT</option>
                   </select>
                 </div>
               </div>
 
               <div class="form-group">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                  <label class="form-label" for="scripture-reflow-slider" style="margin:0;">Smart Text-Flow Reflow Length:</label>
-                  <span id="scripture-char-label" class="font-mono" style="font-size:0.84rem;font-weight:700;">145 characters / slide</span>
+                <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                  <label class="form-label" for="scripture-reflow-slider">Reflow Density</label>
+                  <span id="scripture-char-label" class="font-mono" style="font-size:0.8rem;">145 chars / slide</span>
                 </div>
-                <input
-                  type="range"
-                  id="scripture-reflow-slider"
-                  min="75"
-                  max="260"
-                  value="145"
-                  style="width:100%;"
-                  oninput="ProViewApp.renderAdminScriptureTab()"
-                />
+                <input type="range" id="scripture-reflow-slider" min="75" max="260" value="145" style="width:100%;" oninput="ProViewApp.renderAdminScriptureTab()" />
               </div>
 
               <div class="form-group">
-                <label class="form-label" for="scripture-custom-textarea">Verse Text (Editable or Paste Any Passage)</label>
-                <textarea
-                  id="scripture-custom-textarea"
-                  class="form-textarea"
-                  style="min-height:150px;"
-                  oninput="ProViewApp.renderAdminScriptureTab()"
-                >For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life. For God did not send his Son into the world to condemn the world, but in order that the world might be saved through him. Whoever believes in him is not condemned, but whoever does not believe is condemned already, because he has not believed in the name of the only Son of God.</textarea>
+                <label class="form-label" for="scripture-custom-textarea">Verse Text</label>
+                <textarea id="scripture-custom-textarea" class="form-textarea" oninput="ProViewApp.renderAdminScriptureTab()">For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life. For God did not send his Son into the world to condemn the world, but in order that the world might be saved through him.</textarea>
               </div>
 
               <div class="form-group">
-                <label class="form-label" for="scripture-target-service">Target Service Collection</label>
+                <label class="form-label" for="scripture-target-service">Add to Service</label>
                 <select id="scripture-target-service" class="form-select"></select>
               </div>
 
-              <div style="display:flex;flex-direction:column;gap:12px;">
-                <button type="button" class="btn btn-primary" style="width:100%;" onclick="ProViewApp.pushScriptureToActiveService(false)">
-                  + Add Scripture Slides to Service Collection
+              <div style="display:flex;gap:10px;">
+                <button type="button" class="btn btn-primary" style="flex:1;" onclick="ProViewApp.pushScriptureToActiveService(false)">
+                  + Add to Service
                 </button>
-                <button type="button" class="btn btn-emerald" style="width:100%;" onclick="ProViewApp.pushScriptureToActiveService(true)">
-                  ● Add &amp; Launch Immediately in Operator Page →
+                <button type="button" class="btn btn-emerald" style="flex:1;" onclick="ProViewApp.pushScriptureToActiveService(true)">
+                  Add &amp; Open Operator →
                 </button>
               </div>
             </div>
           </div>
 
-          <!-- Real-Time Reflow Sub-Slides Preview -->
           <div class="panel-card">
             <div class="panel-header">
-              <h3>Auto-Formatted Sub-Slides Preview</h3>
-              <span class="font-mono" style="font-size:0.76rem;color:var(--accent-blue);">Smart Text-Flow Reflow Active</span>
+              <h3>Auto-Reflowed Slides</h3>
             </div>
             <div class="panel-body">
-              <p style="font-size:0.95rem;color:var(--text-secondary);margin-bottom:20px;">
-                ProView automatically calculates character density and word boundaries so verses never overflow or clip on the sanctuary screen.
-              </p>
               <div id="scripture-engine-slides-preview" class="reflow-slides-preview"></div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </main>
-
-  <footer class="site-footer">
-    <div class="container-wide" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div class="brand-mark" style="width:28px;height:28px;font-size:0.75rem;">PV</div>
-        <strong style="color:var(--text-primary);">ProView Presentation</strong>
-        <span>• Instant Scripture Engine</span>
-      </div>
-      <div style="display:flex;gap:24px;flex-wrap:wrap;">
-        <a href="index.html">Overview</a>
-        <a href="admin.html">Admin Page</a>
-        <a href="operator.html">Operator Page</a>
-        <a href="media.html">Media Library</a>
-        <a href="stage.html">Stage View</a>
-        <a href="account.html">Free Account</a>
-      </div>
-    </div>
-  </footer>
 
   <div id="toast-container" class="toast-container"></div>
 
